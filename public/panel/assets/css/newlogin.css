@@ -1,0 +1,275 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: inter,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	background: url('./../images/basic/bg.png');
+	background-size: cover;
+	background-position: center;
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px;
+}
+
+.login-container {
+	background: white;
+	border-radius: 16px;
+	box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+	padding: 10px 20px;
+	width: 100%;
+	max-width: 550px;
+}
+
+.login-header {
+	text-align: center;
+	margin-bottom: 5px;
+	padding:10px;
+}
+
+.logo {
+	width: 80px;
+	margin: 0 auto 15px;
+	border-radius: 8px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.org-name {
+	font-size: 12px;
+	color: #666;
+	margin-top: -10px;
+}
+
+.portal-title {
+	font-size: 18px;
+	font-weight: 600;
+	color: #333;
+	margin-top: 5px;
+}
+
+.login-as {
+	text-align: center;
+	font-size: 14px;
+	color: #555;
+
+}
+
+.user-types {
+	display: flex;
+	gap: 15px;
+	margin-bottom: 15px;
+}
+
+.user-type {
+	flex: 1;
+	padding: 5px 5px;
+	border: 1px solid #e5e5e5;
+	border-radius: 12px;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	background: #f8f9fa;
+	position:relative;
+}
+
+.user-type.active {
+	background: #d4edda;
+	border-color: #025964;
+	color: #155724;
+}
+
+.user-type:hover {
+	border-color: #025964;
+	background: #e8f5e8;
+}
+
+.user-type-icon {
+	width: 40px;
+	height: 40px;
+	background: #147E8B;
+	border-radius: 8px;
+	margin: 0 auto 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	font-size: 18px;
+}
+
+.user-type.active .user-type-icon {
+	background: #025964;
+}
+
+.user-type-label {
+	font-weight: 500;
+	font-size: 14px;
+}
+
+.credentials-text {
+	text-align: center;
+	color: #666;
+	margin-bottom: 10px;
+	font-size: 14px;
+}
+
+.form-group {
+	margin-bottom: 10px;
+}
+
+.form-label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: 500;
+	color: #333;
+	font-size: 14px;
+}
+
+.required {
+	color: #dc3545;
+}
+
+.form-input {
+	width: 100%;
+	padding: 8px 12px!important;
+	border: 1px solid #d8e0ee!important;
+	border-radius: 4px!important;
+	font-size: 14px!important;
+	transition: border-color 0.3s ease;
+	color:#000!important;
+}
+
+.form-input:focus {
+	outline: none;
+	border-color: #025964;
+}
+
+.password-container {
+	position: relative;
+}
+
+.password-toggle {
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: #666;
+	font-size: 16px;
+}
+
+.form-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 25px;
+}
+
+.checkbox-container {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.checkbox {
+	width: 16px;
+	height: 16px;
+}
+
+.forgot-password {
+	color: #007bff;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.forgot-password:hover {
+	text-decoration: underline;
+}
+
+.submit-btn {
+	width: 100%;
+	padding: 14px;
+	background: #025964;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 16px;
+	font-weight: 500;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+	margin-bottom: 20px;
+}
+
+.submit-btn:hover {
+	background: #147E8B;
+}
+
+.register-section {
+	text-align: center;
+	margin-top: 0px;
+	margin-bottom: 10px;
+}
+
+.register-text {
+	color: #666;
+	margin-bottom: 15px;
+	font-size: 14px;
+}
+
+.register-btn {
+	width: 100%;
+	padding: 12px;
+	background: transparent;
+	color: #007bff;
+	border: 2px solid #147E8B;
+	border-radius: 8px;
+	font-size: 14px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+}
+
+.register-btn:hover {
+	background: #147E8B;
+	color: white;
+}
+
+@media (max-width: 480px) {
+	.login-container {
+		padding: 30px 20px;
+	}
+	
+	.user-types {
+		flex-direction: column;
+	}
+}
+
+
+.login-as {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+  margin: 20px 0;
+  margin-top:0px;
+}
+
+.login-as::before,
+.login-as::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #777;
+  margin: 0 10px;
+}
+
+

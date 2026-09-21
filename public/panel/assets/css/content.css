@@ -1,0 +1,77 @@
+.printingtable
+{
+	width:11.69in!important;
+	height:8in!important;
+}
+.innertable
+{
+	width:11.69in!important;
+	height:8in!important;
+	border-collapse:collapse;
+	border:1px solid #eee;
+	padding:3px;
+}
+.itemtable
+{
+	width:100%!important;
+	border-collapse:collapse;
+	border:1px solid #eee;
+	font-size:12px;
+}
+
+.height20
+{
+	height:20px;
+}
+.label
+{
+	font-size:12px;
+	/*font-weight:bold;*/
+	border:1px solid #eee;
+	width:100%;
+	position:relative;
+	padding:0px 5px;	
+}
+
+.content
+{
+	font-size:12px;
+	line-height:20px;
+	padding:0px 5px;
+	border:1px solid #eee;
+}
+
+.headcenter
+{
+	text-align:center;
+	padding:0px 3px;
+	/*font-weight:bold;*/
+	font-size:12px;
+}
+.headleft
+{
+	text-align:left;
+	padding:0px 3px;
+	/*font-weight:bold;*/
+	font-size:12px;
+}
+.headright
+{
+	text-align:right;
+	padding:0px 3px;
+	/*font-weight:bold;*/
+	font-size:12px;
+}
+.declaration
+{
+	text-align:left; vertical-align:top; font-size:12px; padding:0px 3px;
+}
+.notes
+{
+	text-align:left; vertical-align:top; font-size:12px; padding:0px 3px; line-height:16px;
+}
+
+.thead
+{
+	font-weight:bold;
+}

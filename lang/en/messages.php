@@ -1,0 +1,13 @@
+<?php
+
+return [
+	'sorry'			=>	'SORRY! <br> THE SYSTEM DID NOT FIND THE DATA YOU ARE LOOKING FOR.',
+	'stored' 		=>	'RECORD STORED SUCCESSFULLY!',
+	'duplicate'		=>	'IT SEEMS DUPLICATE RECORD. PLEASE CHECK AND TRY AGAIN!',
+	'updated' 		=>	'RECORD UPDATED SUCCESSFULLY!',
+	'notfound' 		=>	'RECORD ID DOES NOT EXIST OR FOUND SOME PROBLEM!',
+	'confirmation' 	=>	'ARE YOU SURE YOU WANT TO DELETE THIS RECORD?',
+	'deleted' 		=>	'RECORD DELETED SUCCESSFULLY',
+];
+
+?>

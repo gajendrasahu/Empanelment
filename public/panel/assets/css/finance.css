@@ -1,0 +1,312 @@
+/* ================================
+   Payment Card
+================================ */
+
+.finance-payment-card-row {
+    background: transparent !important;
+}
+
+.finance-payment-card-cell {
+    padding: 10px 5px !important;
+    border: 0 !important;
+    background: transparent !important;
+}
+
+.finance-payment-card {
+    background: #ffffff;
+    border: 1px solid #e4e8ed;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+    transition: all 0.25s ease;
+}
+/*
+.finance-payment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 22px rgba(0, 0, 0, 0.10);
+}
+*/
+
+/* ================================
+   Header
+================================ */
+
+.finance-payment-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px;
+    background: linear-gradient(135deg, #f8fafc, #eef3f8);
+    border-bottom: 1px solid #e6eaf0;
+}
+
+.finance-payment-card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.finance-payment-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #337ab7;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.department-name {
+    color: #263238;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.receipt-info {
+    color: #7b8794;
+    font-size: 12px;
+}
+
+.receipt-info strong {
+    color: #337ab7;
+}
+
+.finance-payment-card-date {
+    text-align: right;
+}
+
+.finance-payment-card-date span {
+    display: block;
+    color: #8a96a3;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.finance-payment-card-date strong {
+    display: block;
+    color: #37474f;
+    font-size: 13px;
+    margin-top: 3px;
+}
+
+
+/* ================================
+   Body
+================================ */
+
+.finance-payment-card-body {
+    padding: 18px 20px;
+}
+
+.detail-section {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.detail-item {
+    min-height: 65px;
+    padding: 11px 13px;
+    background: #f8fafc;
+    border: 1px solid #edf0f3;
+    border-radius: 8px;
+}
+
+.detail-label {
+    display: block;
+    color: #8a96a3;
+    font-size: 11px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.detail-label i {
+    margin-right: 4px;
+    color: #337ab7;
+}
+
+.detail-item strong {
+    display: block;
+    color: #37474f;
+    font-size: 13px;
+    word-break: break-word;
+}
+
+
+/* ================================
+   Payment Mode
+================================ */
+
+.finance-payment-mode {
+    display: inline-block;
+    padding: 4px 9px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* ================================
+   Amount Section
+================================ */
+
+.amount-section {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.amount-box {
+    padding: 12px 14px;
+    background: #fff;
+    border: 1px solid #e5e9ee;
+    border-radius: 8px;
+}
+
+.amount-box span {
+    display: block;
+    color: #8a96a3;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.amount-box strong {
+    display: block;
+    color: #37474f;
+    font-size: 14px;
+}
+
+.amount-box.net-amount {
+    background: #eef8f1;
+    border-color: #cde8d3;
+}
+
+.amount-box.net-amount strong {
+    color: #218838;
+    font-size: 15px;
+}
+
+.amount-box.invoiced-amount {
+    background: #f3f6fb;
+    border-color: #dce4f0;
+}
+
+.amount-box.invoiced-amount strong {
+    color: #337ab7;
+}
+
+
+/* ================================
+   Footer
+================================ */
+
+.finance-payment-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: #fafbfc;
+    border-top: 1px solid #edf0f3;
+	gap: 7px;
+}
+
+.finance-payment-card-footer > div {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.footer-label {
+    color: #929da8;
+    font-size: 11px;
+	
+}
+
+.finance-payment-card-footer strong {
+    color: #455a64;
+    font-size: 12px;
+}
+
+.card-actions {
+    margin-left: auto;
+}
+
+.card-actions .btn {
+    border-radius: 6px;
+}
+
+
+/* ================================
+   Responsive
+================================ */
+
+@media (max-width: 992px) {
+
+    .detail-section {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .amount-section {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .finance-payment-card-header {
+        align-items: flex-start;
+    }
+
+    .finance-payment-card-date {
+        display: none;
+    }
+
+    .detail-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .amount-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .finance-payment-card-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .finance-payment-card-header,
+    .finance-payment-card-body,
+    .finance-payment-card-footer {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .detail-section,
+    .amount-section {
+        grid-template-columns: 1fr;
+    }
+
+    .finance-payment-card-footer {
+        display: block;
+    }
+
+    .finance-payment-card-footer > div {
+        margin-bottom: 8px;
+    }
+
+    .card-actions {
+        margin-top: 10px;
+    }
+}

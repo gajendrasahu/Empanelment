@@ -1,0 +1,173 @@
+
+@font-face
+{
+font-family:myFont;
+src:url('../fonts/PALACIO.ttf');
+}
+
+
+
+
+.container h4
+{
+color:#FF5601;
+font-family: inter,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+font-size:20px;
+}
+
+.desc
+{
+font-size:14px;
+}
+
+.desc i
+{
+color:#FF5601; 
+font-weight:bold;
+line-height:30px;
+}
+
+#mytitle
+{
+font-family: inter,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+text-align:center; 
+padding:0px;
+color:#FF5601;
+}
+#mytitlebg
+{
+background-image:url(../images/bg-title-bar.png);
+background-repeat:no-repeat;
+background-position:center;
+margin-top:-30px;
+}
+
+.started-content
+{
+width:100%; 
+background-color:#FFFFFF; 
+min-height:500px; 
+border-radius:10px;
+box-shadow:2px 10px 12px #CCC;
+}
+
+
+#cont
+{
+padding:5px; text-align:justify;
+
+}
+
+
+.table-c h4
+{
+font-family: inter,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.readmore
+{
+padding:5px 20px;
+background-color:#FFFFFF;
+color:#FF5601;
+font-weight:bold;
+border-radius:4px;
+}
+
+.readmore:hover
+{
+color:#FF5601;
+}
+
+.modal-content li
+{
+list-style:none;
+}
+
+.modal-content li img
+{
+height:50px;
+background-color:#FFFFFF;
+}
+
+#icos
+{
+background-color:#FFFFFF;
+}
+
+#but
+{
+background-color:#FFF;
+color:#ff5601;
+font-weight:bold;
+border:none;
+border-radius:3px;
+}
+
+#but:hover
+{
+box-shadow:0px 0px 70px #CCC;
+}
+
+#iicon
+{
+color:#7C7C7C;
+}
+
+#rupees
+{
+font-size:24px;
+color:#FFFFFF;
+vertical-align:top;
+line-height:35px;
+}
+
+#booknow
+{
+background-color:#FF5601;
+color:#fff;
+font-weight:bold;
+border:none;
+border-radius:3px;
+}
+
+#booknow:hover
+{
+box-shadow:0px 0px 70px #CCC;
+}
+
+#tariffrow
+{
+font-weight:bold;
+}
+
+#title
+{
+background-color:#FF5601;
+color:#FFFFFF;
+padding:0px 10px;
+font-family: inter,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+font-weight:bold;
+font-size:16px;
+}
+
+#footerline
+{
+line-height:50px;
+border:1px solid #DFDFDF;
+border-top-style:none;
+border-left-style:none;
+border-right-style:none;
+border-bottom-style:1px solid #DFDFDF;
+}
+
+#roomname
+{
+font-size:18px;
+font-family: inter,-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#totalamount
+{
+font-size:14px;
+}
+

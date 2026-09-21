@@ -1,0 +1,40 @@
+.sticky-table-container {
+	width: 100%;
+	overflow-x: auto;
+	border: 1px solid #ccc;
+	position: relative;
+}
+
+.sticky-table {
+	border-collapse: collapse;
+	width: 100%;
+	min-width: 800px; /* force horizontal scroll */
+}
+
+.sticky-table th,
+.sticky-table td {
+	padding: 8px;
+	border: 1px solid #ccc;
+	text-align: left;
+	white-space: nowrap;
+	font-weight:normal!important;
+}
+
+/* Sticky column helpers */
+.sticky-table-left {
+	position: sticky;
+	left: 0;
+	z-index: 9;
+}
+
+.sticky-table-right {
+	position: sticky;
+	right: 0;
+	z-index: 9;
+}
+
+/* Optional sticky header */
+.sticky-table-header {
+	position: sticky;
+	top: 0;
+}

@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'thisis.required' 			=> 'IT IS REQUIRED FIELD.',
+	'thisis.date' 				=> 'IT MUST BE A DATE VALUE.',
+    'thisis.numeric' 			=> 'IT SHOULD BE NUMERIC.',
+    'thisis50.max' 				=> 'MAXIMUM LENGTH IS 50.',
+	'thisis40.max' 				=> 'MAXIMUM LENGTH IS 40.',
+	'thisis30.max' 				=> 'MAXIMUM LENGTH IS 30.',
+	'thisis20.max' 				=> 'MAXIMUM LENGTH IS 20.',
+	'thisis10.max' 				=> 'MAXIMUM LENGTH IS 10.',
+	'thisis15.max' 				=> 'MAXIMUM LENGTH IS 15.',
+	'thisis12.digits' 			=> 'ONLY 12 DIGITS ALLOWED',
+	'thisis10.digits' 			=> 'ONLY 10 DIGITS ALLOWED',
+	'thisis12.max' 				=> 'MAXIMUM LENGTH IS 12.',	
+	'thisis500kb.max' 			=> 'MAXIMUM SIZE IS 500 KB.',
+	'thisis512kb.max' 			=> 'MAXIMUM SIZE IS 512 KB.',
+	'thisis300.max' 			=> 'MAXIMUM SIZE IS 300 CHARACTERS ONLY.',
+	'thisis250.max' 			=> 'MAXIMUM SIZE IS 250 CHARACTERS ONLY.',
+	'thisis100.max' 			=> 'MAXIMUM SIZE IS 100 CHARACTERS ONLY.',
+	'thisis150.max' 			=> 'MAXIMUM SIZE IS 150 CHARACTERS ONLY.',
+    'thisis.email' 				=> 'INVALID EMAIL PROVIDED.',
+    'thisis.link' 				=> 'INVALID URL PROVIDED.',
+	'thisis.alpha' 				=> 'IT MUST CONTAIN LETTERS ONLY.',
+	'thisismin1.required' 		=> 'ATLEAST ONE SLIDER IMAGE SHOULD BE SELECTED.',
+	'thisisimage.required' 		=> 'INVALID IMAGE.',
+	'thisismimes.required' 		=> 'INVALID MIME TYPE.',
+	'thisismin1need.required' 	=> 'ATLEAST ONE NEED DETAIL SHOULD BE PROVIDED.',
+	'tiername.required' 		=> 'IF OPERATING STATUS IS YES THEN TIER NAME IS MANDATORY.',
+	'thisis.aadhar' 			=> 'IT MUST BE OF 12 DIGITS',
+
+	'thisis.inactiveaccount'	=> 	'INVALID MOBILE NUMBER',
+	'thisis10.invalidmobile' 	=>	'INVALID MOBILE NUMBER',
+	'invalidemail' 				=>	'INVALID EMAIL',
+	'thisis.min2tax' 			=>	'MINIMUM 2 TAXES REQUIRED FOR TAX TYPE MULTIPLE',
+	'thisis.array' 				=>	'PLEASE PROVIDE MULTIPLE TAX RATES FOR TAX TYPE MULTIPLE',
+	'thisis.invalidname' 		=>	'INVALID NAME PROVIDED',
+	'thisis.invalidemail' 		=>	'INVALID EMAIL PROVIDED',
+	'thisis.invalidemail' 		=>	'INVALID EMAIL PROVIDED',
+];
+
+?>

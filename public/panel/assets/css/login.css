@@ -1,0 +1,232 @@
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color:#fafaff;
+    }
+	
+	.primary-color
+	{
+		color:#3A5F5F!important;
+	}
+	.primary-bgcolor
+	{
+		background-color:#3A5F5F!important;
+	}
+	
+    .full-height {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      border-bottom:1px solid #337ab7;
+      color: white;
+      padding: 0px 20px 20px 20px;
+      text-align: left;
+    }
+	
+	.header h2
+	{
+		color:black;
+		font-weight:bold;
+	}
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .image-box,
+    .form-box {
+      padding: 15px;
+    }
+
+    .image-box img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .login-box {
+      background-color: white;
+      padding: 25px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      width: 100%;
+    }
+
+    .forgot-link {
+      display: block;
+      margin-bottom: 10px;
+	  margin-top: -15px;
+      text-align: right;
+    }
+	#banner-text
+	{
+		color:#888;
+		font-size:12px;
+	}
+	.small-text
+	{
+		color:#888;
+		font-size:12px;
+		text-align:left;
+	}
+	
+	.p-0
+	{
+		padding:0px 2px!important;
+	}
+
+	.radio-button-label {
+		display: block;
+		padding: 5px 0px;
+		border: 1px solid #337ab7;
+		border-radius:none;
+		color: #337ab7;
+		text-align: center;
+		cursor: pointer;
+		transition: background-color 0.3s;
+	}
+
+	.radio-button-label:hover {
+		background-color: #e6f2ff;
+	}
+
+	.radio-button-label input[type="radio"] {
+		
+	}
+
+	.radio-button-label.checked {
+		background-color: #016833;
+		color: white;
+	}
+	
+	@media (max-width: 767px) {
+	  #banner-text {
+		font-size: 8px; /* smaller on mobile */
+		display: block;
+		text-align: center;
+		line-height:0px;
+		margin-top:0px;
+	  }
+			
+	  .header h2 {
+		font-size: 18px; /* adjust heading on mobile */
+		text-align: center;
+		line-height:0px;
+		padding:0px;
+	  }
+
+	  .header {
+		padding: 0px 20px 20px 20px;
+		line-height:20px;
+	  }
+	  h3{
+		  font-size:20px;
+	  }
+	}
+
+  input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+	vertical-align:top;
+  }
+  
+  .label-text
+  {
+	  font-weight:bold;
+	  font-size:14px;
+  }
+	
+.label-register
+{
+	width:100%;
+	text-align:center;
+	font-weight:bold;
+}
+
+.label-message
+{
+	width:100%;
+	text-align:center;	
+}
+
+#req
+{
+font-size:10px;
+color:green;
+line-height:0px!important;
+vertical-align:middle;
+}
+.input-group-text {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.font-bold
+{
+	font-weight:bold!important;
+}
+
+.font-normal
+{
+	font-weight:normal!important;
+}
+
+button[data-bb-handler="ok"] {
+    width: 70px!important;
+	padding: 0px 10px!important;
+}
+
+
+.v-top
+{
+	vertical-align:top!important;
+}
+
+
+.otp-modal-content {
+  font-size: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.otp-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.otp-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.otp-input {
+  width: 40px;
+  padding: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.otp-button {
+  width: calc((40px * 6) + (8px * 5)); /* Width of inputs + gaps */
+}

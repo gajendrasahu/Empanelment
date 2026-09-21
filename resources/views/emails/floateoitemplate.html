@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EOI Published</title>
+<style>
+.padding-5
+{
+	padding:5px;
+}
+
+.padding-8
+{
+	padding:8px;
+}
+.form-label
+{
+	font-weight:500;
+	color:#000000;
+}
+.center
+{
+	text-align:center;
+}
+.head-bg
+{
+	background-color:#e4e6e9;
+}
+td
+{
+	vertical-align:top!important;
+}
+
+.a4-table-container {
+  width: 8.27in;
+  height: 11.69in;
+  background-image: url('https://vaarnikaenterprises.com/portal/panel/assets/images/basic/template-bg.png');
+  background-repeat: no-repeat;
+  background-position: top left;
+  background-size: auto 100%;
+  border:none;
+}
+
+.a4-table-container table, 
+.a4-table-container th, 
+.a4-table-container td {
+  border: 1px solid #333;
+}
+
+.a4-table-container th, 
+.a4-table-container td {
+  padding: 8px;
+  text-align: left;
+}
+</style>
+</head>
+<body>
+  <div class="a4-table-container">
+	<table style="border:none; width:100%; text-align:center;">
+		<tr>
+			<td class="center" style="border:none!important; text-align:center;">
+				<img src="https://vaarnikaenterprises.com/portal/panel/assets/images/basic/chips-label.png" style="border:none!important; width:80%!important; margin:20px auto;">
+			</td>
+		</tr>
+		<tr style="height:200px; border:none; ">
+			<td style="width:100%; height:200px; border:none; text-align:center; vertical-align:middle; padding:100px 0px; font-size:40px;">
+				Expression of Interst (EOI)<br>
+				For The Project Title<br>{{$data->projecttitle}}
+			</td>
+		</tr>
+	</table>
+  </div>
+<table style="width:100%; border-collapse:collapse;" border="1">
+	<tr>
+		<td colspan="2" class="padding-8 form-label head-bg"><b>Project Detail</b></td>
+	</tr>
+
+	<tr>
+		<td class="padding-8 form-label">EOI Number</td>
+		<td class="padding-8">{{ $data->eoinumber }}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Requested On</td>
+		<td class="padding-8">{{ date('d\-m\-Y, h:i A',strtotime($data->creationdate)) }}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Project Duration</td>
+		<td class="padding-8">{{ $data->projectduration }} Months</td>
+	</tr>
+</table>
+<table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
+	<tr>
+		<td colspan="2" class="padding-8 form-label head-bg"><b>Fact Sheet</b></td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Name of Issuer</td>
+		<td class="padding-8">{{ $data->issuername }}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Name of the Engagement</td>
+		<td class="padding-8">{{ $data->engagementname }}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Release Date of Eoi by CHiPS</td>
+		<td class="padding-8">{{ date('d-m-Y',strtotime($data->releasedate)) }}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Last Date of Pre-Bid Query</td>
+		<td class="padding-8">{{ date('d-m-Y',strtotime($data->prebidlastdate)) }}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Last Date (deadline) for Submission of Proposals</td>
+		<td class="padding-8">{{ date('d-m-Y',strtotime($data->deadlinedate))}}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Tentative Date of Presentation & Candidate Interview</td>
+		<td class="padding-8">{{ date('d-m-Y',strtotime($data->interviewdate)) }}</td>
+	</tr>
+	<tr>
+		<td class="padding-8 form-label">Address of Communication</td>
+		<td class="padding-8">{!! $data->communicationaddress !!}</td>
+	</tr>
+</table>
+<table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
+	<tr>
+		<td colspan="2" class="padding-8 form-label head-bg"><b>Project Objective</b></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="padding-8">{!! $data->projectobjective !!}</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="padding-8 form-label head-bg"><b>About Project</b></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="padding-8">{!! $data->aboutproject !!}</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="padding-8 form-label head-bg"><b>Scope of Work</b></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="padding-8">{!! $data->scopeofwork !!}</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="padding-8 form-label head-bg"><b>Special Condition of Contract</b></td>
+	</tr>
+	<tr>
+		<td colspan="2" class="padding-8">{!! $data->anyother !!}</td>
+	</tr>
+</table>
+<table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
+	<thead>
+	<tr>
+		<td colspan="7" class="padding-8 form-label head-bg"><b>Resource Details</b></td>
+	</tr>
+	<tr class="">
+		<td class="padding-5 center" style="width:50px;">S.No.</td>
+		@if($data->categoryid==1)
+		<td class="padding-5" nowrap>Role</td>
+
+		@elseif($data->categoryid==2)
+		<td class="padding-5" nowrap>Sector</td>
+		<td class="padding-5" nowrap>Position</td>
+		@endif
+		<td class="padding-5" nowrap>Experience <i class="fa fa-info-circle" title="As per empanelment"></i></td>
+		@if($data->categoryid==1)
+		<td class="padding-5" nowrap>Qualification</td>
+		@endif
+		<td class="padding-5" nowrap>Duration</td>
+		<td class="padding-5" nowrap>Rate <i class="fa fa-info-circle" title="Man Month Rate Including Tax"></i></td>
+		<td class="padding-5" nowrap>Remark <i class="fa fa-info-circle" title="Additional qualifications, depending on experience."></i></td>
+	</tr>
+	
+	</thead>
+	<tbody class="eoidata">
+	@php $i=1; $total=0; @endphp
+	@foreach($detail as $detail)
+	
+	<tr class="font-12">
+		<td nowrap class="padding-5 center">{{$i}}</td>
+		@if($data->categoryid==2)
+		<td nowrap class="padding-5">{{ucwords(strtolower($detail->sectorname))}}</td>
+		<td nowrap class="padding-5">{{$detail->consultantposition}}</td>
+		@else
+		<td nowrap class="padding-5">{{$detail->role}}</td>
+		@endif
+		@if($data->categoryid==1)
+		<td nowrap class="padding-5">{{$detail->workexperience}} [L-{{$detail->experiencelevel}}]</td>
+		@else
+		<td nowrap class="padding-5">{{$detail->experience}}</td>
+		@endif
+		@if($data->categoryid==1)
+		<td nowrap class="padding-5">{{$detail->qualification}}</td>
+		@endif
+		<td nowrap class="padding-5">{{$detail->duration}} Months</td>
+		<td nowrap class="padding-5">{{$detail->budget}}</td>
+		<td nowrap class="padding-5">{{$detail->remark}}</td>
+	</tr>
+	@php $i=$i+1; @endphp
+	@php $total=$total+$detail->total; @endphp
+	@endforeach
+	<tr>
+		<td class="padding-5 font-14 form-label" colspan="5" style="text-align:right;">Cost of Resources (Incuding Tax)</td>
+		<td class="padding-5 font-14 form-label">{{$data->totalbudget}}</td>
+		<td class="padding-5 font-14 form-label">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="padding-5 font-14 form-label" colspan="5" style="text-align:right;">CHiPS Admin Charge (5%)</td>
+		<td class="padding-5 font-14 form-label">{{$data->totaladmincharge}}</td>
+		<td class="padding-5 font-14 form-label">&nbsp;</td>
+	</tr>
+	<tr>
+		<td class="padding-5 font-14 form-label" colspan="5" style="text-align:right;">Grand Total</td>
+		<td class="padding-5 font-14 form-label">{{$data->totalamount}}</td>
+		<td class="padding-5 font-14 form-label">&nbsp;</td>
+	</tr>
+	
+	@if($i==1)
+	<tr>
+		<td colspan="7" class="center">--NO RECORD ADDED--</td>
+	</tr>
+	@endif
+	</tbody>
+</table>
+<div class="content-detail">
+	<div class="section-block-detail">
+		<div class="section-header-detail">
+			<h2 class="section-title-detail">Terms & Condition</h2>
+		</div>			
+		{!!$data->termsandcondition!!}
+	</div>
+
+</div>
+
+</body>
+</html>

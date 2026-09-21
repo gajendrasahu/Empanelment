@@ -1,0 +1,89 @@
+.dashboard_icons_2
+{
+	width:15px;
+	height:15px;
+}
+
+.dashboard_icons
+{
+	width:30px;
+	height:30px;
+}
+.dashboard-header {
+	margin-bottom: 10px;
+	padding:0px 15px;
+	border-bottom:1px solid #fff;
+}
+
+.dashboard-horizontal-card {
+  min-width: 230px;
+  max-width:auto;
+  height: 120px;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px 0px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  text-align:center!important;
+}
+
+
+
+.dashboard-card-header {
+  margin-bottom:0px;
+  padding:0px 0px;
+  text-align:center!important;
+}
+
+.card-icon {
+  font-size: 20px;
+  color: #025964;
+  margin-left:10px;
+}
+
+
+.dashboard-card-title {
+  padding:0px;
+  font-size: 13px;
+  color: #025964;
+  font-weight:normal;
+  text-align:center!important;
+}
+
+.dashboard-card-count {
+  font-size: 28px;
+  color: #000;
+  margin-bottom: 0px;
+  margin-top: 5px;
+  text-align:center;
+  font-weight:bold;
+}
+
+
+
+
+/* CHARTS RELATED */
+.dashboard-charts
+{
+	background-color: #fff;	
+	text-align:left!important;
+}
+
+.dashboard-chart-header {
+  margin-bottom:0px;
+  padding:5px 10px;
+  text-align:left!important;
+}
+
+.dashboard-chart-title {
+  padding:0px;
+  font-size: 13px;
+  color: #025964;
+  font-weight:bold;
+  text-align:left!important;
+}
+
+.dashboard-table-head
+{
+	background-color:#fff!important;
+}

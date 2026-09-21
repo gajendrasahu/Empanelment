@@ -1,0 +1,289 @@
+/* CSS Document */
+
+
+.td-padding
+{
+	padding:4px 5px!important;
+}
+
+.carttd
+{
+	padding:5px!important;
+}
+
+.right
+{
+	float:right;
+}
+.btn {
+	cursor: pointer;
+}
+.remove-row {
+	display: inline-block; /* Ensure the remove button is visible */
+}
+.add-row {
+	display: inline-block; /* Ensure the add button is visible */
+}
+
+
+.chosen-container
+{
+	background-color:white!important;
+}
+.chosen-single
+{
+	background-color:white!important;
+}
+
+.subcategorylabel
+{
+	margin-right:10px!important;
+	padding:0px;
+	float:left;
+	font-size:14px;
+}
+
+.arealabels
+{
+	float:left;
+	width:200px!important;
+	vertical-align:text-top;
+}
+
+.valid
+{
+	padding:2px 10px;
+	background-color:green;
+	color:white;
+}
+
+.invalid
+{
+	padding:2px 10px;
+	background-color:red;
+	color:white;
+}
+
+.multiselect-container.dropdown-menu
+{
+	
+	max-width:100%;
+	overflow:auto!important;
+}
+
+.mycheckboxlabel
+{
+	width:250px!important; 
+	float:left!important; 
+	padding:10px 5px; 
+	font-size:14px; 
+	font-weight:600;
+}
+.mycheckbox
+{
+	vertical-align:text-top!important;
+}
+
+.selectbx1
+{
+width:auto;
+height:28px;
+vertical-align:text-top;
+vertical-align:middle;
+font-size:13px;
+padding:0px;
+}
+.select2-container--default .select2-selection--single,
+.select2-container--default .select2-selection--single:focus {
+    border: 1px solid #ddd!important; /* Set your desired border color */
+	height:26px!important;
+	line-height:25px!important;
+}
+
+.mytheame-background
+{
+	color:#3A5F5F!important;
+}
+
+#charCounter {
+	margin-top:5px!important;
+    font-size:10px!important;
+    color:#333!important;
+	float:right;
+}
+
+#charCounter1 {
+	margin-top:5px!important;
+    font-size:10px!important;
+    color:#333!important;
+	float:right;
+}
+
+#charCounter2 {
+	margin-top:5px!important;
+    font-size:10px!important;
+    color:#333!important;
+	float:right;
+}
+
+#lab
+{
+font-size:12px;
+line-height:12px;
+}
+#req
+{
+font-size:10px;
+color:green;
+line-height:0px!important;
+vertical-align:middle;
+}
+
+.btn
+{
+padding-top:0px;
+padding-bottom:0px;
+}
+
+#forbutton
+{
+line-height:20px;
+}
+
+#pagesize
+{
+width:50px; display:inline; padding:0px; height:25px; font-size:13px;
+}
+
+#pagesearch
+{
+width:200px; 
+height:25px; 
+font-size:13px; 
+font-weight:normal; 
+}
+
+
+#tablehead
+{
+display:inline; font-weight:normal;
+}
+
+#tableheadsearch
+{
+display:inline; float:right; font-weight:normal;
+}
+
+#tablerecords td, th
+{
+padding:3px;
+}
+
+#orderby
+{
+width:auto;
+display:inline; padding:0px; height:25px;
+font-size:13px;
+}
+
+
+#categorywise
+{
+width:auto;
+display:inline; padding:0px; height:25px;
+font-size:13px;
+}
+
+#approvestatus
+{
+width:auto;
+display:inline; padding:0px; height:25px;
+font-size:13px;
+}
+
+#citywise
+{
+width:auto;
+display:inline; padding:0px; height:25px;
+font-size:13px;
+}
+
+#doctorcat
+{
+width:auto;
+display:inline; 
+padding:0px;
+height:25px;
+font-size:13px;
+vertical-align:text-top;
+}
+
+
+.selectbx
+{
+width:auto;
+display:inline; 
+padding:0px;
+height:25px;
+font-size:13px;
+vertical-align:text-top;
+}
+
+
+#action
+{
+width:30px;
+}
+
+.pagination li a
+{
+cursor:pointer;
+}
+
+.myheadbg
+{
+	background-color:#3A5F5F!important;
+	color:white!important;
+}		
+.mytd
+{
+	vertical-align:middle!important;
+	padding:0px 5px!important;	
+	color:black!important;
+}
+
+.mytdleft
+{
+	vertical-align:top!important;
+	padding:0px 5px!important;	
+	color:black!important;
+}
+.mytdcenter
+{
+	vertical-align:top!important;
+	padding:0px 5px!important;	
+	color:black!important;
+	text-align: center;
+}
+.myheadtd
+{
+	 padding:0px 5px;
+}
+.myheadtdcenter
+{
+	vertical-align:top!important;
+	padding:0px 5px!important;	
+	text-align: center;
+}
+.mybtn
+{
+	border-radius:0px; 
+	outline:none!important; 
+	border:none!important; 
+	padding:0px 5px; 
+	height:25px; 
+	line-height:0px; 
+	font-size:13px!important;
+}
+
+

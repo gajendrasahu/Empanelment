@@ -1,0 +1,179 @@
+.dashboard_icons_2 {
+    width: 15px;
+    height: 15px;
+}
+
+
+.dashboard_icons {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+
+.dashboard-header {
+    margin: 24px 0 32px 0;
+    padding: 0px 15px;
+}
+
+.dashboard-horizontal-card {
+    width: 100%;
+    height: 100%;
+    padding: 18px 10px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+}
+
+.dashboard-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.dashboard-card-header {
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-card-title {
+    padding: 0px;
+    font-size: 13px;
+    color: #0a0a0a;
+    font-weight: normal;
+}
+
+
+
+.dashboard-card-count {
+    font-size: 32px;
+    color: #0c243c;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.dashboard-horizontal-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ===================== */
+/* LIGHT CARD BACKGROUNDS */
+/* ===================== */
+.bg-yellow {
+    /* background-color: #fdf7f1; */
+    background-color: #fff;
+}
+
+.bg-orange {
+    /* background-color: #fdf7f1; */
+    background-color: #fff;
+}
+
+.bg-blue {
+    /* background-color: #f0f9fd; */
+    background-color: #fff;
+}
+
+.bg-purple {
+    /* background-color: #6f42c11a; */
+    background-color: #fff;
+}
+
+.bg-red {
+    /* background-color: #fdf3f2; */
+    background-color: #fff;
+}
+
+.bg-green {
+    /* background-color: #f2f9f7; */
+    background-color: #fff;
+}
+
+.bg-purple-light {
+    background-color: rgba(97, 85, 245, 0.12);
+}
+
+.bg-pink-light {
+    background-color: rgba(255, 45, 85, 0.12);
+}
+
+/* ===================== */
+/* SOLID ICON CIRCLE COLORS */
+/* ===================== */
+.bg-yellow .dashboard-icon {
+    background-color: #fdbb1f;
+}
+
+.bg-orange .dashboard-icon {
+    background-color: #ff8110;
+}
+
+.bg-blue .dashboard-icon {
+    background-color: #02b4fa;
+}
+
+.bg-purple .dashboard-icon {
+    background-color: #6f42c1;
+}
+
+.bg-red .dashboard-icon {
+    background-color: #ff401c;
+}
+
+.bg-green .dashboard-icon {
+    background-color: #22b07e;
+}
+
+
+.dashboard-card-header {
+    margin-bottom: 0px;
+    padding: 0px 0px;
+}
+
+.card-icon {
+    font-size: 20px;
+    color: #025964;
+    margin-left: 10px;
+}
+
+
+
+.dashboard-card-count {
+    font-size: 32px;
+    color: #000;
+    margin-bottom: 0px;
+    margin: 8px 0;
+}
+
+/* CHARTS RELATED */
+.dashboard-charts {
+    background-color: #fff;
+    text-align: left !important;
+}
+
+.dashboard-chart-header {
+    margin-bottom: 0px;
+    text-align: left !important;
+}
+
+.dashboard-chart-title {
+    padding: 0px;
+    margin-bottom: 28px !important;
+    font-size: 16px;
+    color: #0a0a0a;
+    font-weight: 600;
+    text-align: left !important;
+}
+
+.dashboard-table-head {
+    background-color: #fff !important;
+}

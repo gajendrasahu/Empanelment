@@ -1,0 +1,2457 @@
+:root {
+    --sidebar-width: 230px;
+    --background-color: #f1ede7;
+    --active-color: #025964;
+    --active-bg-color: #025964;
+    --active-text-color: #fff;
+    --main-color: #025964;
+    --sidebar-bg-color: #f9f9f9;
+}
+
+h1 {
+    margin: 8px 0 4px 0 !important;
+}
+
+.h4,
+.h5,
+.h6,
+h4,
+h5,
+h6,
+p {
+    margin: 0 !important;
+}
+
+body {
+    font-size: 13px !important;
+}
+
+/* sidebar icons start */
+/* ==============================
+   SIDEBAR – FINAL SAFE STYLE
+   (Ace Admin Compatible)
+================================ */
+
+/* Base link */
+.sidebar .nav-list>li>a {
+    padding: 12px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827 !important;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent !important;
+}
+
+/* Icons (Font Awesome, refined) */
+.sidebar .nav-list>li>a>.menu-icon {
+    font-size: 18px;
+    width: 20px;
+    text-align: center;
+    color: #6b7280;
+}
+
+/* Hover */
+.sidebar .nav-list>li>a:hover {
+    background-color: #f9fafb !important;
+    color: #0f766e !important;
+}
+
+/* Active */
+.sidebar .nav-list>li.active>a {
+    background-color: #f0fdfa !important;
+    color: #0f766e !important;
+    border-radius: 8px;
+}
+
+/* Active icon */
+.sidebar .nav-list>li.active>a>.menu-icon {
+    color: #0f766e;
+}
+
+/* Left indicator (clean) */
+.sidebar .nav-list>li.active>a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 3px;
+    background-color: #0f766e;
+    border-radius: 2px;
+}
+
+/* Dropdown arrow */
+.sidebar .nav-list>li>a>.arrow {
+    margin-left: auto;
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+/* Rotate arrow on open */
+.sidebar .nav-list>li.open>a>.arrow {
+    color: #0f766e;
+}
+
+/* Submenu */
+.sidebar .submenu>li>a {
+    padding-left: 52px !important;
+    font-size: 13px;
+    color: #374151 !important;
+}
+
+/* Submenu icon */
+.sidebar .submenu .menu-icon {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* Submenu active */
+.sidebar .submenu>li.active>a {
+    color: #0f766e !important;
+    font-weight: 500;
+}
+
+
+
+/* Sidebar icons end */
+
+.mr-1 {
+    margin-right: 1rem;
+}
+
+.no-skin .sidebar-toggle {
+    background-color: var(--sidebar-bg-color) !important;
+    border-bottom: 0 !important;
+}
+
+.main-content,
+.main-container:before {
+    background-color: var(--background-color) !important;
+}
+
+
+
+.card {
+    border: 1px solid #e8ebf1;
+    border-radius: 12px;
+    padding: 20px !important;
+    background-color: #fff;
+}
+
+.chart-wrapper {
+    width: 100%;
+    height: 400px;
+    margin: auto;
+}
+
+/* .main-content-inner {
+    padding: 2rem !important;
+} */
+
+/* .main-content-inner {
+    padding: 1rem 2rem !important;
+} */
+
+
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.nav>li>a {
+    display: flex;
+    align-items: center;
+}
+
+
+
+/* ===============================
+   BASE SIDEBAR RESET (ACE OVERRIDE)
+   =============================== */
+
+.no-skin .nav-list>li {
+    border: none !important;
+}
+
+.no-skin .nav-list>li>a {
+    /* background: #ffffff !important; */
+    color: #111827 !important;
+    font-family: Inter, system-ui, sans-serif;
+    font-size: 14px !important;
+    padding: 12px 8px !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Remove Ace wedges / borders */
+.nav-list>li:before,
+.nav-list li.active>a:after,
+.no-skin .nav-list>li.active:after,
+.nav-list>li>.submenu:before,
+.nav-list>li>.submenu>li:before {
+    display: none !important;
+}
+
+/* Icons */
+.nav-list>li>a>.menu-icon {
+    font-size: 18px !important;
+    color: #374151 !important;
+    margin-right: 0 !important;
+}
+
+/* ===============================
+   ACTIVE MAIN MENU (GREEN)
+   =============================== */
+
+.no-skin .nav-list>li.active>a,
+.no-skin .nav-list>li.active>a:hover {
+    background: #d0efe8 !important;
+    color: #0f766e !important;
+    border-radius: 6px;
+}
+
+.no-skin .nav-list>li.active>a>span {
+    font-weight: 400 !important;
+}
+
+.no-skin .nav-list>li.active>a .menu-icon {
+    color: #0f766e !important;
+}
+
+/* ===============================
+   DROPDOWN TOGGLE (ARROW)
+   =============================== */
+
+.nav-list>li>a .arrow {
+    margin-left: auto;
+    color: #6B7280 !important;
+}
+
+/* arrow active */
+.nav-list>li.active>a .arrow {
+    color: #0f766e !important;
+}
+
+/* Rotate arrow when open */
+.nav-list>li.open>a .arrow {
+    transform: rotate(180deg);
+}
+
+/* ===============================
+   SUBMENU CONTAINER
+   =============================== */
+
+.no-skin .nav-list>li .submenu {
+    background: transparent !important;
+    border: none !important;
+    margin-top: 4px;
+    padding-left: 8px;
+}
+
+/* ===============================
+   SUBMENU ITEMS (YELLOW HIGHLIGHT)
+   =============================== */
+
+.no-skin .nav-list>li .submenu>li>a {
+    background: transparent !important;
+    color: #374151 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    padding: 10px 14px !important;
+    border-radius: 6px;
+}
+
+/* Hover */
+.no-skin .nav-list>li .submenu>li>a:hover {
+    background: #fff !important;
+    /* light yellow */
+    color: var(--main-color) !important;
+}
+
+/* Active submenu */
+.no-skin .nav-list>li .submenu>li.active>a {
+    /* stronger yellow */
+    color: #065F46 !important;
+    font-weight: 500;
+}
+
+/* Remove caret icons in submenu */
+.nav-list>li .submenu>li>a .menu-icon {
+    display: none !important;
+}
+
+.no-skin .sidebar {
+    width: var(--sidebar-width) !important;
+}
+
+.no-skin .main-content {
+    margin-left: var(--sidebar-width) !important;
+}
+
+.no-skin .sidebar.menu-min {
+    width: 48px !important;
+}
+
+.no-skin .sidebar.menu-min+.main-content {
+    margin-left: 48px !important;
+}
+
+
+/* =========================================================
+  Table Start
+========================================================= */
+
+/* Table container */
+
+
+/* Filter row */
+.table-filter-area {
+    background: #ffffff !important;
+    padding: 8px !important;
+}
+
+/* Table base */
+#tablerecords {
+    width: 100% !important;
+    min-width: unset !important;
+    table-layout: auto;
+    border-collapse: collapse;
+    background: #ffffff !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif !important;
+    font-size: 13px !important;
+    color: #374151 !important;
+}
+
+/* Light grid borders for clear separation (single 1px lines) */
+#tablerecords {
+    border: 1px solid #e5e7eb !important;
+}
+
+#tablerecords td,
+#tablerecords th {
+    border: 1px solid #e5e7eb !important;
+}
+
+/* Header row */
+#tablerecords thead tr:last-child td {
+    background: #E7EBF8 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    padding: 14px 12px !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Body rows */
+#tablerecords tbody td {
+    padding: 24px 12px !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Zebra rows */
+#tablerecords tbody tr:nth-child(even) td {
+    background: #F5F7FC !important;
+}
+
+/* Zebra rows */
+#tablerecords tbody tr:nth-child(odd) td {
+    background: #ffffff !important;
+}
+
+/* Hover */
+#tablerecords tbody tr:hover td {
+    background: #f3f4f6;
+}
+
+/* Main row */
+.table-filters-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.table>thead>tr {
+    background: #fff !important;
+}
+
+#tablerecords td {
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
+}
+
+.resource-details-table {
+    table-layout: fixed !important;
+    width: max-content !important;
+    min-width: 100% !important;
+    display: inline-table;
+}
+
+.resource-details-table [data-column="project"],
+.resource-details-table [data-column="eoi"],
+.resource-details-table [data-column="order_number"] {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.resource-details-table thead .myhead td {
+    white-space: nowrap !important;
+}
+
+.sno-cell,
+.order-amount {
+    white-space: nowrap;
+}
+
+/* DATE COLUMNS — DO NOT WRAP */
+#tablerecords td.center,
+#tablerecords th.center {
+    white-space: nowrap !important;
+}
+
+/* Optional: slightly nicer spacing */
+#tablerecords td.center {
+    padding-left: 14px;
+    padding-right: 14px;
+}
+
+
+
+
+/* Left filters */
+.filters-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Column visibility chips */
+.column-toggle-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    align-items: flex-start;
+}
+
+.column-chip {
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    width: auto !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    flex-basis: auto !important;
+    display: inline-flex !important;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.resource-details-table .column-toggle-chips .column-chip,
+.resource-details-table .column-toggle-chips [data-column] {
+    width: auto !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+}
+
+.column-chip:not(.active) {
+    background: #ffffff;
+    border-color: #d1d5db;
+    color: #374151;
+}
+
+.column-chip.active {
+    background: #e6f4ef;
+    border-color: #b8e0d4;
+    color: #14532d;
+}
+
+.column-chip:hover {
+    border-color: #93c5aa;
+}
+
+.hidden-column {
+    display: none !important;
+}
+
+/* Right checkbox */
+.eoi-old-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #374151;
+    white-space: nowrap;
+    cursor: pointer;
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 6px;
+    gap: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.eoi-old-toggle input {
+    margin: 0;
+}
+
+.first-column-name {
+    font-weight: 600;
+}
+
+
+
+/* Alignment helpers */
+.center {
+    text-align: center !important;
+}
+
+#tablerecords td[style*="right"] {
+    text-align: right !important;
+}
+
+/* Amount values */
+.format-indian {
+    font-weight: 600 !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+.format-indian[data-currency="INR"]::before {
+    content: "₹ ";
+}
+
+.order-name {
+    font-weight: 600 !important;
+}
+
+.order-resources {
+    text-align: center;
+}
+
+/* Firm name */
+.firm-name {
+    font-weight: 400 !important;
+    color: #111827 !important;
+    display: block !important;
+}
+
+/* Tier chip – base */
+.firm-tier {
+    display: inline-block !important;
+    margin-top: 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+}
+
+/* Tier I */
+.firm-tier.tier-1 {
+    background: #ede9fe !important;
+    color: #6d28d9 !important;
+}
+
+/* Tier II */
+.firm-tier.tier-2 {
+    background: #fce7f3 !important;
+    color: #be185d !important;
+}
+
+.dashboard-table-head>td {
+    padding: 12px 16px !important;
+}
+
+/* =========================================================
+   Table End
+========================================================= */
+
+/* =========================================================
+   TABLE HEADER – PAGE SIZE + SEARCH (FINAL FIX)
+========================================================= */
+
+/* Use wrapper as flex container */
+#tablehead {
+    display: flex;
+    align-items: center;
+    /* vertical center */
+    gap: 12px;
+    /* spacing between controls */
+}
+
+/* Fix Select2 container alignment */
+#tablehead .select2-container {
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+/* Match search input height */
+#pagesearch.nav-search-input {
+    height: 40px !important;
+    line-height: 40px !important;
+}
+
+/* Fix input-icon vertical alignment */
+#tablehead .input-icon {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Center search icon perfectly */
+#tablehead .input-icon>.ace-icon {
+    top: 55% !important;
+    transform: translateY(-50%) !important;
+}
+
+/* Prevent baseline shift */
+#tablehead .select2-container,
+#tablehead .input-icon {
+    vertical-align: middle !important;
+}
+
+
+.page-content {
+    background-color: transparent !important;
+}
+
+
+
+/* =========================================================
+   MODERN UNDERLINE TABS WITH GRADIENT GLOW
+   (BOOTSTRAP + ACE ADMIN SAFE)
+========================================================= */
+
+.nav-tabs {
+    background: #ffffff !important;
+    /* border-bottom: 1px solid #0a0a0a !important;
+    border-color: #0a0a0a !important; */
+}
+
+/* Remove default tab spacing issues */
+.nav-tabs>li {
+    margin-bottom: -1px !important;
+}
+
+/* Base tab */
+.nav-tabs>li>a {
+    border: 0 !important;
+    background: transparent !important;
+    color: #6b7280 !important;
+    /* inactive text */
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    padding: 14px 22px !important;
+    position: relative !important;
+    transition: color 0.25s ease !important;
+    overflow: hidden;
+    font-weight: 500 !important;
+
+
+}
+
+/* Hover */
+.nav-tabs>li>a:hover {
+    background: transparent !important;
+    color: #0f766e !important;
+}
+
+.nav-tabs>li.active>a {
+    box-shadow: none !important;
+    margin-top: 0 !important;
+}
+
+/* Active tab text */
+.nav-tabs>li.active>a,
+.nav-tabs>li.active>a:hover,
+.nav-tabs>li.active>a:focus {
+    border: 0 !important;
+    background: transparent !important;
+    color: #0f766e !important;
+    font-weight: 500 !important;
+}
+
+/* =========================
+   ACTIVE GRADIENT GLOW
+========================= */
+.nav-tabs>li.active>a::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 52px;
+    background: #f3fcfb;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* =========================
+   UNDERLINE INDICATOR
+========================= */
+.nav-tabs>li>a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 0;
+    height: 3px;
+    background: #14b8a6 !important;
+    border-radius: 3px 3px 0 0;
+    transition: width 0.3s ease !important;
+}
+
+/* Active underline */
+.nav-tabs>li.active>a::after {
+    width: 100% !important;
+}
+
+/* Icons inside tabs */
+.nav-tabs>li>a i {
+    margin-right: 6px;
+    font-size: 15px;
+    vertical-align: middle;
+    color: inherit !important;
+}
+
+
+/* =========================================================
+   SELECT2 styled as shadcn-select (SAFE GLOBAL OVERRIDE) 
+   Applies ONLY to selects having .shadcn-select
+========================================================= */
+
+/* =========================
+   SELECT (INPUT)
+========================= */
+
+/* Visible Select2 box */
+.shadcn-select+.select2-container .select2-selection--single {
+    height: 40px !important;
+    padding: 6px 34px 6px 10px !important;
+    border-radius: 6px !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #ffffff !important;
+    font-size: 13px !important;
+    color: #09090b !important;
+    display: flex !important;
+    align-items: center !important;
+    box-shadow: none !important;
+}
+
+/* Selected text */
+.shadcn-select+.select2-container .select2-selection__rendered {
+    padding: 0 !important;
+    line-height: normal !important;
+    color: #09090b !important;
+}
+
+/* Arrow */
+.shadcn-select+.select2-container .select2-selection__arrow {
+    height: 100% !important;
+    right: 8px !important;
+}
+
+/* Hover */
+.shadcn-select+.select2-container .select2-selection--single:hover {
+    background-color: #f9fafb !important;
+}
+
+/* Focus */
+.shadcn-select.select2-hidden-accessible+.select2-container.select2-container--focus .select2-selection--single {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25) !important;
+}
+
+/* Disabled */
+.shadcn-select:disabled+.select2-container .select2-selection--single {
+    background-color: #f4f4f5 !important;
+    color: #a1a1aa !important;
+    cursor: not-allowed !important;
+}
+
+/* =========================
+   DROPDOWN (OPTIONS)
+========================= */
+
+/* Dropdown panel */
+.select2-container--default .select2-dropdown {
+    border-radius: 8px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+    padding: 4px 0 !important;
+    background-color: #ffffff !important;
+}
+
+/* Option item */
+.select2-container--default .select2-results__option {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    color: #09090b !important;
+    cursor: pointer !important;
+}
+
+/* Hovered option */
+.select2-container--default .select2-results__option--highlighted {
+    background-color: #f1f5f9 !important;
+    color: #09090b !important;
+}
+
+/* Selected option */
+.select2-container--default .select2-results__option--selected {
+    background-color: #e0f2fe !important;
+    color: #0369a1 !important;
+    font-weight: 500 !important;
+}
+
+/* Disabled option */
+.select2-container--default .select2-results__option[aria-disabled="true"] {
+    color: #a1a1aa !important;
+    cursor: not-allowed !important;
+}
+
+/* Search box inside dropdown (if enabled) */
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    border-radius: 6px !important;
+    border: 1px solid #e5e7eb !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+}
+
+
+/* search */
+
+
+/* =========================================================
+   TABLE SEARCH INPUT (Ace Admin – FINAL SAFE OVERRIDE)
+========================================================= */
+
+/* Search input */
+#pagesearch.nav-search-input {
+    height: 40px !important;
+    padding: 6px 36px 6px 32px !important;
+    /* space for icon on right */
+    border-radius: 6px !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #ffffff !important;
+    font-size: 13px !important;
+    color: #09090b !important;
+    box-shadow: none !important;
+}
+
+/* Hover */
+#pagesearch.nav-search-input:hover {
+    background-color: #f9fafb !important;
+}
+
+/* Focus */
+#pagesearch.nav-search-input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25) !important;
+}
+
+/* =========================================================
+   SEARCH ICON (FULL ACE RESET + CORRECT POSITION)
+========================================================= */
+
+.input-icon {
+    position: relative !important;
+}
+
+.input-icon>.ace-icon {
+    position: absolute !important;
+
+    /* Kill Ace Admin defaults */
+    left: auto !important;
+    bottom: auto !important;
+    line-height: normal !important;
+
+    /* Our positioning */
+    left: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+
+    font-size: 14px !important;
+    color: #6b7280 !important;
+    z-index: 2 !important;
+
+    pointer-events: none !important;
+    /* CRITICAL: keep input clickable */
+}
+
+/* =========================================================
+   FIXED NAVBAR + SIDEBAR (DESKTOP)
+========================================================= */
+:root {
+    --navbar-height: 70px;
+}
+
+@media (max-width: 767px) {
+    :root {
+        --navbar-height: 45px;
+    }
+}
+
+@media (min-width: 992px) {
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    #navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1030;
+    }
+
+    .main-container {
+        padding-top: var(--navbar-height);
+        height: 100vh;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: var(--navbar-height);
+        bottom: 0;
+        overflow-y: auto;
+        height: calc(100vh - var(--navbar-height));
+    }
+
+    .main-content {
+        height: calc(100vh - var(--navbar-height));
+        overflow-y: auto;
+    }
+}
+
+/* Right-aligned icons (e.g., datepicker) */
+#tablehead .input-icon.input-icon-right>.ace-icon,
+.filters-group .input-icon.input-icon-right>.ace-icon {
+    left: auto !important;
+    right: 10px !important;
+}
+
+#tablehead .input-icon.input-icon-right input,
+.filters-group .input-icon.input-icon-right input {
+    padding-right: 30px !important;
+}
+
+.tab-content {
+    background-color: #fff !important;
+}
+
+/* Allow sticky headers to work inside Bootstrap table wrapper */
+.page-content .table-responsive {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+}
+
+.page-content .sticky-table-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* =========================================================
+   STICKY TABLE FILTERS + HEADERS (ADMIN)
+========================================================= */
+.page-content table.sticky-table {
+    --table-filters-height: 0px;
+    --table-filters-bg: #ffffff;
+    --table-header-bg: #E7EBF8;
+}
+
+.sticky-table-floating {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: none;
+    background: #ffffff;
+}
+
+.sticky-table-floating .sticky-table-floating-inner {
+    overflow: hidden;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.sticky-table-floating .sticky-clone-table {
+    margin-bottom: 0 !important;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.sticky-table-floating .sticky-clone-table thead tr:first-child td,
+.sticky-table-floating .sticky-clone-table thead tr:first-child th {
+    background: #ffffff !important;
+}
+
+.sticky-table-floating .sticky-clone-table thead tr:last-child td,
+.sticky-table-floating .sticky-clone-table thead tr:last-child th {
+    background: #E7EBF8 !important;
+}
+
+.sticky-original-hidden {
+    visibility: hidden !important;
+}
+
+.sticky-filter-placeholder td,
+.sticky-filter-placeholder th {
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+
+
+/* =========================================================
+   FORM INPUTS Start 
+========================================================= */
+
+/* Label styling */
+.field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+
+
+/* Space between rows */
+.form-group .row {
+    margin-bottom: 24px;
+}
+
+/* Inputs remain unchanged */
+.form-control {
+    height: 40px;
+}
+
+/* Text inputs, selects, textarea */
+.form-group .form-control,
+.form-group select,
+.form-group textarea {
+    height: 40px !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    color: #111827 !important;
+
+    background-color: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+
+    box-shadow: none !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Textarea height reset (important) */
+.form-group textarea {
+    height: auto !important;
+    resize: vertical;
+}
+
+/* Hover (very subtle) */
+.form-group .form-control:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #9ca3af !important;
+}
+
+/* Focus (minimal, professional) */
+.form-group .form-control:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25) !important;
+    outline: none !important;
+}
+
+/* Disabled fields */
+.form-group .form-control:disabled,
+.form-group select:disabled,
+.form-group textarea:disabled {
+    background-color: #f9fafb !important;
+    color: #9ca3af !important;
+    cursor: not-allowed;
+}
+
+
+/* Create gap between field title text and input/select */
+.form-group .form-control {
+    font-size: 14px;
+    margin-top: 6px;
+}
+
+/* Optional: slightly reduce visual tightness between rows */
+.form-group>div {
+    margin-bottom: 12px;
+}
+
+
+/* Align action buttons with input fields (not labels) */
+.btn-align-input {
+    margin-top: 26px;
+}
+
+.field-label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.req,
+#req {
+    color: #dc2626;
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+
+#frm {
+    padding: 2rem !important
+}
+
+.form-group select.form-control {
+    height: 40px;
+    padding: 6px 10px;
+    font-size: 13px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+/* =========================================================
+   FORM INPUTS End 
+========================================================= */
+
+/* =========================================================
+   CHOSEN SELECT – MATCH FORM CONTROL DESIGN
+========================================================= */
+
+/* Chosen container width */
+.chosen-container {
+    width: 100% !important;
+    font-size: 13px;
+}
+
+/* Main visible select box */
+.chosen-container-single .chosen-single {
+    height: 40px !important;
+    padding: 6px 10px !important;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+
+    color: #111827 !important;
+    box-shadow: none !important;
+    margin-top: 6px;
+}
+
+/* Placeholder & text */
+.chosen-container-single .chosen-single span {
+    font-size: 13px;
+    color: #111827;
+}
+
+/* Dropdown arrow */
+.chosen-container-single .chosen-single div {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Hover */
+.chosen-container-single .chosen-single:hover {
+    border-color: #9ca3af !important;
+}
+
+/* Focus (match input focus) */
+.chosen-container-active .chosen-single {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25) !important;
+}
+
+/* Dropdown list */
+.chosen-container .chosen-drop {
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Dropdown items */
+.chosen-container .chosen-results li {
+    padding: 8px 10px;
+    font-size: 13px;
+}
+
+/* Highlight */
+.chosen-container .chosen-results li.highlighted {
+    background: #025964 !important;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   Button End 
+========================================================= */
+
+/* =========================================================
+   PRIMARY FORM BUTTON (SAFE GLOBAL OVERRIDE)
+========================================================= */
+
+/* Base button reset (do NOT touch behavior) */
+.btn.myfrmbtn {
+    height: 40px;
+    padding: 0 20px !important;
+
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    line-height: 40px;
+
+    border-radius: 6px !important;
+    border: none !important;
+
+    background-color: #147E8B !important;
+    /* your brand teal */
+    color: #ffffff !important;
+
+    box-shadow: none !important;
+    text-shadow: none !important;
+
+    transition: background-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.05s ease;
+}
+
+/* Hover */
+.btn.myfrmbtn:hover {
+    background-color: #126f7a !important;
+}
+
+/* Focus (keyboard + accessibility safe) */
+.btn.myfrmbtn:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(20, 126, 139, 0.25) !important;
+}
+
+/* Active / click */
+.btn.myfrmbtn:active {
+    background-color: #0f5f68 !important;
+    transform: translateY(1px);
+}
+
+/* Optional fixed width helper (keeps your existing usage) */
+.width-100 {
+    width: 120px !important;
+}
+
+
+.btn.myfrmbtn.smbtn {
+    height: 24px;
+    padding: 14px 4px !important;
+
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    line-height: 0 !important;
+
+    border-radius: 6px !important;
+    border: 1px solid #147E8B !important;
+
+    background-color: #fff !important;
+    /* your brand teal */
+    color: #147E8B !important;
+
+    box-shadow: none !important;
+    text-shadow: none !important;
+
+    transition: background-color 0.15s ease,
+        box-shadow 0.15s ease,
+        transform 0.05s ease;
+}
+
+/* =========================================================
+   Button End 
+========================================================= */
+
+/* ====== TOP NAV NOTIFICATION GROUPING ====== */
+
+.nav.ace-nav {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Notification items */
+.nav.ace-nav>li.dropdown-modal:not(.nav-profile) {
+    margin-right: 0 !important;
+    border-radius: 0 !important;
+}
+
+/* Remove internal separators */
+.nav.ace-nav>li.dropdown-modal:not(.nav-profile)::before,
+.nav.ace-nav>li.dropdown-modal:not(.nav-profile)::after {
+    display: none !important;
+}
+
+/* Notification padding */
+.nav.ace-nav>li.dropdown-modal:not(.nav-profile)>a {
+    padding: 10px 14px !important;
+}
+
+/* Profile separation */
+.nav.ace-nav>li.nav-profile {
+    margin-left: 16px !important;
+    border-left: none !important;
+}
+
+/* Profile image */
+.ace-nav .nav-user-photo {
+    max-width: 36px !important;
+    margin-right: 8px !important;
+}
+
+.ace-nav>li {
+    border-left: 6px solid #025964 !important;
+}
+
+.ace-nav .nav-user-photo {
+    margin: 0 8px 0 0 !important;
+}
+
+.ace-nav>li>a {
+    border-radius: 6px !important;
+    padding: 0 12px !important;
+}
+
+
+/* =========================================
+   USER PROFILE DROPDOWN – FINAL MODERN UI
+   Ace Admin SAFE
+========================================= */
+
+/* Dropdown container */
+.user-menu.dropdown-menu {
+    width: max-content !important;
+    padding: 8px 0 !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* Remove Ace hard edges */
+.dropdown-menu {
+    border-radius: 12px !important;
+}
+
+/* Menu row */
+.user-menu>li>a {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0;
+    padding: 12px !important;
+    font-size: 14px !important;
+    font-weight: 500;
+    color: #111827 !important;
+    line-height: 1.4;
+    background: transparent !important;
+    transition: background-color 0.15s ease;
+}
+
+.user-menu>li {
+    padding: 0 8px !important;
+}
+
+/* Icons */
+.user-menu>li>a>i {
+    width: 22px;
+    font-size: 16px;
+    text-align: center;
+    color: #6b7280;
+    flex-shrink: 0;
+}
+
+/* Hover */
+.user-menu>li>a:hover {
+    background-color: #f3f4f6 !important;
+    border-radius: 8px !important;
+}
+
+/* Dividers */
+.user-menu>li.divider {
+    margin: 6px 0 !important;
+    height: 1px !important;
+    background-color: #e5e7eb !important;
+    border: none !important;
+}
+
+/* Top item (Organization) */
+.user-menu>li:first-child>a {
+    font-weight: 600;
+    color: #025964 !important;
+    border-radius: 8px !important;
+}
+
+/* Last login emphasis */
+.user-menu .fa-clock-o {
+    color: #025964 !important;
+}
+
+/* Logout – destructive */
+.user-menu a[href*="logout"] {
+    color: #dc2626 !important;
+    font-weight: 600;
+}
+
+.user-menu a[href*="logout"] i {
+    color: #dc2626 !important;
+}
+
+.user-menu a[href*="logout"]:hover {
+    background-color: #fee2e2 !important;
+}
+
+/* Caret polish */
+.dropdown-menu.dropdown-caret:before {
+    border-bottom-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.dropdown-menu.dropdown-caret:after {
+    border-bottom-color: #ffffff !important;
+}
+
+/* =========================================
+   NOTIFICATION DROPDOWN – MATCH USER MENU
+   Ace Admin SAFE
+========================================= */
+
+/* Dropdown container */
+.dropdown-navbar.dropdown-menu {
+    width: max-content !important;
+    background: #ffffff !important;
+    border-radius: 12px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18) !important;
+}
+
+/* Header (title row) */
+.dropdown-navbar>li.dropdown-header {
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: #111827 !important;
+    background-color: #f6f7f8 !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    border-radius: 8px 8px 0 0 !important;
+}
+
+/* Header icon */
+.dropdown-navbar>li.dropdown-header>i {
+    margin-right: 8px;
+    font-size: 16px;
+    color: #6b7280;
+}
+
+/* Content wrapper */
+.dropdown-navbar>li.dropdown-content {
+    border-radius: 8px !important;
+}
+
+/* Inner list */
+.dropdown-navbar .dropdown-menu {
+    padding: 0 !important;
+    margin: 4px !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* Notification row */
+.dropdown-navbar .dropdown-menu>li>a {
+    display: flex !important;
+    align-items: center !important;
+    padding: 12px 16px !important;
+    font-size: 14px !important;
+    font-weight: 500;
+    color: #111827 !important;
+    line-height: 1.4;
+    border-radius: 8px;
+    transition: background-color 0.15s ease;
+}
+
+/* Hover */
+.dropdown-navbar .dropdown-menu>li>a:hover {
+    background-color: #f3f4f6 !important;
+}
+
+/* Text inside */
+.dropdown-navbar .form-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+}
+
+/* Scroll cleanup */
+.dropdown-navbar .ace-scroll {
+    max-height: 260px !important;
+    overflow-y: auto !important;
+}
+
+/* Caret polish */
+.dropdown-menu.dropdown-caret:before {
+    border-bottom-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+.dropdown-menu.dropdown-caret:after {
+    border-bottom-color: #ffffff !important;
+}
+
+.dropdown-navbar.navbar-pink>li:hover {
+    background-color: transparent !important;
+}
+
+.dropdown-navbar>li:hover {
+    background-color: transparent !important;
+}
+
+.ace-nav>li>a>.badge {
+    position: relative !important;
+    top: 0px !important;
+    left: 5px !important;
+    padding-right: 5px !important;
+    padding-left: 5px !important;
+}
+
+
+
+/* ==============================
+   PUSH NAVBAR DROPDOWNS DOWN
+   SAFE ACE OVERRIDE
+============================== */
+
+.dropdown-menu.dropdown-close.dropdown-menu-right {
+    left: auto !important;
+    right: 8px !important;
+    top: 48px !important;
+}
+
+/* =====================================================
+   NOTIFICATION DROPDOWN – FINAL CLEAN OVERRIDE (SAFE)
+   Works with Ace Admin without breaking anything
+===================================================== */
+
+
+
+/* Reset Ace list spacing */
+.dropdown-navbar {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Remove LI padding (hover must belong to A) */
+.dropdown-navbar>li {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+/* Header styling */
+.dropdown-navbar>li.dropdown-header {
+    padding: 10px 16px !important;
+    font-weight: 600;
+    font-size: 14px;
+    color: #111827;
+    background-color: #f9fafb !important;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* 🔥 CORE FIX — make anchor full width */
+.dropdown-navbar a.action-a,
+.dropdown-navbar>li>a {
+    float: none !important;
+    display: flex !important;
+    align-items: center;
+    width: 100% !important;
+    padding: 12px 16px !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    font-weight: 500;
+    color: #111827 !important;
+    background: transparent !important;
+    border-radius: 8px;
+    border: none !important;
+    line-height: 1.4;
+    transition: background-color 0.15s ease;
+}
+
+/* Remove Ace slicing borders */
+.dropdown-navbar>li>a {
+    border-top: none !important;
+}
+
+/* Hover – full row highlight */
+.dropdown-navbar>li>a:hover {
+    background-color: #f4f9fc !important;
+    text-decoration: none !important;
+}
+
+/* Text container cleanup */
+.dropdown-navbar .clearfix,
+.dropdown-navbar .form-label {
+    width: 100%;
+}
+
+/* Scroll area polish */
+.dropdown-navbar .ace-scroll {
+    max-height: 260px !important;
+    overflow-y: auto !important;
+}
+
+/* Remove Ace hover conflicts */
+.dropdown-navbar>li:hover {
+    background-color: transparent !important;
+}
+
+/* =====================================================
+   FIX FULL-WIDTH DROPDOWN ROWS (Ace Admin)
+===================================================== */
+
+/* Kill float behaviour inside dropdown links */
+.dropdown-navbar a.action-a {
+    float: none !important;
+    display: flex !important;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+/* Neutralize clearfix inside dropdowns */
+.dropdown-navbar .clearfix::before,
+.dropdown-navbar .clearfix::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Remove pull-left float so width can expand */
+.dropdown-navbar .pull-left {
+    float: none !important;
+}
+
+/* Ensure text spans stretch */
+.dropdown-navbar .form-label,
+.dropdown-navbar span {
+    display: block;
+    width: 100%;
+}
+
+/* Ensure LI does not restrict width */
+.dropdown-navbar>li {
+    width: 100%;
+}
+
+/* =========================================================
+   TABLE PAGE SIZE SELECT2 (25 / 50 / 100)
+   Match Search Input Styling
+========================================================= */
+
+/* Main Select2 container */
+.select2-container--default .select2-selection--single {
+    position: relative;
+    height: 40px !important;
+    border-radius: 6px !important;
+    border: 1px solid #e5e7eb !important;
+    background-color: #ffffff !important;
+    font-size: 13px !important;
+    color: #09090b !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+    line-height: 38px;
+    display: block;
+}
+
+/* Rendered value (100 / 50 / 25) */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    position: relative;
+    display: block;
+    line-height: 38px !important;
+    padding-left: 12px !important;
+    padding-right: 56px !important;
+    color: #09090b !important;
+    font-size: 13px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Dropdown arrow */
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 100% !important;
+    right: 10px !important;
+    display: block;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #6b7280 transparent transparent transparent !important;
+    border-width: 5px 4px 0 4px !important;
+    border-style: solid !important;
+    height: 0 !important;
+    left: 50% !important;
+    margin-left: -4px !important;
+    margin-top: 0 !important;
+    position: absolute;
+    top: 40% !important;
+    width: 0 !important;
+}
+
+/* Toggle arrow/clear based on container state */
+.select2-container.select2-has-value .select2-selection__arrow {
+    display: none !important;
+}
+
+.select2-container:not(.select2-has-value) .select2-selection__clear {
+    display: none !important;
+}
+
+/* Clear (×) button */
+.select2-selection__clear {
+    position: absolute !important;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 28px;
+    line-height: 1;
+    z-index: 2;
+    float: none !important;
+    cursor: pointer;
+}
+
+/* Hover */
+.select2-container--default .select2-selection--single:hover {
+    border-color: #9ca3af !important;
+}
+
+/* Focus (same as search input) */
+.select2-container--default.select2-container--focus .select2-selection--single {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25) !important;
+    height: 40px !important;
+    line-height: 38px !important;
+}
+
+/* Dropdown menu */
+.select2-dropdown {
+    border-radius: 6px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+    font-size: 13px !important;
+}
+
+/* Dropdown options */
+.select2-results__option {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+}
+
+/* Hover option */
+.select2-results__option--highlighted {
+    background-color: #f3f4f6 !important;
+    color: #111827 !important;
+}
+
+/* Selected option */
+.select2-results__option[aria-selected="true"] {
+    background-color: #e5e7eb !important;
+    font-weight: 500;
+}
+
+/* Width fix for page-size selector only */
+.select2-container {
+    min-width: 70px !important;
+}
+
+/* =========================================
+   PAGE SIZE SELECT2 – AUTO WIDTH FIX
+========================================= */
+
+/* Remove forced width from Select2 */
+#tablehead .select2-container {
+    width: auto !important;
+    min-width: unset !important;
+}
+
+/* Let selection size by content */
+#tablehead .select2-selection--single {
+    width: auto !important;
+    min-width: 56px;
+    /* padding handled by rendered span */
+    padding-right: 0 !important;
+}
+
+/* Prevent Select2 from re-injecting width */
+#tablehead .select2-container[style] {
+    width: auto !important;
+}
+
+/* Optional: slightly nicer visual balance */
+#tablehead .select2-selection__rendered {
+    padding-left: 12px !important;
+    padding-right: 56px !important;
+    text-align: left;
+}
+
+#pagesearch {
+    width: 288px !important;
+}
+
+.filters-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* =========================================================
+   DATE PICKER INPUT – MATCH FILTER & SEARCH UI
+   (Flatpickr + Ace + SelectBX safe)
+========================================================= */
+
+input.selectbx.datepicker {
+    height: 40px !important;
+    line-height: 40px !important;
+
+    padding: 6px 36px 6px 10px !important;
+    /* space for icon */
+    font-size: 13px !important;
+
+    color: #09090b !important;
+    background-color: #ffffff !important;
+
+    border: 1px solid #e5e7eb !important;
+    border-radius: 6px !important;
+
+    box-shadow: none !important;
+    outline: none !important;
+
+    vertical-align: middle !important;
+    cursor: pointer;
+}
+
+/* Hover */
+input.selectbx.datepicker:hover {
+    border-color: #9ca3af !important;
+}
+
+/* Focus – SAME as search input */
+input.selectbx.datepicker:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25) !important;
+}
+
+/* Add calendar icon (visual consistency) */
+.flatpickr-input {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%236b7280' viewBox='0 0 24 24'%3E%3Cpath d='M7 2a1 1 0 0 1 1 1v1h8V3a1 1 0 1 1 2 0v1h1a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1V3a1 1 0 0 1 1-1zm12 7H5v10h14V9z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+}
+
+/* =========================================================
+   FLATPICKR POPUP STYLING (CLEAN & GOV-SAFE)
+========================================================= */
+
+.flatpickr-calendar {
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .18);
+    font-family: Inter, system-ui, sans-serif;
+}
+
+.flatpickr-months {
+    padding: 8px;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background: #025964;
+    border-color: #025964;
+    color: #ffffff;
+}
+
+.flatpickr-day:hover {
+    background: #e6f4f1;
+}
+
+/* =========================================================
+   CHOSEN DROPDOWN OPTIONS – MATCH FORM UI
+========================================================= */
+
+.chosen-container .chosen-drop {
+    margin-top: 4px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.14);
+}
+
+/* Options list */
+.chosen-container .chosen-results {
+    margin: 0;
+    padding: 6px;
+}
+
+/* Individual option */
+.chosen-container .chosen-results li {
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #111827;
+    border-radius: 6px;
+    transition: background 0.15s ease;
+}
+
+/* Hover */
+.chosen-container .chosen-results li:hover {
+    background: #f3f4f6;
+}
+
+/* Selected */
+.chosen-container .chosen-results li.result-selected {
+    background: #e6f4f1;
+    color: #025964;
+    font-weight: 500;
+}
+
+/* Active (keyboard / mouse) */
+.chosen-container .chosen-results li.highlighted {
+    background: #025964;
+    color: #ffffff;
+}
+
+/* No results text */
+.chosen-container .chosen-results li.no-results {
+    color: #6b7280;
+    font-size: 12px;
+}
+
+.table {
+    margin-bottom: 0 !important;
+}
+
+/* =========================================================
+   EOI REQUEST TIMELINE CARD
+========================================================= */
+.eoi-card-cell {
+    background: #f8fafc;
+    vertical-align: top !important;
+    padding: 12px !important;
+}
+
+.eoi-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.eoi-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+
+.eoi-main {
+    min-width: 220px;
+}
+
+.eoi-number-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.eoi-sno {
+    font-weight: 600;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.eoi-number-line .eoi-project {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.eoi-number {
+    font-weight: 400;
+    font-size: 12px;
+    color: #6b7280;
+    font-style: italic;
+}
+
+.eoi-project {
+    font-weight: 600;
+    margin-top: 4px;
+    font-size: 14px;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.eoi-flags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.eoi-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+
+.eoi-flag--success {
+    background: #e6f4f1;
+    color: #025964;
+    border-color: #b6e4da;
+}
+
+.eoi-flag--info {
+    background: #e0f2fe;
+    color: #0369a1;
+    border-color: #bae6fd;
+}
+
+.eoi-flag--warning {
+    background: #fff7ed;
+    color: #9a3412;
+    border-color: #fed7aa;
+}
+
+.eoi-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.eoi-btn {
+    border: 1px solid #0f766e;
+    color: #0f766e;
+    background: #ffffff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.eoi-btn:hover {
+    background: #f0fdfa;
+    color: #0f766e;
+    text-decoration: none;
+}
+
+.eoi-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.eoi-progress-label {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.eoi-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    min-width: 160px;
+    overflow: hidden;
+}
+
+.eoi-progress-bar span {
+    display: block;
+    height: 100%;
+    background: #0f766e;
+    border-radius: 999px;
+}
+
+.eoi-progress-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f766e;
+}
+
+.eoi-timeline {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.eoi-timeline::-webkit-scrollbar {
+    height: 6px;
+}
+
+.eoi-timeline::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 999px;
+}
+
+.timeline-step {
+    flex: 1 0 150px;
+    text-align: center;
+}
+
+.timeline-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 6px;
+    border: 1px solid #e5e7eb;
+    background: #ffffff;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.timeline-step.is-done .timeline-icon {
+    background: #ffffff;
+    border-color: #0f766e;
+    color: #0f766e;
+}
+
+.timeline-step.is-pending .timeline-icon {
+    background: #fff7ed;
+    border-color: #f59e0b;
+    color: #b45309;
+}
+
+.timeline-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #111827;
+}
+
+.timeline-date {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+
+/* ================= WORK ORDER TABLE – TRUE GMAIL STYLE ================= */
+
+
+/* ---------- ROW ---------- */
+.workorder-row {
+    position: relative;
+    /* CRITICAL */
+    transition: background-color 0.2s ease;
+}
+
+.workorder-row:hover {
+    background: #f9fafb;
+}
+
+/* ---------- S.NO ---------- */
+.sno-cell {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* ---------- CELLS ---------- */
+.order-detail-cell {
+    vertical-align: middle;
+    line-height: 1.45;
+}
+
+/* ---------- ACTION ANCHOR CELL ---------- */
+.actions-anchor {
+    /* Remove the table cell box so it doesn't consume column space */
+    display: contents;
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    padding: 0;
+    border: none;
+    overflow: visible;
+}
+
+/* ---------- FLOATING ACTIONS ---------- */
+.row-actions {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    /* RIGHTMOST EDGE */
+    transform: translateY(-50%) translateX(12px);
+
+    display: flex;
+    gap: 8px;
+
+    opacity: 0;
+    pointer-events: none;
+
+    background: #ffffff;
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .18);
+
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 20;
+}
+
+.workorder-row {
+    position: relative;
+}
+
+.workorder-row:hover .row-actions {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* ---------- BUTTON ---------- */
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    font-size: 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    color: #111827;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.action-btn:hover {
+    background: #e5e7eb;
+}
+
+.action-btn .badge {
+    font-size: 10px;
+}
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 992px) {
+    .row-actions {
+        position: static;
+        opacity: 1;
+        pointer-events: auto;
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 6px 0;
+    }
+}
+
+
+/* PROJECT NAME — CLEAN MULTI-WORD WRAP */
+.order-detail-cell .order-number {
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    line-height: 1.5;
+}
+
+td.order-detail-cell {
+    min-width: 140px;
+}
+
+.actions-anchor {
+    display: contents;
+}
+
+#tablerecords td.center,
+#tablerecords th.center {
+    white-space: nowrap;
+}
+
+.table>thead>tr>td {
+    vertical-align: middle !important;
+}
+
+
+
+
+/* expiry badge design */
+
+.expiry-badge {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 999px;
+    /* pill */
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+/* ✅ Active (more than 60 days) */
+.expiry-badge.active {
+    background: #e6f4f1;
+    color: #025964;
+}
+
+/* ⚠️ Warning (0–60 days) */
+.expiry-badge.warning {
+    background: #fff7ed;
+    color: #9a3412;
+}
+
+/* ❌ Expired */
+.expiry-badge.expired {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* RESOURCE BADGE – WORK ORDER TABLE */
+
+.resource-badge {
+    display: inline-block;
+    min-width: 44px;
+    text-align: center;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    border-radius: 999px;
+    /* pill */
+    white-space: nowrap;
+}
+
+/* ✅ Complete (e.g. 7/7) */
+.resource-badge.complete {
+    background: #e6f4f1;
+    color: #025964;
+    border: 1px solid #b6e4da;
+}
+
+/* ⚠️ Pending (e.g. 3/7) */
+.resource-badge.pending {
+    background: #fff7ed;
+    color: #9a3412;
+    border: 1px solid #fed7aa;
+}
+
+.project_selection {
+    float: right;
+    position: absolute;
+    right: 0;
+    font-weight: bold;
+}
+
+.tabbable {
+    /* background-color: white; */
+}
+
+.timeline-check-icon {
+    font-size: 10px !important;
+}
+
+.float-btn {
+    margin-top: 24px;
+}
+
+/* =========================================================
+   CLEAN TABLES INSIDE TAB CONTENT (NO-BORDER)
+========================================================= */
+.tab-content {
+    padding: 0 !important;
+}
+
+.tab-content.no-border {
+    border: none !important;
+    /* background: transparent !important; */
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.tab-content.no-border .table-responsive {
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+    background: var(--surface-color) !important;
+}
+
+.tab-content.no-border .table {
+    margin-bottom: 0 !important;
+    border-collapse: collapse !important;
+    width: 100%;
+}
+
+.tab-content.no-border .table td,
+.tab-content.no-border .table th {
+    border: 1px solid var(--border-color) !important;
+}
+
+.tab-content.no-border .table thead td,
+.tab-content.no-border .table thead th {
+    background: var(--surface-muted) !important;
+    color: #334155 !important;
+    font-weight: 600;
+}
+
+.tab-content.no-border {
+    border-radius: 8px !important;
+    margin-top: 1rem !important;
+}
+
+
+.select2-container--default .select2-selection .select2-selection__clear {
+    right: -40px !important;
+}
+
+.eoi-section-header {
+    padding: 8px !important;
+    cursor: pointer !important;
+}
+
+.eoi-row {
+    background: transparent !important;
+    background-color: transparent !important;
+}

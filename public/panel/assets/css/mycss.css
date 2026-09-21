@@ -1,0 +1,740 @@
+.td-padding {
+	padding: 4px 5px !important;
+}
+
+.pac-container {
+	z-index: 1051 !important;
+}
+
+.reset-color-bg {
+	background-color: transparent !important;
+	color: black !important;
+}
+
+.selected-color-bg {
+	background-color: #E4E6E9 !important;
+	color: black !important;
+}
+
+
+.reset-color {
+	background-color: transparent !important;
+	color: black !important;
+}
+
+.selected-color {
+	background-color: #F2F5FF !important;
+	color: black !important;
+}
+
+.selected-color .fa {
+	color: white !important;
+}
+
+.bdleft {
+	border-left: 1px solid #F2F5FF !important;
+}
+
+.bdright {
+	border-right: 1px solid #F2F5FF !important;
+}
+
+.fixed-height {
+	height: 100px;
+	overflow: hidden;
+	/* Ensures that content exceeding the height is hidden */
+}
+
+.res-image {
+	max-height: 200px;
+	/* Ensures the image does not exceed 100px in height */
+	max-width: 100%;
+	/* Maintain aspect ratio */
+	display: block;
+	/* Ensure the image behaves like a block element */
+	margin: auto;
+}
+
+.mybtn {
+	border-radius: 0px;
+	outline: none !important;
+	border: none !important;
+	padding: 0px 5px;
+	height: 25px;
+	line-height: 0px;
+	font-size: 13px !important;
+}
+
+.mylabelbtn {
+	width: 100%;
+	border-radius: 0px;
+	outline: none !important;
+	border: none !important;
+	padding: 0px 5px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 12px !important;
+	border: none !important;
+	color: white !important;
+}
+
+.gridbtn {
+	width: 100%;
+	border-radius: 0px;
+	outline: none !important;
+	border: none !important;
+	padding: 0px 5px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 12px !important;
+	border: none !important;
+}
+
+
+.mygridbtn {
+	width: 100%;
+	border-radius: 0px;
+	outline: none !important;
+	border: none !important;
+	padding: 0px 5px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 12px !important;
+	border: none !important;
+	background-color: #F2F5FF !important;
+	color: white !important;
+}
+
+.mylabelbg {
+	background-color: #F2F5FF !important;
+	color: white !important;
+	padding: 3px 5px;
+	font-size: 14px;
+}
+
+.give-weight {
+	font-weight: 500;
+}
+
+.myheadbg {
+	background-color: #F2F5FF !important;
+	color: black !important;
+}
+
+.mysubheadbg {
+	background-color: #D9EDF7;
+	color: black;
+}
+
+.mytext {
+	padding: 0px;
+	height: 20px;
+	width: 100%;
+	height: 25px;
+}
+
+.mybgtd {
+	vertical-align: middle;
+	padding: 0px 5px;
+	background-color: #f7f7f7;
+	color: black;
+}
+
+.topright {
+	border-right: 1px solid #f0f0f0 !important;
+}
+
+
+.topbottom {
+	border-top: 1px solid #f0f0f0 !important;
+	border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.mytd {
+	vertical-align: middle !important;
+	padding: 0px 5px !important;
+	color: black !important;
+}
+
+.mytdleft {
+	vertical-align: top !important;
+	padding: 0px 5px !important;
+	color: black !important;
+}
+
+.mytdleftwhite {
+	vertical-align: top !important;
+	padding: 0px 5px !important;
+	color: white !important;
+}
+
+.mytdcenter {
+	vertical-align: top !important;
+	padding: 0px 5px !important;
+	color: black !important;
+	text-align: center;
+}
+
+.mytdcenterwhite {
+	vertical-align: top !important;
+	padding: 0px 5px !important;
+	color: white !important;
+	text-align: center;
+}
+
+.mytdwithfield {
+	vertical-align: middle !important;
+	padding: 0px !important;
+	color: black !important;
+}
+
+.myheadtd {
+	padding: 0px 5px;
+}
+
+.myrectd {
+	vertical-align: middle;
+	text-align: center;
+	color: black;
+}
+
+.myactionlink {
+	font-size: 14px;
+}
+
+.input-group .fa-search {
+	display: table-cell;
+	float: left;
+}
+
+.myerrbg {
+	background-color: darkred;
+	color: white;
+}
+
+.mytextarea {
+	width: 100% !important;
+	height: 50px !important;
+}
+
+.mytextarea1 {
+	width: 100% !important;
+	height: 25px !important;
+}
+
+/* input[type=text] {
+	text-transform: uppercase;
+} */
+
+/* textarea {
+	text-transform: uppercase;
+} */
+
+.inner-label {
+	font-size: 13px;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+	padding: 5px 0px;
+	width: 100%;
+}
+
+.mytable {
+	width: 100% !important;
+	border: 1px solid #ddd !important;
+	border-collapse: collapse !important;
+	text-transform: none !important;
+}
+
+.mytable .prebidcontent {
+	background-color: #fcfcfa;
+	margin-left: 5%;
+	width: 95%;
+	border-radius: 20px 0px 0px 0px;
+}
+
+.myassettable {
+	border: 1px solid #F2F5FF !important;
+	border-collapse: collapse !important;
+	text-transform: uppercase !important;
+}
+
+.withsearch {
+	vertical-align: middle;
+	line-height: 25px;
+	padding-right: 0px;
+}
+
+.nav-search-input {
+	height: 28px !important;
+	border-radius: 0px !important;
+}
+
+#req {
+	line-height: 0px;
+	height: 0px;
+}
+
+.req {
+	line-height: 0px;
+	height: 0px;
+}
+
+.nodata {
+	font-size: 100px;
+}
+
+
+.label-head {
+	background-color: #F2F5FF;
+	color: white;
+	padding: 5px 5px;
+}
+
+
+.dataTables_wrapper>.row:first-child {
+	padding: 5px !important;
+	background-color: #F2F5FF !important;
+	color: white !important;
+	height: 40px !important;
+	bertical-align: middle !important;
+	text-transform: uppercase;
+}
+
+.input-sm {
+	height: 30px !important;
+}
+
+input[type=search] {
+	margin-top: -3px !important;
+	margin-right: -10px !important;
+	height: 20px !important;
+	width: 300px !important;
+	padding: 0px;
+}
+
+
+#dynamic-table thead th {
+	background-color: white !important;
+	color: black !important;
+	padding: 5px 10px !important;
+}
+
+#dynamic-table1 thead th {
+	background-color: white !important;
+	color: black !important;
+	padding: 5px 10px !important;
+}
+
+
+.dataTable>thead>tr>th.sorting_asc,
+.dataTable>thead>tr>th.sorting_desc {
+	background-image: -webkit-linear-gradient(top, #FFFFFF 0, #FFFFFF 100%) !important;
+	background-image: -o-linear-gradient(top, #FFFFFF 0, #FFFFFF 100%) !important;
+	background-image: linear-gradient(to bottom, #FFFFFF 0, #FFFFFF 100%) !important;
+}
+
+.myfrmbtn {
+	padding: 2px;
+	outline: none;
+	/*text-transform: capitalize;*/
+	width: 100%;
+}
+
+.recdbtn {
+	padding: 0px 5px;
+	outline: none;
+	/*text-transform: capitalize;*/
+
+}
+
+
+.multiselect {
+	padding: 0px 5px;
+	text-align: left;
+	top: -2px;
+	border: 1px solid #ddd !important;
+	color: #000 !important;
+	background-color: #fff !important;
+	border-radius: 0px;
+}
+
+.multiselect-container>li.multiselect-group-clickable label {
+	float: left;
+	cursor: pointer;
+	margin-left: 0px;
+	padding: 0px;
+	/*background-color:#4F99C6;*/
+	background-color: #F2F5FF;
+	color: #fff !important;
+	width: 100%;
+}
+
+.multiselect-container>li>a>label {
+	padding: 0px 10px;
+	color: #000 !important;
+}
+
+.multiselect-container>li>a>label>input[type=checkbox] {
+	float: left;
+	width: 100%;
+	color: #000 !important;
+	opacity: 9;
+	margin-top: 5px;
+	margin-left: 0px;
+}
+
+.multiselect-all label {
+	padding: 0px;
+	text-transform: uppercase;
+	/*background-color:#4F99C6;*/
+	background-color: #F2F5FF;
+	color: #000 !important;
+}
+
+.myarrow {
+	float: right;
+	margin-top: 8px;
+}
+
+.multiselect .caret {
+	float: right;
+	margin-top: 8px;
+}
+
+.multiselect-item .filter {
+	padding: 0px !important;
+}
+
+.multiselect-clear-filter {
+	padding: 0px !important;
+}
+
+.input-group-addon {
+	padding: 0px 5px;
+}
+
+.glyphicon-search {
+	font-size: 12px;
+}
+
+.multiselect-search {
+	height: 30px;
+}
+
+.smalltable {
+	border: 1px solid #eee;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.smalltabletd {
+	background-color: #F2F5FF;
+	color: white !important;
+	padding: 2px 5px !important;
+}
+
+.selectbx {
+	width: auto;
+	display: inline;
+	padding: 0px;
+	height: 26px !important;
+	font-size: 13px;
+	vertical-align: text-top;
+}
+
+.selectbxfull {
+	width: 100%;
+	display: inline;
+	padding: 0px;
+	height: 25px;
+	font-size: 13px;
+	vertical-align: text-top;
+}
+
+input[type=radio] {
+	margin-top: 0px;
+	vertical-align: sub;
+	width: 15px;
+	height: 15px;
+}
+
+.dataTables_filter {
+	display: none;
+}
+
+#dynamic-table_length {
+	display: none;
+}
+
+
+#dynamic-table thead th {
+	padding: 3px 4px !important;
+}
+
+#dynamic-table1 thead th {
+	padding: 3px 4px !important;
+}
+
+
+#dynamic-table tbody td {
+	padding: 3px 4px;
+}
+
+#dynamic-table1 tbody td {
+	padding: 3px 4px;
+}
+
+.twitter-typeahead {
+	width: 100%;
+}
+
+.tt-menu {
+	max-height: 150px;
+	overflow-y: auto;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+
+.datatableselected {
+	background-color: #eee !important;
+}
+
+.ui-helper-hidden-accessible {
+	display: none !important;
+}
+
+.ui-autocomplete {
+	max-height: 200px;
+	overflow-y: auto;
+	/* Add more styling as needed */
+}
+
+.chosen-container-single .chosen-single {
+	height: auto;
+	/* Reset height */
+	line-height: 1.5;
+	/* Adjust line height for vertical centering */
+	border: 1px solid #ccc;
+	/* Add border */
+	padding: 6px 12px;
+	/* Add padding */
+	font-size: 13px;
+	/* Set font size */
+	width: 100%;
+	/* Set width to fill container */
+}
+
+.chosen-container .chosen-single .search-choice-close {
+	top: 45%;
+	right: 25px;
+	/* Adjust this value for the desired spacing */
+}
+
+.chosen-container .chosen-single div b::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	/* Adjust this value for the desired spacing */
+	transform: translateY(0%);
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 5px 5px 0;
+	border-color: #999 transparent transparent transparent;
+}
+
+
+.selectbxdate {
+	width: 100px;
+	display: inline;
+	padding: 0px;
+	height: 25px;
+	font-size: 13px;
+	vertical-align: text-top;
+}
+
+
+.select2-container--default .select2-search__field {
+	width: 100% !important;
+}
+
+.select2-selection {
+	width: 100%;
+	height: 27px !important;
+	padding: 0px !important;
+}
+
+.select2-results__option {
+	white-space: nowrap;
+	/* Prevent text from wrapping */
+}
+
+.select2-selection__clear {
+	color: black;
+	font-size: 16px !important;
+	font-weight: bold !important;
+	margin-right: 55px !important;
+	z-index: 9;
+}
+
+.select2-search--dropdown::before {
+	display: none !important;
+}
+
+.mypopuptable {
+	width: 100%;
+	border: 1px solid #ddd;
+	border-collapse: collapse;
+	text-transform: uppercase;
+}
+
+.mypopuptdlabel {
+	padding: 0px 5px;
+	text-align: left;
+	vertical-align: middle;
+	font-size: 14px;
+}
+
+.mypopuptdcenterlabel {
+	padding: 0px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 14px;
+}
+
+.mypopuptdcenter {
+	padding: 0px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 12px;
+}
+
+.mypopuptd {
+	padding: 0px 5px;
+	text-align: left;
+	vertical-align: middle;
+	font-size: 12px;
+}
+
+.mypopupsrandlink {
+	padding: 0px;
+	text-align: center;
+	vertical-align: middle;
+	width: 30px;
+	font-size: 12px;
+}
+
+.inputblank {
+	background-color: #F5F5F5 !important;
+}
+
+.scrollable-textarea {
+	width: 300px;
+	/* Set the desired width */
+	height: 150px;
+	/* Set the desired height */
+	overflow: auto;
+	/* Enable scrollbars when content overflows */
+}
+
+
+#product-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#product-list li {
+	padding: 5px;
+	cursor: pointer;
+}
+
+#product-list li:hover {
+	background-color: #f0f0f0;
+}
+
+.password-container {
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.password-container input[type="password"] {
+	padding-right: 30px;
+}
+
+.password-container .toggle-password {
+	position: absolute;
+	top: 50%;
+	right: 5px;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+
+.loginfield-container {
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.loginfield-container input[type="text"] {
+	padding-right: 30px;
+}
+
+.loginfield-container .toggle-password {
+	position: absolute;
+	top: 50%;
+	right: 5px;
+	transform: translateY(-50%);
+	opacity: 0.5;
+}
+
+.tox-tinymce {
+	border-radius: 0px !important;
+}
+
+
+
+.holiday_table td
+{
+	width:80px!important;
+	background: transparent !important;
+}
+
+.holiday_bg {
+	background-color: #eeee!important;
+}
+
+.weekoff_bg {
+	background-color: #eeee!important;
+}
+
+.empty {
+	background-color:red!important;
+}
+
+.holiday_date {
+	font-weight: bold!important;
+}
+
+.holiday_label {
+	font-size: 11px!important;
+	display: block!important;
+	margin-top: 5px!important;
+}
+
+
+
+.interview-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 3 per row */
+    gap: 6px;
+    padding: 0;
+	margin: 0; 
+    list-style: none;
+}
+
+.interview-list li {
+    background: #fbfbfb;
+    padding: 10px;
+    border-radius: 6px;
+}

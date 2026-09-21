@@ -1,0 +1,341 @@
+/* Bootstrap 3.3.5 inspired CSS - No external links */
+* {
+	box-sizing: border-box;
+}
+
+
+/* Panel styles */
+.multi-panel {
+	margin-bottom: 20px;
+	background-color: #fff;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+}
+
+.multi-panel-default {
+	border-color: #ddd;
+}
+
+.multi-panel-heading {
+	padding: 10px 15px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	background-color: #f5f5f5;
+	border-color: #ddd;
+}
+
+.multi-panel-body {
+	padding: 15px;
+}
+
+.multi-panel-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 16px;
+	color: inherit;
+}
+
+/* Progress bar */
+.progress {
+	height: 30px;
+	vertical-align: middle;
+	margin-bottom: 20px;
+	overflow: hidden;
+	background-color: #f5f5f5;
+	border-radius: 4px;
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1);
+}
+
+.progress-bar {
+	float: left;
+	width: 0%;
+	height: 100%;
+	font-size: 12px;
+	line-height: 30px;
+	vertical-align: middle;
+	color: #fff;
+	text-align: center;
+	background-color: #147E8B;
+	box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .15);
+	transition: width .6s ease;
+}
+
+.progress-bar-success {
+	background-color: #147E8B;
+	line-height: 30px;
+	vertical-align: middle;
+}
+
+/* Form styles */
+.multi-form-group {
+	margin-bottom: 15px;
+}
+
+.form-control {
+	display: block;
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.form-control:focus {
+	border-color: #66afe9;
+	outline: 0;
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+textarea.form-control {
+	height: auto;
+	min-height: 100px;
+}
+
+label {
+	display: inline-block;
+	max-width: 100%;
+	font-weight: 500;
+	font-size: 14px !important;
+	margin-bottom: 0 !important;
+}
+
+/* Button styles */
+.multi-btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	text-decoration: none;
+}
+
+.multi-btn-info {
+	color: #fff;
+	background-color: #147E8B !important;
+	border-color: #147E8B;
+}
+
+.multi-btn-primary {
+	color: #fff;
+	background-color: #147E8B;
+	border-color: #147E8B;
+}
+
+.multi-btn-primary:hover {
+	color: #fff;
+	background-color: #147E8B;
+	border-color: #147E8B;
+}
+
+.multi-btn-success {
+	color: #fff;
+	background-color: #147E8B;
+	border-color: #147E8B;
+}
+
+.multi-btn-success:hover {
+	color: #fff;
+	background-color: #147E8B;
+	border-color: #147E8B;
+}
+
+.multi-btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.multi-btn-default:hover {
+	color: #fff;
+	background-color: #147E8B;
+	border-color: #147E8B;
+}
+
+.search-btn {
+	margin-top: 5px;
+	font-size: 12px;
+	padding: 0px 10px;
+	font-weight: normal;
+	height: 25px;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+	text-decoration: none;
+	background-color: #147E8B;
+	color: white;
+}
+
+
+/* Step indicator */
+.multi-step-indicator {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 30px;
+	padding: 0;
+	list-style: none;
+}
+
+.multi-step-indicator li {
+	flex: 1;
+	text-align: center;
+	position: relative;
+}
+
+.multi-step-indicator li:not(:last-child):after {
+	content: '';
+	position: absolute;
+	top: 15px;
+	right: -50%;
+	width: 100%;
+	height: 2px;
+	background-color: #ddd;
+	z-index: 1;
+}
+
+.multi-step-indicator li.active:not(:last-child):after {
+	background-color: #147E8B;
+}
+
+.multi-step-indicator .multi-step-number {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 50%;
+	background-color: #ddd;
+	color: #fff;
+	font-weight: bold;
+	position: relative;
+	z-index: 2;
+}
+
+.multi-step-indicator li.active .multi-step-number {
+	background-color: #147E8B;
+}
+
+.multi-step-indicator li.completed .multi-step-number {
+	background-color: #147E8B;
+}
+
+.multi-step-indicator .multi-step-title {
+	display: block;
+	margin-top: 5px;
+	font-size: 12px;
+	color: #666;
+}
+
+/* Form sections */
+.multi-form-section {
+	display: none;
+}
+
+.multi-form-section.active {
+	display: block;
+}
+
+.multi-section-item {
+	border: 1px solid #e0e0e0;
+	border-radius: 4px;
+	padding: 20px;
+	margin-bottom: 15px;
+	background-color: #fff;
+}
+
+.multi-section-icon {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-right: 10px;
+	vertical-align: middle;
+	color: #5cb85c;
+}
+
+.multi-section-title {
+	font-size: 16px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 5px;
+}
+
+.multi-section-description {
+	color: #666;
+	font-size: 14px;
+}
+
+/* Alert styles */
+.alert {
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.alert-warning {
+	color: #8a6d3b;
+	background-color: #fcf8e3;
+	border-color: #faebcc;
+}
+
+.alert-info {
+	color: #31708f;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+
+/* Navigation buttons */
+.multi-form-navigation {
+	margin-top: 30px;
+	text-align: right;
+}
+
+.multi-form-navigation .btn {
+	margin-left: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+	.col-md-8 {
+		width: 100%;
+		margin-left: 0;
+	}
+
+	.col-md-offset-2 {
+		margin-left: 0;
+	}
+
+	.multi-step-indicator {
+		flex-direction: column;
+	}
+
+	.multi-step-indicator li {
+		margin-bottom: 10px;
+	}
+
+	.multi-step-indicator li:not(:last-child):after {
+		display: none;
+	}
+}
+
+.form-label {
+	font-weight:400!important;
+}
+
+.sample-link {
+	text-decoration: none;
+}
