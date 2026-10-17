@@ -13,19 +13,24 @@ $t=0;
 					<!-- PAGE CONTENT BEGINS -->
 <div class="tabbable" style="padding:0px 0px!important;">
 		<ul class="nav nav-tabs padding-0">
+			@permission('finance.demandnote.store')
 			<li class="active">
 				<a data-toggle="tab" href="#home">
 					<i class="green ace-icon fa fa-list-alt bigger-120 datalist" style="vertical-align:bottom;"></i> EoI's
 				</a>
 			</li>
+			@endpermission
+			@permission('finance.demandnote.demandnotelist')
 			<li>
 				<a data-toggle="tab" href="#demandnote_list">
 					<i class="green ace-icon fa fa-list-alt bigger-120 datalist" style="vertical-align:bottom;"></i> Demand Note List
 				</a>
 			</li>
+			@endpermission
 		</ul>
 
 		<div class="tab-content no-border" style="min-height:100px; border-radius:0px!important;">
+@permission('finance.demandnote.store')		
 <div id="home" class="tab-pane in active">
 		<form name="eoi_data" id="eoi_data" action="#" method="post" onsubmit="return false;">
 			<div class="table-responsive">
@@ -72,7 +77,9 @@ $t=0;
 							<input type="text" placeholder="Search ..." class="" id="pagesearch" name="pagesearch" autocomplete="off" tabindex="<?php echo $t++;?>" style="width:250px!important; border-radius:5px; height:38px!important; line-height:38px!important;" />
 							<i class="ace-icon fa fa-search nav-search-icon padding-0"></i>
 						</span>
+						@permission('finance.demandnote.store')
 						<button type="submit" class="btn btn-info gridbtn width-100" onclick="loadData(1,'{{ route('finance.demandnote.eoilist') }}')" tabindex="{{$t++}}"><i class="fa fa-search"></i> Search</button>
+						@endpermission
 					</td>
 				</tr>
 				<tr class="myhead">
@@ -90,7 +97,8 @@ $t=0;
 			</div>
 		</form>
 </div>
-
+@endpermission
+@permission('finance.demandnote.demandnotelist')
 <div id="demandnote_list" class="tab-pane">
 	<form name="demandnote_data" id="demandnote_data" action="#" method="post" onsubmit="return false;">
 		<div class="table-responsive">
@@ -146,7 +154,7 @@ $t=0;
 		</div>
 	</form>
 </div>
-
+@endpermission
 
 </div>
 </div>
@@ -162,7 +170,7 @@ $t=0;
 </div>
 <script src="{{ asset('panel/assets/js/jquery-2.1.4.min.js') }}"></script>
 <script>
-
+@permission('finance.demandnote.store')
 	function loadData(page, r1) {
 		var pagesize 	= document.getElementById("page_size").value;
 		var projectid 	= document.getElementById("project_id").value;
@@ -191,7 +199,9 @@ $t=0;
 				
 			});
 	}
+@endpermission
 
+@permission('finance.demandnote.demandnotelist')
 	function loadDemandData(page, r1)
 	{
 		var pagesize 	= document.getElementById("demand_page_size").value;
@@ -223,7 +233,7 @@ $t=0;
 			
 		});
 	}
-
+@endpermission
 
 $(document).on('click','.btnCancelDemandNote',function(){
 

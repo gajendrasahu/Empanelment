@@ -67,12 +67,10 @@ $t=1;
 			@csrf
 			<div class="table-responsive">
 				<table class="table table-bordered table-striped table-hover pd-5" id="tablerecords" style="width:100%;">
-				<thead>
+				
 				
 				<tr>
-					<td colspan="5">
-					<div class="table-filters-row">
-						<div class="filters-group">
+					<td colspan="5" style="padding:5px!important;">
 						<input type="hidden" name="record_ids" id="record_ids" value="">
 						<input type="hidden" name="form_token" id="form_token" value="{{$token}}">
 						<select name="pagesize" id="pagesize" class="select2" onchange="loadData(1,'{{ route('admininvoicehistory.html') }}')" data-width="95" data-placeholder="RECORDS">
@@ -94,10 +92,33 @@ $t=1;
 							@endforeach
 						</select>
 
-						<select class="select2" name="vendor_id" id="vendor_id" onKeyPress="return OnKeyPress(this, event)" onchange="loadData(1,'{{ route('admininvoicehistory.html') }}');" data-placeholder="Firm Name" data-width="150">
+						<select class="select2" name="vendor_id" id="vendor_id" onKeyPress="return OnKeyPress(this, event)" onchange="loadData(1,'{{ route('admininvoicehistory.html') }}');" data-placeholder="Firm Name" data-width="220">
 							<option value=""></option>
 							@foreach ($firms as $itm)
 							<option value="{{ $itm->vendorid }}">{{ $itm->companyname }} [{{ $itm->shortname }}]</option>
+							@endforeach
+						</select>
+
+						<select class="select2" name="department_id" id="department_id" onKeyPress="return OnKeyPress(this, event)" onchange="loadData(1,'{{ route('admininvoicehistory.html') }}');" data-placeholder="Department" data-width="220">
+							<option value=""></option>
+							@foreach ($departments as $itm)
+							<option value="{{ $itm->departmentid }}">{{ $itm->shortname }} - {{ $itm->departmentname }}</option>
+							@endforeach
+						</select>
+
+						<select class="select2" name="manager_id" id="manager_id" onKeyPress="return OnKeyPress(this, event)" onchange="loadData(1,'{{ route('admininvoicehistory.html') }}');" data-placeholder="Project Manager" data-width="220">
+							<option value=""></option>
+							@foreach ($managers as $itm)
+							<option value="{{ $itm->departmentid }}">{{ $itm->departmentname }}</option>
+							@endforeach
+						</select>
+					
+						<div style="width:100%;" class="mt-10"></div>
+
+						<select class="select2" name="category_id" id="category_id" onKeyPress="return OnKeyPress(this, event)" onchange="loadData(1,'{{ route('admininvoicehistory.html') }}');" data-placeholder="Category" data-width="150">
+							<option value=""></option>
+							@foreach ($category as $itm)
+							<option value="{{ $itm->categoryid }}">{{ $itm->jobcategory }}</option>
 							@endforeach
 						</select>
 
@@ -108,15 +129,14 @@ $t=1;
 							<option value="Unpaid">Unpaid</option>
 						</select>
 
-						<span class="input-icon">
+						<span class="input-icon" style="float:right;">
 							<input type="text" placeholder="Search ..." class="nav-search-input selectbx" id="pagesearch" name="pagesearch" autocomplete="off" onChange="loadData(1,'{{ route('admininvoicehistory.html') }}')" tabindex="<?php echo $t++;?>" />
 							<i class="ace-icon fa fa-search nav-search-icon" style="margin-top:-3px;"></i>
 						</span>
-						</div>
-					</div>
-					
+						
 					</td>
 				</tr>
+				
 				<tr class="myhead">
 					<td style="width:25px;" nowrap><b>S.No.</b></td>
 					<td style="width:25px;" nowrap><input type="checkbox" name="chkAll" id="chkAll"></td>
@@ -125,7 +145,7 @@ $t=1;
 					<td nowrap class="center"><b>Amount Detail</b></td>
 				</tr>
 			
-				</thead>
+				
 				<tbody class="tabledata" style="height:100px; max-height:100px; overflow:scroll;">
 				<tr><td colspan="5" class="center">--Search Record--</td></tr>
 				</tbody>
@@ -223,6 +243,9 @@ function loadData(page,r1)
 	var mpr_year		=	document.getElementById("mpr_year").value;
 	var vendor_id		=	document.getElementById("vendor_id").value;
 	var payment_status	=	document.getElementById("payment_status").value;
+	var department_id	=	document.getElementById("department_id").value;
+	var manager_id		=	document.getElementById("manager_id").value;
+	var category_id		=	document.getElementById("category_id").value;
 	
 	$.get(""+r1,
 	{
@@ -232,7 +255,10 @@ function loadData(page,r1)
 		mpr_month:mpr_month,
 		mpr_year:mpr_year,
 		vendor_id:vendor_id,
-		payment_status:payment_status
+		payment_status:payment_status,
+		department_id:department_id,
+		manager_id:manager_id,
+		category_id:category_id
 	},
 	function(data, status){
 		$(".tabledata").html(data);

@@ -35,6 +35,7 @@ class PermissionMiddleware
         if(!$this->permissionService->hasPermission($routeName))
         {
 			Log::info('You are not authorized to access this page.');
+			Log::info('Route Name is '.$routeName);
             return redirect()->back()->with('permission_error','You are not authorized to access this page.');
         }
 

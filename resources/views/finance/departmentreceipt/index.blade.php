@@ -14,24 +14,32 @@ $t=0;
 					<!-- PAGE CONTENT BEGINS -->
 <div class="tabbable" style="padding:0px 0px!important;">
 <ul class="nav nav-tabs padding-0">
+	@permission('finance.departmentreceipt.store')
 	<li class="active">
 		<a data-toggle="tab" href="#home">
 			<i class="green ace-icon mt-3 fa fa-list-alt bigger-120"></i> Demand Note List
 		</a>
 	</li>
+	@endpermission
+	@if(app(\App\Services\PermissionService::class)->hasPermission('finance.departmentreceipt.update') || app(\App\Services\PermissionService::class)->hasPermission('finance.departmentreceipt.view') || app(\App\Services\PermissionService::class)->hasPermission('finance.departmentreceipt.cancel'))
+
 	<li>
 		<a data-toggle="tab" href="#departmentreceipt">
 			<i class="green ace-icon mt-3 fa fa-list-alt bigger-120" style="vertical-align:bottom;"></i> Department Receipt List
 		</a>
 	</li>
+	@endpermission
+	@permission('finance.departmentinvoice.store')
 	<li>
 		<a data-toggle="tab" href="#departmentinvoicereceipt">
 			<i class="green ace-icon mt-3 fa fa-list-alt bigger-120" style="vertical-align:bottom;"></i> Create Invoice
 		</a>
 	</li>
+	@endpermission
 </ul>
 
 <div class="tab-content no-border" style="min-height:100px; border-radius:0px!important;">
+@permission('finance.departmentreceipt.store')
 <div id="home" class="tab-pane in active">
 	<form name="demandnote_data" id="demandnote_data" action="#" method="post" onsubmit="return false;">
 		@if(Session::has('success'))
@@ -113,7 +121,9 @@ $t=0;
 		</div>
 	</form>
 </div>
+@endpermission
 
+@if(app(\App\Services\PermissionService::class)->hasPermission('finance.departmentreceipt.update') || app(\App\Services\PermissionService::class)->hasPermission('finance.departmentreceipt.view') || app(\App\Services\PermissionService::class)->hasPermission('finance.departmentreceipt.cancel'))
 
 <div id="departmentreceipt" class="tab-pane">
 	<form name="receipt_data" id="receipt_data" action="#" method="post" onsubmit="return false;">
@@ -162,7 +172,8 @@ $t=0;
 		</div>
 	</form>
 </div>
-
+@endpermission
+@permission('finance.departmentinvoice.store')
 <div id="departmentinvoicereceipt" class="tab-pane">
 	<form name="invoice_receipt_data" id="invoice_receipt_data" action="#" method="post" onsubmit="return false;">
 		<div class="table-responsive">
@@ -214,7 +225,7 @@ $t=0;
 		</div>
 	</form>
 </div>
-
+@endpermission
 
 </div>
 </div>

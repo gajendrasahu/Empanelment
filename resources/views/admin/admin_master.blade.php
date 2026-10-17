@@ -126,7 +126,11 @@ $eoi	=	DB::table('eoi_request')->where('userid',session('userId'))->where('eoist
 										->orderBy('workorderduedate')
 										->get();
 						
-						$invoices	=	DB::table('invoice_mpr')->select('voucher_id','voucher_number')->where('is_paid',0)->get();
+						$invoices		=	DB::table('invoice_mpr as a')
+											->select('a.voucher_id','a.voucher_number','a.invoice_number','v.shortname')
+											->leftJoin('vendor_tbl as v','v.vendorid','=','a.vendor_id')
+											->where('a.is_paid',0)
+											->get();
 						
 						$cancellation	=	DB::table('eoi_cancellation as a')
 											->select('a.requestid','b.eoinumber')
@@ -238,10 +242,10 @@ $eoi	=	DB::table('eoi_request')->where('userid',session('userId'))->where('eoist
 									<ul class="dropdown-menu dropdown-navbar" nowrap style="max-width:100%; overflow-x:scroll;">
 										@foreach($invoices as $ids)
 										<li>
-											<a href="" class="action-a">
+											<a href="{{route('finance.vendorinvoice.index',str_replace('/','-',$ids->invoice_number))}}" class="action-a">
 												<div class="clearfix">
 													<span class="pull-left form-label">
-														 {{$ids->voucher_number}}
+														 {{$ids->shortname}} | {{$ids->invoice_number}}
 													</span>
 												</div>
 											</a>
@@ -1593,7 +1597,11 @@ $eoi	=	DB::table('eoi_request')->where('userid',session('userId'))->where('eoist
 							<a data-toggle="dropdown" href="#">
 								<img class="nav-user-photo" src="{{ asset('panel/assets/images/basic/sarkar.png') }}" alt="" />
 									@if(Session::get('userType')=='ADMIN')
+									@if(Session::get('isMaster')==1)
 									{{Session::get('userType')}}
+									@else
+									{{explode(' ', Session::get('userName'))[0]}}
+									@endif
 									@endif
 									
 									@if(Session::get('userType')=='PROJECT MANAGER')
@@ -1738,7 +1746,9 @@ function addDaysSkippingWeekend(date, daysToAdd) {
 }
 // Initialize prebidlastdate, deadlinedate, and interviewdate pickers
 const prebidlastdatePicker = flatpickr("#prebidlastdate", {
-	dateFormat: "d-m-Y",
+	dateFormat: "d-m-Y h:i K",
+	enableTime: true,
+	time_24hr: false,
 	minDate:"today",
 	disable: [
 		date => date.getDay() === 0 || date.getDay() === 6

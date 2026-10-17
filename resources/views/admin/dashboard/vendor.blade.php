@@ -92,15 +92,23 @@
 <div class="main-content" style="background-color:#fdfdfd!important;">
 	<div class="main-content-inner">
 
+	
 		<div class="col-sm-12 height-space"></div>
 		<div class="col-sm-12">
 			<div class="dashboard-header">
 				<h1 class="welcome-title">Welcome, {{ucwords(strtolower(Session('userName')))}}</h1>
-				<p class="subtitle">Stay updated with daily activities, reports, and announcements from CHiPS and
-					departments.</p>
+				<p class="subtitle">Stay updated with daily activities, reports, and announcements from CHiPS and departments.</p>
 			</div>
 		</div>
-
+		
+		@if(in_array(session('vendorId'),[2,3,4,5]) && now()->lt('2026-09-23 17:00:00'))
+		<div class="col-sm-12">
+			<div class="alert alert-block alert-success">
+				<b>Notification:</b> EoI Ref. EoI/EMPL/CHiPS/CGSPC/ANJOR/2026 — The pre-bid response from the department is still awaited; the participation window remains open until <b>23 September 2026 at 05:00 P.M.</b>
+			</div>
+		</div>
+		@endif
+		
 		<div class="col-sm-12" style="padding:0px 18px!important;">
 			<div class="col-sm-3 animated flipInX delay-01">
 				<div class="horizontal-card">

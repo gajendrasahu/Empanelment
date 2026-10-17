@@ -76,7 +76,7 @@
 					@endif
 				</td>
 				<td style="width:300px;">
-					<button type="button" class="btn btn-info gridbtn" onclick="submitMprToDepartment('{{route('submit.mpr')}}','{{Crypt::encrypt($order->orderid)}}',{{$mprid}},{{$month}},{{$year}})">
+					<button type="button" class="btn btn-info gridbtn submitMprBtn" onclick="submitMprToDepartment('{{route('submit.mpr')}}','{{Crypt::encrypt($order->orderid)}}',{{$mprid}},{{$month}},{{$year}})">
 						<i class="fa fa-save"></i> @if($order->ispm==0) Submit to Department for Approval @else Submit to Project Manager for Approval @endif
 					</button>
 				</td>
@@ -146,6 +146,11 @@ function submitMprToDepartment(rl,orderid,mprid,month,year)
 		
 		if(result)
 		{
+			var btn = $('.submitMprBtn');
+			var originalHtml = btn.html();
+			btn.prop('disabled', true);
+			btn.html('<i class="fa fa-spinner fa-spin"></i> Please wait...');
+			
 			var form = $('#storeattendance')[0];
 			var formData = new FormData(form);
 			formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
@@ -176,6 +181,8 @@ function submitMprToDepartment(rl,orderid,mprid,month,year)
 					}			
 				},
 				error: function(xhr) {
+					btn.prop('disabled', false);
+					btn.html(originalHtml);
 					let errors = xhr.responseJSON?.errors;
 					let message = '';
 					$.each(errors, function(key, val) {

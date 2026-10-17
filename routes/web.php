@@ -36,6 +36,7 @@ use App\Http\Controllers\Finance\DepartmentInvoiceController;
 use App\Http\Controllers\Finance\FinanceVendorInvoiceController;
 use App\Http\Controllers\Finance\FinanceVendorPaymentController;
 use App\Http\Controllers\Finance\FinanceDepartmentFundController;
+use App\Http\Controllers\Finance\FinanceReportingController;
 
 use App\Http\Controllers\Master\DashboardController;
 use App\Http\Controllers\Master\PasswordManagementController;
@@ -174,13 +175,13 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN,DEPARTMENT,PROJECT M
 	Route::post('/master/markas/read','markAsRead')->name('markas.read');
 });
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(CommunicationController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(CommunicationController::class)->group(function()
 {
 	Route::post('/master/sendmessageadmin/conversation','sendConversationAdmin')->name('sendmessageadmin.conversation');
 });
 
 
-Route::middleware(['isLoggedIn', 'role:ADMIN'])->controller(RolePermissionController::class)->group(function()
+Route::middleware(['isLoggedIn','permission', 'role:ADMIN'])->controller(RolePermissionController::class)->group(function()
 {
    Route::get('/master/add/role','addRole')->name('add.role');
    Route::post('/master/store/role/{recordid}','storeRole')->middleware('throttle:master_data')->name('store.role');
@@ -200,7 +201,7 @@ Route::middleware(['isLoggedIn', 'role:ADMIN'])->controller(RolePermissionContro
 });
 
 
-Route::middleware(['isLoggedIn', 'role:ADMIN'])->controller(FinanceModule::class)->group(function()
+Route::middleware(['isLoggedIn','permission', 'role:ADMIN'])->controller(FinanceModule::class)->group(function()
 {
    Route::get('/master/payment/request/{search?}','getWorkOrderList')->name('payment.request');
    Route::get('/master/orders/html','getOrdersData')->name('orders.html');
@@ -226,7 +227,7 @@ Route::middleware(['isLoggedIn', 'role:ADMIN'])->controller(FinanceModule::class
 });
 
 
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(EoiController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(EoiController::class)->group(function()
 {
    Route::get('/master/eoi/requestlist/{firm_type?}/{record_type?}','eoiRequestList')->name('eoi.requestlist'); 
    Route::get('/master/eoirequest/html','getEoiRequestData')->name('eoirequest.html');
@@ -323,7 +324,7 @@ Route::controller(EoiController::class)->group( function()
 });
 
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(WorkOrderController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(WorkOrderController::class)->group(function()
 {
    Route::get('/master/workorder/list/{firm_type?}','workOrderList')->name('workorder.list');
    Route::get('/master/workorders/list/{search?}','workOrdersList')->where('search', '.*')->name('workorders.list');
@@ -385,7 +386,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(WorkO
    
 });
 
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(ResourceController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(ResourceController::class)->group(function()
 {
 	// Resource Related
 	Route::get('/master/add/newresource/{requestid?}','addNewResource')->name('add.newresource');
@@ -414,7 +415,7 @@ Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(Resour
 });
 
 
-Route::middleware(['isLoggedIn','check.method'])->controller(DocumentController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method'])->controller(DocumentController::class)->group(function()
 {
    Route::get('/master/read/scopeofwork','readScopeDoc')->name('read.scopeofwork');
    Route::get('/master/read/aboutproject','readAboutDoc')->name('read.aboutproject');
@@ -424,7 +425,7 @@ Route::middleware(['isLoggedIn','check.method'])->controller(DocumentController:
 
 
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(DepartmentController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(DepartmentController::class)->group(function()
 {
    Route::get('/master/department/request','addDeptRequest')->name('department.request');   
    Route::post('/master/store/departmentrequest/{recordid}','storeDeptRequest')->middleware('throttle:master_data')->name('store.departmentrequest');
@@ -456,7 +457,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(Depar
 
 
 // VENDOR RELATED LINKS
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(VendorController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(VendorController::class)->group(function()
 {
    Route::get('/master/vendor/list','vendorList')->name('vendor.list');
    Route::get('/master/vendors/html','getVendorData')->name('vendors.html');
@@ -469,6 +470,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(Vendo
    Route::post('/master/update/firm/{recordid}','storeFirm')->name('update.firm');
 });
 
+
 Route::middleware(['isLoggedIn','check.method', 'role:ADMIN,VENDOR'])->controller(VendorController::class)->group(function()
 {
    Route::get('/master/sendmessage/vendor/{vendorid?}','sendMessageVendor')->name('sendmessage.vendor');
@@ -476,9 +478,8 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN,VENDOR'])->controlle
 });
 
 
-
 // SERVICES RELATED LINKS
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(ServicesController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(ServicesController::class)->group(function()
 {
 
    Route::get('/master/add/commission','addCommission')->name('add.commission');   
@@ -557,7 +558,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(Servi
 
 
 // MASTER RELATED LINKS
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(MasterController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(MasterController::class)->group(function()
 {
    Route::get('/master/prebid/format','preBidFormat')->name('prebid.format');
    //Route::post('/master/store/format/{recordid}','storePreBidFormat')->middleware('pdf.security')->name('store.format');
@@ -938,7 +939,7 @@ Route::controller(MenuController::class)->group( function() {
 });
 
 // MANAGEMENT RELATED LINKS
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(ManagementController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(ManagementController::class)->group(function()
 {
    Route::get('/master/add/permission','addPermission')->name('add.permission');   
    Route::get('/master/permission/html','getPermissionData')->name('permission.html');
@@ -984,7 +985,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(Manag
 
 
 // STATE-CITY-LOCATION MASTER RELATED LINKS
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(StateCityController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(StateCityController::class)->group(function()
 {
    Route::get('/master/store/state','storeState')->name('store.statename');   
    Route::get('/master/store/city','storeCity')->name('store.cityname');
@@ -1077,7 +1078,7 @@ Route::controller(MasterController::class)->group( function()
 });
 
 // STATE-CITY-LOCATION MASTER RELATED LINKS
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(UserController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(UserController::class)->group(function()
 {
    Route::get('/master/add/appuser','addAppUser')->name('add.appuser');   
    Route::post('/master/store/appuser/{recordid}','storeAppUser')->name('store.appuser');
@@ -1090,7 +1091,7 @@ Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(UserCo
 
 
 // AREA LOCATION MASTER RELATED LINKS
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(ProfileController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(ProfileController::class)->group(function()
 {
    
    Route::get('/edit/profile/{recordid}','editData')->name('edit.profile');
@@ -1123,7 +1124,7 @@ Route::middleware(['isLoggedIn','check.method','role:ADMIN,DEPARTMENT'])->contro
 });
 
 
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(AdminPreBidQuery::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(AdminPreBidQuery::class)->group(function()
 {
 	Route::post('/master/view/allprebidquery','viewAllPreBidQuery')->name('view.allprebidquery');
 	Route::post('/master/forwardto/department','forwardToDepartment')->name('forwardto.department');
@@ -1147,7 +1148,7 @@ Route::middleware(['isLoggedIn','check.method','role:ADMIN,DEPARTMENT,PROJECT MA
 });
 
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(CalendarController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(CalendarController::class)->group(function()
 {
 	Route::get('/master/create/holiday','createHoliday')->name('create.holiday');
 	Route::post('/master/store/holiday/{recordid?}','storeHoliday')->name('store.holiday');
@@ -1158,7 +1159,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(Calen
 	Route::get('/master/calendar/view','calendarView')->name('calendar.view');	
 });
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(RemunerationController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(RemunerationController::class)->group(function()
 {
 	Route::get('/master/add/ratelist','manageRemuneration')->name('add.ratelist');
 	Route::get('/master/create/ratelist/{rateid?}','createRateList')->name('create.ratelist');
@@ -1166,7 +1167,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(Remun
 });
 
 
-Route::middleware(['isLoggedIn','check.method','role:ADMIN'])->controller(NotificationController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method','role:ADMIN'])->controller(NotificationController::class)->group(function()
 {
 	Route::get('/master/send/notification','sendNotification')->name('send.notification');
 	Route::post('/master/store/notification','storeNotification')->name('store.notification');
@@ -1180,7 +1181,7 @@ Route::middleware(['isLoggedIn','check.method','role:PROJECT MANAGER,DEPARTMENT,
 	Route::get('/master/viewnotification/html','getNotificationsData')->name('viewnotification.html');	
 });
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(LoiBasedWorkOrderController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(LoiBasedWorkOrderController::class)->group(function()
 {
 	Route::get('/master/loibased/order/{categoryid?}','addLoIWorkOrder')->name('loibased.order');
 	Route::post('/master/store/directworkorder','storeDirectWorkOrder')->name('store.directworkorder');
@@ -1188,13 +1189,13 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(LoiBa
 });
 
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(ExtensionController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(ExtensionController::class)->group(function()
 {
 	Route::get('/workorder/extensionform/{orderid?}','showExtendForm')->name('workorder.extension.form');
 	Route::post('/workorder/extend/{orderid?}','extendWorkOrder')->name('extend.workorder');
 });
 
-Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(ReportingController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','check.method', 'role:ADMIN'])->controller(ReportingController::class)->group(function()
 {
 	Route::get('/reporting/eoisummary','summaryDetail')->name('eoi.summary');
 
@@ -1227,24 +1228,43 @@ Route::middleware(['isLoggedIn','check.method', 'role:ADMIN'])->controller(Repor
 	Route::post('/reporting/firmwise/eoiorderresource','getFirmWiseEoiOrderResourceData')->name('firmwise.eoiorderresource');
 });
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(FinanceController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(FinanceController::class)->group(function()
 {
    Route::get('/master/project/summary','getProjectSummary')->name('project.summary');
    Route::get('/master/finance/taxmaster','getProjectSummary')->name('finance.taxmaster');
    Route::get('/master/payment/modemaster','getProjectSummary')->name('payment.modemaster');
 });
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(FinanceDashboardController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(FinanceDashboardController::class)->group(function()
 {
    Route::get('/master/financedashboard','index')->name('finance.dashboard');
+   Route::get('/master/payment/cycle','financePaymentCycle')->name('finance.payment.cycle');
 });
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(DemandNoteController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(FinanceReportingController::class)->group(function()
+{
+   Route::get('/master/project/wise','projectWisePayment')->name('finance.project.wise');
+   Route::get('/master/projectwise/payment','getProjectWisePaymentData')->name('finance.projectwise.payment');
+   
+   Route::get('/finance/fundtype/wise','fundTypeWisePayment')->name('finance.fundtype.wise');
+   Route::get('/finance/fundtypewise/summary','getFundTypeWiseSummary')->name('finance.fundtypewise.summary');
+   
+   Route::get('/finance/fund/movement','fundTypeMovement')->name('finance.fund.movement');
+   Route::get('/finance/fundmovement/wise','financialYearFundMovement')->name('finance.fundmovement.wise');
+   
+   Route::get('/finance/fund/utilization','fundTypeUtilization')->name('finance.fund.utilization');
+   Route::get('/finance/fund/utilization/data','getFundTypeUtilization')->name('finance.fund.utilization.data');
+
+   Route::get('/finance/depaermentwise/balance','departmentWiseFundBalance')->name('finance.depaermentwise.balance');
+   Route::get('/finance/department/fundbalance/data','getDepartmentWiseFundBalance')->name('finance.department.fundbalance.data');
+
+});
+
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(DemandNoteController::class)->group(function()
 {
    Route::get('/finance/demandnote/index','index')->name('finance.demandnote.index');
    Route::get('/finance/demandnote/eoilist','getEoIList')->name('finance.demandnote.eoilist');
    Route::get('/finance/demandnote/demandnotelist','getDemandNoteList')->name('finance.demandnote.demandnotelist');
-
 
    /* Working */
    Route::get('/finance/createdemandnote/{requestid?}','create')->name('finance.demandnote.create');
@@ -1260,7 +1280,7 @@ Route::middleware(['isLoggedIn','role:ADMIN'])->controller(DemandNoteController:
    Route::post('/finance/demandnote/downloadcalculation','downloadCalculatedFile')->name('finance.demandnote.downloadcalculation');
 });
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(DepartmentPaymentController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(DepartmentPaymentController::class)->group(function()
 {
    Route::get('/finance/departmentreceipt/index','index')->name('finance.departmentreceipt.index');
    Route::get('/finance/departmentreceipt/demandnotelist','getDemandNoteList')->name('finance.departmentreceipt.demandnotelist');
@@ -1276,12 +1296,13 @@ Route::middleware(['isLoggedIn','role:ADMIN'])->controller(DepartmentPaymentCont
 });
 
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(DepartmentInvoiceController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(DepartmentInvoiceController::class)->group(function()
 {
    Route::get('/finance/departmentinvoice/create/{id}','create')->name('finance.departmentinvoice.create');
    Route::post('/finance/departmentinvoice/prepare','prepareDepartmentInvoice')->name('finance.departmentinvoice.prepare');
    Route::get('/finance/departmentinvoice/form/{ids}','prepareDepartmentInvoiceForm')->name('finance.departmentinvoice.form');
    Route::post('/finance/departmentinvoice/store','storeDepartmentInvoice')->name('finance.departmentinvoice.store');
+
    Route::get('/finance/departmentinvoice/index','index')->name('finance.departmentinvoice.index');
    Route::get('/finance/departmentinvoice/invoicelist','getDepartmentInvoiceList')->name('finance.departmentinvoice.invoicelist');
    Route::get('/finance/departmentinvoice/view/{id}','view')->name('finance.departmentinvoice.view');
@@ -1292,16 +1313,16 @@ Route::middleware(['isLoggedIn','role:ADMIN'])->controller(DepartmentInvoiceCont
 });
 
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(FinanceVendorInvoiceController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(FinanceVendorInvoiceController::class)->group(function()
 {
-   Route::get('/finance/vendorinvoice/index','index')->name('finance.vendorinvoice.index');
+   Route::get('/finance/vendorinvoice/index/{search?}','index')->name('finance.vendorinvoice.index');
    Route::get('/finance/vendorinvoice/list','getVendorInvoiceList')->name('finance.vendorinvoice.list');
    Route::get('/finance/vendorinvoice/view/{id}','view')->name('finance.vendorinvoice.view');
    Route::post('/finance/vendorinvoice/mpr/verify','verifyMpr')->name('finance.vendorinvoice.mpr.verify');
    Route::post('/finance/vendorinvoice/invoice/verify','verifyVendorInvoice')->name('finance.vendorinvoice.invoice.verify');
 });
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(FinanceVendorPaymentController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(FinanceVendorPaymentController::class)->group(function()
 {
    Route::get('/finance/vendorpayment/index','index')->name('finance.vendorpayment.index');
    Route::get('/finance/vendorpayment/verifiedinvoicelist','getVerifiedInvoiceList')->name('finance.vendorpayment.verifiedinvoicelist');
@@ -1311,7 +1332,7 @@ Route::middleware(['isLoggedIn','role:ADMIN'])->controller(FinanceVendorPaymentC
    Route::get('/finance/vendorpayment/view/{id}','view')->name('finance.vendorpayment.view');
 });
 
-Route::middleware(['isLoggedIn','role:ADMIN'])->controller(FinanceDepartmentFundController::class)->group(function()
+Route::middleware(['isLoggedIn','permission','role:ADMIN'])->controller(FinanceDepartmentFundController::class)->group(function()
 {
    Route::get('/finance/department/balance','index')->name('finance.department.balance');
    Route::get('/finance/department/availablefund','getDepartmentAvailableFund')->name('finance.department.availablefund');

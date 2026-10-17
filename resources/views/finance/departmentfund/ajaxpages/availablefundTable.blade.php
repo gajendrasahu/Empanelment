@@ -8,7 +8,7 @@ $available_total=	0;
 @endphp
 @forelse($data as $fund)
 	<tr>
-		<td rowspan="3" class="align-middle">
+		<td rowspan="2" class="align-middle">
 			<strong>{{ $fund->name }}</strong><br>
 			<strong>{{ $fund->eoinumber }}</strong><br>
 			{{ $fund->projecttitle }}
@@ -51,30 +51,12 @@ $available_total=	0;
 			</strong>
 		</td>
 	</tr>
-	<tr class="font-14">
-		<td><strong>Total</strong></td>
-		<td class="text-right no_wrap">
-			<strong>
-				<span class="format-indian" data-value="{{ number_format($fund->vendor_funding_opening+$fund->service_charge_opening,'2','.','') }}"></span>
-			</strong>
-		</td>
-		<td class="text-right no_wrap">
-			<strong>
-				<span class="format-indian" data-value="{{ number_format($fund->vendor_funding_received+$fund->service_charge_received,'2','.','') }}"></span>
-			</strong>
-		</td>
-		<td class="text-right no_wrap">
-			<strong>
-				<span class="format-indian" data-value="{{ number_format($fund->vendor_funding_utilized+$fund->service_charge_utilized,'2','.','') }}"></span>
-			</strong>
-		</td>
-		<td class="text-right no_wrap">
-			<strong>
-				<span class="format-indian" data-value="{{ number_format($fund->vendor_funding_balance+$fund->service_charge_balance,'2','.','') }}"></span>
-			</strong>
-		</td>
-	</tr>
-
+	@php
+	$opening_total	=	$opening_total+$fund->vendor_funding_opening+$fund->service_charge_opening;
+	$received_total	=	$received_total+$fund->vendor_funding_received+$fund->service_charge_received;
+	$utilized_total	=	$utilized_total+$fund->vendor_funding_utilized+$fund->service_charge_utilized;
+	$available_total=	$available_total+$fund->vendor_funding_balance+$fund->service_charge_balance;
+	@endphp
 @empty
 
 	<tr>
@@ -86,6 +68,33 @@ $available_total=	0;
 	</tr>
 
 @endforelse
+
+@if($data->count()>0)
+<tr class="font-14">
+	<td colspan="2" class="text-right"><strong>Total</strong></td>
+	<td class="text-right no_wrap">
+		<strong>
+			<span class="format-indian" data-value="{{ number_format($opening_total,'2','.','') }}"></span>
+		</strong>
+	</td>
+	<td class="text-right no_wrap">
+		<strong>
+			<span class="format-indian" data-value="{{ number_format($received_total,'2','.','') }}"></span>
+		</strong>
+	</td>
+	<td class="text-right no_wrap">
+		<strong>
+			<span class="format-indian" data-value="{{ number_format($utilized_total,'2','.','') }}"></span>
+		</strong>
+	</td>
+	<td class="text-right no_wrap">
+		<strong>
+			<span class="format-indian" data-value="{{ number_format($available_total,'2','.','') }}"></span>
+		</strong>
+	</td>
+</tr>
+	
+@endif
 
 <script>
 document.querySelectorAll('.format-indian').forEach(function(el)

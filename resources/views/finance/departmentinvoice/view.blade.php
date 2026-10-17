@@ -159,21 +159,27 @@ $t=0;
 			<div class="card mt-10">
 				<div class="card-body mt-10 text-right">
 				@if($invoice->status == 'Draft')
+				@permission('finance.departmentinvoice.update')
 				<a href="{{ route('finance.departmentinvoice.edit',Crypt::encrypt($item->department_invoice_id)) }}" title="Edit">
 					<button type="button" id="btnPostInvoice" class="btn btn-info gridbtn width-100">
 						<i class="fa fa-pencil"></i> Edit Invoice
 					</button>
 				</a>
+				@endpermission
 				@endif
 				@if($invoice->status == 'Draft')
+				@permission('finance.departmentinvoice.post')
 					<button type="button" id="btnPostInvoice" class="btn btn-info gridbtn width-100">
 						<i class="fa fa-check"></i> Post Invoice
 					</button>
+				@endpermission
 				@endif
 				@if($invoice->status == 'Posted')
+				@permission('finance.departmentinvoice.cancel')
 					<button type="button" id="btnCancelInvoice" class="btn btn-info gridbtn width-100">
 						<i class="fa fa-times"></i> Cancel Invoice
 					</button>
+				@endpermission
 				@endif				
 				</div>
 			</div>

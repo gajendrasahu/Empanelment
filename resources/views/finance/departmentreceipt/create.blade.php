@@ -251,13 +251,17 @@ $t=0;
 						</div>
 						<div class="col-md-4 mt-10 text-right">
 							@if($mode=='create')
+							@permission('finance.departmentreceipt.store')
 							<button type="button" class="btn btn-info gridbtn width-100" id="btnSaveDepartmentPayment">
 								<i class="fa fa-save"></i> Submit
 							</button>
+							@endpermission
 							@else
+							@permission('finance.departmentreceipt.update')
 							<button type="button" class="btn btn-info gridbtn width-100" id="btnUpdateDepartmentPayment">
 								<i class="fa fa-refresh"></i> Update
 							</button>
+							@endpermission
 							@endif
 						</div>
 					</div>

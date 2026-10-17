@@ -31,9 +31,11 @@ $now = \Carbon\Carbon::now();
 @else
 <tr>
 	<td colspan="8" class="text-right">
+		@permission('finance.departmentinvoice.store')
 		<button type="button" id="btnPrepareInvoice" class="btn btn-info gridbtn width-150" disabled>
 			<i class="fa fa-file-text-o"></i> Prepare Invoice
 		</button>		
+		@endpermission
 	</td>
 </tr>
 <tr>

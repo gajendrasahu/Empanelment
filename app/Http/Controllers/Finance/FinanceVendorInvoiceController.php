@@ -21,7 +21,7 @@ use App\Helpers\FinanceHelper;
 
 class FinanceVendorInvoiceController extends Controller
 {
-	public function index()
+	public function index($search=NULL)
 	{
         Session::put('adminmenu','adminfinance');
 		Session::put('adminsubmenu','financevendorinvoiceindex');
@@ -51,10 +51,15 @@ class FinanceVendorInvoiceController extends Controller
 		
 		$vendors	=	DB::table('vendor_tbl')->select('vendorid','shortname','companyname','categoryid')->orderBy('categoryid')->get();
 		
+		if(!empty($search))
+		{
+			$search	=	str_replace('-','/',$search);
+		}
+		
 		$token	=	rand('100000','999999').''.time();
 		Session::put('form_token',$token);
 
-		return view('finance.vendorinvoice.index',compact('departments','managers','projects','token','vendors'));
+		return view('finance.vendorinvoice.index',compact('departments','managers','projects','token','vendors','search'));
 	}
 
 	public function getVendorInvoiceList(Request $request)
@@ -1426,8 +1431,7 @@ public function view($id)
 		}
 	}
 
-/*
-public function verifyVendorInvoice(Request $request)
+/* public function verifyVendorInvoice(Request $request)
 {
 	DB::beginTransaction();
 
@@ -1437,7 +1441,6 @@ public function verifyVendorInvoice(Request $request)
 			'voucher_id' => 'required|integer',
 			'finance_remarks' => ['nullable','string','not_regex:/<[^>]*>/'],
 		];
-		
 
 		$validatedData = $request->validate($rules);
 
@@ -1461,34 +1464,52 @@ public function verifyVendorInvoice(Request $request)
 		if($pendingMprs->count() > 0) throw new \Exception('All MPRs must be Finance Verified before Vendor Invoice verification.<br><br>Pending MPRs: '.$pendingMprs->implode(', '));
 
 		$vendor = DB::table('vendor_tbl')->where('vendorid',$invoice->vendor_id)->first();
-		
-		$isProjectManager	=	DB::table('eoi_request as a')
-								->join('users_tbl as b','b.userid','=','a.userid')
-								->where('a.requestid',$invoice->request_id)
-								->value('b.ispm') ?? 0;
-		
+
+		$isProjectManager = DB::table('eoi_request as a')->join('users_tbl as b','b.userid','=','a.userid')->where('a.requestid',$invoice->request_id)->value('b.ispm') ?? 0;
+
 		if(!$vendor) throw new \Exception('Vendor not found.');
 
 		$caseType = ((int)$vendor->categoryid == 2 && $isProjectManager==0) ? 'CSF' : 'AWD';
-		$vendorTdsRate = 0;//round((float)$vendorTdsTax->rate,2);
-		$vendorGstTdsRate = 0;//round((float)$vendorGstTdsTax->rate,2);
+
+
+
+		$vendorTdsRate = 0;
+		$vendorGstTdsRate = 0;
 
 		$fundUtilizedAmount = 0;
+
 
 		$vendorFundingTdsTaxId = null;
 		$vendorFundingTdsRate = 0;
 		$vendorFundingGstTdsTaxId = null;
 		$vendorFundingGstTdsRate = 0;
+
+
+
 		$serviceChargeTdsTaxId = null;
 		$serviceChargeTdsRate = 0;
 		$serviceChargeGstTdsTaxId = null;
 		$serviceChargeGstTdsRate = 0;
 
+
+
+		$departmentGstRate = 18;
+
 		if($caseType == 'CSF')
 		{
-			$vendorFundingDemandNotesQuery = DB::table('finance_demand_note')
-											->where('demand_note_type','VENDOR_FUNDING')
-											->where('status','Active');
+
+			$vendorFundingOpeningBalance = DB::table('finance_opening_balance')->where('request_id',$invoice->request_id)->where('balance_type','VENDOR_FUNDING')->where('isactive',1)->sum('opening_balance');
+
+
+			$vendorFundingOpeningTax = DB::table('finance_opening_balance')->where('request_id',$invoice->request_id)->where('balance_type','VENDOR_FUNDING')->where('isactive',1)->orderBy('opening_balance_id','asc')->first();
+
+
+
+			$serviceChargeOpeningTax = DB::table('finance_opening_balance')->where('request_id',$invoice->request_id)->where('balance_type','SERVICE_CHARGE')->where('isactive',1)->orderBy('opening_balance_id','asc')->first();
+
+
+
+			$vendorFundingDemandNotesQuery = DB::table('finance_demand_note')->where('demand_note_type','VENDOR_FUNDING')->where('status','Active');
 
 			if(!empty($invoice->request_id))
 			{
@@ -1501,12 +1522,9 @@ public function verifyVendorInvoice(Request $request)
 
 			$vendorFundingDemandNotes = $vendorFundingDemandNotesQuery->orderBy('demand_note_id','asc')->get();
 
-			if($vendorFundingDemandNotes->count() == 0)
-			{
-				throw new \Exception('Vendor Invoice cannot be Finance Verified because no active Vendor Funding Demand Note was found for this EOI / Work Order.');
-			}
-
 			$vendorFundingDemandNoteIds = $vendorFundingDemandNotes->pluck('demand_note_id')->toArray();
+
+	
 
 			$serviceChargeDemandNotesQuery = DB::table('finance_demand_note')->where('demand_note_type','SERVICE_CHARGE')->where('status','Active');
 
@@ -1523,12 +1541,16 @@ public function verifyVendorInvoice(Request $request)
 
 			$serviceChargeDemandNoteIds = $serviceChargeDemandNotes->pluck('demand_note_id')->toArray();
 
-			$vendorFundingPayment = DB::table('finance_department_payment')->whereIn('demand_note_id',$vendorFundingDemandNoteIds)->where('status','!=','Cancelled')->orderBy('department_payment_id','asc')->first();
+	
 
-			if(!$vendorFundingPayment)
+			$vendorFundingPayment = null;
+
+			if(count($vendorFundingDemandNoteIds) > 0)
 			{
-				throw new \Exception('Vendor Invoice cannot be Finance Verified because no Department payment has been received against the Vendor Funding Demand Note.');
+				$vendorFundingPayment = DB::table('finance_department_payment')->whereIn('demand_note_id',$vendorFundingDemandNoteIds)->where('status','!=','Cancelled')->orderBy('department_payment_id','asc')->first();
 			}
+
+		
 
 			$serviceChargePayment = null;
 
@@ -1537,83 +1559,195 @@ public function verifyVendorInvoice(Request $request)
 				$serviceChargePayment = DB::table('finance_department_payment')->whereIn('demand_note_id',$serviceChargeDemandNoteIds)->where('status','!=','Cancelled')->orderBy('department_payment_id','asc')->first();
 			}
 
-			$vendorFundingTdsTaxId = !empty($vendorFundingPayment->tds_tax_id) ? $vendorFundingPayment->tds_tax_id : null;
-			$vendorFundingGstTdsTaxId = !empty($vendorFundingPayment->gst_tds_tax_id) ? $vendorFundingPayment->gst_tds_tax_id : null;
+		
 
-			$serviceChargeTdsTaxId = $serviceChargePayment && !empty($serviceChargePayment->tds_tax_id) ? $serviceChargePayment->tds_tax_id : null;
-			$serviceChargeGstTdsTaxId = $serviceChargePayment && !empty($serviceChargePayment->gst_tds_tax_id) ? $serviceChargePayment->gst_tds_tax_id : null;
-
-			if(!empty($vendorFundingTdsTaxId))
+			if($vendorFundingPayment)
 			{
-				$vendorFundingTdsTax = DB::table('finance_tax_master')->where('tax_id',$vendorFundingTdsTaxId)->where('tax_type','TDS')->where('is_active',1)->first();
+				$vendorFundingTdsTaxId = !empty($vendorFundingPayment->tds_tax_id) ? $vendorFundingPayment->tds_tax_id : null;
 
-				if($vendorFundingTdsTax)
+				$vendorFundingGstTdsTaxId = !empty($vendorFundingPayment->gst_tds_tax_id) ? $vendorFundingPayment->gst_tds_tax_id : null;
+
+				if(!empty($vendorFundingTdsTaxId))
 				{
-					$vendorFundingTdsRate = round((float)$vendorFundingTdsTax->rate,2);
+					$vendorFundingTdsTax = DB::table('finance_tax_master')->where('tax_id',$vendorFundingTdsTaxId)->where('tax_type','TDS')->where('is_active',1)->first();
+
+					if($vendorFundingTdsTax)
+					{
+						$vendorFundingTdsRate = round((float)$vendorFundingTdsTax->rate,2);
+					}
+				}
+
+				if(!empty($vendorFundingGstTdsTaxId))
+				{
+					$vendorFundingGstTdsTax = DB::table('finance_tax_master')->where('tax_id',$vendorFundingGstTdsTaxId)->where('tax_type','GST_TDS')->where('is_active',1)->first();
+
+					if($vendorFundingGstTdsTax)
+					{
+						$vendorFundingGstTdsRate = round((float)$vendorFundingGstTdsTax->rate,2);
+					}
+				}
+
+
+				$receiptTaxableAmount = round((float)$vendorFundingPayment->taxable_amount,2);
+
+				$receiptGstAmount = round((float)$vendorFundingPayment->gst_amount,2);
+
+				if($receiptTaxableAmount > 0 && $receiptGstAmount > 0)
+				{
+					$departmentGstRate = round(($receiptGstAmount / $receiptTaxableAmount) * 100,2);
+				}
+				else
+				{
+					$departmentGstRate = 18;
+				}
+			}
+			else
+			{
+		
+				if($vendorFundingOpeningTax)
+				{
+					$vendorFundingTdsRate = round((float)$vendorFundingOpeningTax->tds_rate,2);
+
+					$vendorFundingGstTdsRate = round((float)$vendorFundingOpeningTax->gst_tds_rate,2);
+
+					if($vendorFundingTdsRate > 0)
+					{
+						$vendorFundingTdsTax = DB::table('finance_tax_master')->where('tax_type','TDS')->whereRaw('ROUND(rate,2)=?',[$vendorFundingTdsRate])->where('is_active',1)->orderBy('tax_id','asc')->first();
+
+						if($vendorFundingTdsTax)
+						{
+							$vendorFundingTdsTaxId = $vendorFundingTdsTax->tax_id;
+						}
+					}
+
+					if($vendorFundingGstTdsRate > 0)
+					{
+						$vendorFundingGstTdsTax = DB::table('finance_tax_master')->where('tax_type','GST_TDS')->whereRaw('ROUND(rate,2)=?',[$vendorFundingGstTdsRate])->where('is_active',1)->orderBy('tax_id','asc')->first();
+
+						if($vendorFundingGstTdsTax)
+						{
+							$vendorFundingGstTdsTaxId = $vendorFundingGstTdsTax->tax_id;
+						}
+					}
+				}
+
+				$departmentGstRate = 18;
+			}
+
+		
+
+			if($serviceChargePayment)
+			{
+				$serviceChargeTdsTaxId = !empty($serviceChargePayment->tds_tax_id) ? $serviceChargePayment->tds_tax_id : null;
+
+				$serviceChargeGstTdsTaxId = !empty($serviceChargePayment->gst_tds_tax_id) ? $serviceChargePayment->gst_tds_tax_id : null;
+
+				if(!empty($serviceChargeTdsTaxId))
+				{
+					$serviceChargeTdsTax = DB::table('finance_tax_master')->where('tax_id',$serviceChargeTdsTaxId)->where('tax_type','TDS')->where('is_active',1)->first();
+
+					if($serviceChargeTdsTax)
+					{
+						$serviceChargeTdsRate = round((float)$serviceChargeTdsTax->rate,2);
+					}
+				}
+
+				if(!empty($serviceChargeGstTdsTaxId))
+				{
+					$serviceChargeGstTdsTax = DB::table('finance_tax_master')->where('tax_id',$serviceChargeGstTdsTaxId)->where('tax_type','GST_TDS')->where('is_active',1)->first();
+
+					if($serviceChargeGstTdsTax)
+					{
+						$serviceChargeGstTdsRate = round((float)$serviceChargeGstTdsTax->rate,2);
+					}
+				}
+			}
+			else
+			{
+		
+				if($serviceChargeOpeningTax)
+				{
+					$serviceChargeTdsRate = round((float)$serviceChargeOpeningTax->tds_rate,2);
+
+					$serviceChargeGstTdsRate = round((float)$serviceChargeOpeningTax->gst_tds_rate,2);
+
+					if($serviceChargeTdsRate > 0)
+					{
+						$serviceChargeTdsTax = DB::table('finance_tax_master')->where('tax_type','TDS')->whereRaw('ROUND(rate,2)=?',[$serviceChargeTdsRate])->where('is_active',1)->orderBy('tax_id','asc')->first();
+
+						if($serviceChargeTdsTax)
+						{
+							$serviceChargeTdsTaxId = $serviceChargeTdsTax->tax_id;
+						}
+					}
+
+					if($serviceChargeGstTdsRate > 0)
+					{
+						$serviceChargeGstTdsTax = DB::table('finance_tax_master')->where('tax_type','GST_TDS')->whereRaw('ROUND(rate,2)=?',[$serviceChargeGstTdsRate])->where('is_active',1)->orderBy('tax_id','asc')->first();
+
+						if($serviceChargeGstTdsTax)
+						{
+							$serviceChargeGstTdsTaxId = $serviceChargeGstTdsTax->tax_id;
+						}
+					}
 				}
 			}
 
-			if(!empty($vendorFundingGstTdsTaxId))
-			{
-				$vendorFundingGstTdsTax = DB::table('finance_tax_master')->where('tax_id',$vendorFundingGstTdsTaxId)->where('tax_type','GST_TDS')->where('is_active',1)->first();
-
-				if($vendorFundingGstTdsTax)
-				{
-					$vendorFundingGstTdsRate = round((float)$vendorFundingGstTdsTax->rate,2);
-				}
-			}
-
-			if(!empty($serviceChargeTdsTaxId))
-			{
-				$serviceChargeTdsTax = DB::table('finance_tax_master')->where('tax_id',$serviceChargeTdsTaxId)->where('tax_type','TDS')->where('is_active',1)->first();
-
-				if($serviceChargeTdsTax)
-				{
-					$serviceChargeTdsRate = round((float)$serviceChargeTdsTax->rate,2);
-				}
-			}
-
-			if(!empty($serviceChargeGstTdsTaxId))
-			{
-				$serviceChargeGstTdsTax = DB::table('finance_tax_master')->where('tax_id',$serviceChargeGstTdsTaxId)->where('tax_type','GST_TDS')->where('is_active',1)->first();
-
-				if($serviceChargeGstTdsTax)
-				{
-					$serviceChargeGstTdsRate = round((float)$serviceChargeGstTdsTax->rate,2);
-				}
-			}
 
 			$invoiceGrossAmount = round((float)$invoice->net_invoice_value,2);
+
 			$invoiceBasicAmount = round((float)$invoice->taxable_amount,2);
+
 			$invoiceGstAmount = round($invoiceGrossAmount - $invoiceBasicAmount,2);
 
 			$adminChargePercent = round((float)$invoice->admin_charge_percent,2);
 
+		
+
 			$fundInvoiceTds = round($invoiceBasicAmount * $vendorFundingTdsRate / 100,2);
+
 			$fundInvoiceGstTds = round($invoiceBasicAmount * $vendorFundingGstTdsRate / 100,2);
 
-			$fundInvoiceNet = round($invoiceGrossAmount - $fundInvoiceTds - $fundInvoiceGstTds);
+			$fundInvoiceNet = round($invoiceGrossAmount - $fundInvoiceTds - $fundInvoiceGstTds,2);
+
+		
 
 			$fundAdminBasic = round($invoiceBasicAmount * $adminChargePercent / 100,2);
+
 			$fundAdminGst = round($invoiceGstAmount * $adminChargePercent / 100,2);
+
 			$fundAdminTotal = round($fundAdminBasic + $fundAdminGst,2);
 
+	
 			$fundAdminTds = round($fundAdminBasic * $serviceChargeTdsRate / 100,2);
+
 			$fundAdminGstTds = round($fundAdminBasic * $serviceChargeGstTdsRate / 100,2);
 
-			$fundAdminNet = round($fundAdminTotal - $fundAdminTds - $fundAdminGstTds);
+			$fundAdminNet = round($fundAdminTotal - $fundAdminTds - $fundAdminGstTds,2);
 
-			$currentInvoiceFundRequirement = round($fundInvoiceNet + $fundAdminNet);
+		
 
-			$departmentPayments = DB::table('finance_department_payment')->whereIn('demand_note_id',$vendorFundingDemandNoteIds)->where('status','!=','Cancelled')->get();
+			$currentInvoiceFundRequirement = round($fundInvoiceNet + $fundAdminNet,2);
 
-			if($departmentPayments->count() == 0)
+		
+
+			$departmentPayments = collect();
+
+			if(count($vendorFundingDemandNoteIds) > 0)
 			{
-				throw new \Exception('Vendor Invoice cannot be Finance Verified because no Department payment has been received against the Vendor Funding Demand Note.');
+				$departmentPayments = DB::table('finance_department_payment')->whereIn('demand_note_id',$vendorFundingDemandNoteIds)->where('status','!=','Cancelled')->get();
 			}
 
-			$departmentReceived = round((float)$departmentPayments->sum('net_received_amount'),2);
+			if($departmentPayments->count() > 0)
+			{
+				$departmentReceived = round((float)$departmentPayments->sum('net_received_amount'),2);
+			}
+			else
+			{
+				$departmentReceived = round((float)$vendorFundingOpeningBalance,2);
+			}
 
+	
 			$previousInvoicesQuery = DB::table('invoice_mpr')->where('finance_status','Verified')->where('voucher_id','!=',$invoice->voucher_id);
 
 			if(!empty($invoice->request_id))
@@ -1636,7 +1770,11 @@ public function verifyVendorInvoice(Request $request)
 
 			$utilizedAmount = round($utilizedAmount,2);
 
+		
+
 			$balanceBeforeCurrentInvoice = round($departmentReceived - $utilizedAmount,2);
+
+	
 
 			$availableBalance = round($balanceBeforeCurrentInvoice - $currentInvoiceFundRequirement,2);
 
@@ -1649,6 +1787,8 @@ public function verifyVendorInvoice(Request $request)
 
 			$fundUtilizedAmount = round($currentInvoiceFundRequirement,2);
 		}
+
+		
 
 		DB::table('invoice_mpr')->where('voucher_id',$invoice->voucher_id)->update([
 			'finance_status' => 'Verified',
@@ -1670,6 +1810,7 @@ public function verifyVendorInvoice(Request $request)
 			'vendor_gst_tds_rate' => $vendorGstTdsRate
 		]);
 
+	
 		DB::table('finance_activity_log')->insert([
 			'transaction_uuid' => (string)\Illuminate\Support\Str::uuid(),
 			'module_name' => 'Vendor Invoice',
@@ -1682,6 +1823,7 @@ public function verifyVendorInvoice(Request $request)
 			'ip_address' => $request->ip()
 		]);
 
+	
 		DB::table('finance_ledger')->insert([
 			'order_id' => $invoice->order_id ?: 0,
 			'request_id' => $invoice->request_id ?: NULL,
@@ -1714,8 +1856,8 @@ public function verifyVendorInvoice(Request $request)
 		return response()->json(['status'=>0,'message'=>$e->getMessage()],500);
 	}
 }
-*/
-
+ */
+ 
 
 public function verifyVendorInvoice(Request $request)
 {
@@ -1723,9 +1865,7 @@ public function verifyVendorInvoice(Request $request)
 
 	try
 	{
-		/*
-		 * Validation
-		 */
+
 
 		$rules = [
 			'voucher_id' => 'required|integer',
@@ -1761,64 +1901,59 @@ public function verifyVendorInvoice(Request $request)
 
 		$caseType = ((int)$vendor->categoryid == 2 && $isProjectManager==0) ? 'CSF' : 'AWD';
 
-		/*
-		 * Vendor Payment Tax Configuration
-		 * These are selected manually by Finance.
-		 */
+
 
 		$vendorTdsRate = 0;
 		$vendorGstTdsRate = 0;
 
 		$fundUtilizedAmount = 0;
+		$vendorFundingUtilizedAmount = 0;
+		$serviceChargeUtilizedAmount = 0;
+		$departmentFundReceived = 0;
+		$previousVerifiedFundUtilizedAmount = 0;
+		$fundBalanceBeforeInvoice = 0;
+		$currentInvoiceFundRequirement = 0;
+		$fundBalanceAfterInvoice = 0;
+		$vendorFundingNetAmount = 0;
+		$adminChargeBasicAmount = 0;
+		$adminChargeGstAmount = 0;
+		$adminChargeTotalAmount = 0;
+		$serviceChargeTdsAmount = 0;
+		$serviceChargeGstTdsAmount = 0;
+		$serviceChargeNetAmount = 0;
 
-		/*
-		 * Department Vendor Funding Tax Configuration
-		 */
+	
 
 		$vendorFundingTdsTaxId = null;
 		$vendorFundingTdsRate = 0;
 		$vendorFundingGstTdsTaxId = null;
 		$vendorFundingGstTdsRate = 0;
 
-		/*
-		 * Department Service Charge Tax Configuration
-		 */
+
 
 		$serviceChargeTdsTaxId = null;
 		$serviceChargeTdsRate = 0;
 		$serviceChargeGstTdsTaxId = null;
 		$serviceChargeGstTdsRate = 0;
 
-		/*
-		 * Department GST Rate
-		 * Default GST rate is 18%.
-		 */
+
 
 		$departmentGstRate = 18;
 
 		if($caseType == 'CSF')
 		{
-			/*
-			 * Opening Balance
-			 */
+	
 
 			$vendorFundingOpeningBalance = DB::table('finance_opening_balance')->where('request_id',$invoice->request_id)->where('balance_type','VENDOR_FUNDING')->where('isactive',1)->sum('opening_balance');
+			$serviceChargeOpeningBalance = DB::table('finance_opening_balance')->where('request_id',$invoice->request_id)->where('balance_type','SERVICE_CHARGE')->where('isactive',1)->sum('opening_balance');
 
-			/*
-			 * Opening Balance Tax Configuration - Vendor Funding
-			 */
-
+	
 			$vendorFundingOpeningTax = DB::table('finance_opening_balance')->where('request_id',$invoice->request_id)->where('balance_type','VENDOR_FUNDING')->where('isactive',1)->orderBy('opening_balance_id','asc')->first();
 
-			/*
-			 * Opening Balance Tax Configuration - Service Charge
-			 */
-
+	
 			$serviceChargeOpeningTax = DB::table('finance_opening_balance')->where('request_id',$invoice->request_id)->where('balance_type','SERVICE_CHARGE')->where('isactive',1)->orderBy('opening_balance_id','asc')->first();
 
-			/*
-			 * VENDOR_FUNDING Demand Notes
-			 */
+	
 
 			$vendorFundingDemandNotesQuery = DB::table('finance_demand_note')->where('demand_note_type','VENDOR_FUNDING')->where('status','Active');
 
@@ -1835,9 +1970,7 @@ public function verifyVendorInvoice(Request $request)
 
 			$vendorFundingDemandNoteIds = $vendorFundingDemandNotes->pluck('demand_note_id')->toArray();
 
-			/*
-			 * SERVICE_CHARGE Demand Notes
-			 */
+	
 
 			$serviceChargeDemandNotesQuery = DB::table('finance_demand_note')->where('demand_note_type','SERVICE_CHARGE')->where('status','Active');
 
@@ -1854,9 +1987,6 @@ public function verifyVendorInvoice(Request $request)
 
 			$serviceChargeDemandNoteIds = $serviceChargeDemandNotes->pluck('demand_note_id')->toArray();
 
-			/*
-			 * VENDOR_FUNDING Department Payment
-			 */
 
 			$vendorFundingPayment = null;
 
@@ -1865,9 +1995,7 @@ public function verifyVendorInvoice(Request $request)
 				$vendorFundingPayment = DB::table('finance_department_payment')->whereIn('demand_note_id',$vendorFundingDemandNoteIds)->where('status','!=','Cancelled')->orderBy('department_payment_id','asc')->first();
 			}
 
-			/*
-			 * SERVICE_CHARGE Department Payment
-			 */
+	
 
 			$serviceChargePayment = null;
 
@@ -1876,13 +2004,7 @@ public function verifyVendorInvoice(Request $request)
 				$serviceChargePayment = DB::table('finance_department_payment')->whereIn('demand_note_id',$serviceChargeDemandNoteIds)->where('status','!=','Cancelled')->orderBy('department_payment_id','asc')->first();
 			}
 
-			/*
-			 * VENDOR_FUNDING Tax Configuration
-			 *
-			 * Priority:
-			 * 1. Department Receipt
-			 * 2. Opening Balance
-			 */
+	
 
 			if($vendorFundingPayment)
 			{
@@ -1910,9 +2032,7 @@ public function verifyVendorInvoice(Request $request)
 					}
 				}
 
-				/*
-				 * Department Receipt GST Rate
-				 */
+	
 
 				$receiptTaxableAmount = round((float)$vendorFundingPayment->taxable_amount,2);
 
@@ -1929,10 +2049,7 @@ public function verifyVendorInvoice(Request $request)
 			}
 			else
 			{
-				/*
-				 * No Department Receipt
-				 * Get TDS/GST-TDS from Opening Balance.
-				 */
+		
 
 				if($vendorFundingOpeningTax)
 				{
@@ -1961,20 +2078,12 @@ public function verifyVendorInvoice(Request $request)
 					}
 				}
 
-				/*
-				 * No Receipt -> GST 18%
-				 */
+	
 
 				$departmentGstRate = 18;
 			}
 
-			/*
-			 * SERVICE_CHARGE Tax Configuration
-			 *
-			 * Priority:
-			 * 1. Department Receipt
-			 * 2. Opening Balance
-			 */
+	
 
 			if($serviceChargePayment)
 			{
@@ -2004,10 +2113,7 @@ public function verifyVendorInvoice(Request $request)
 			}
 			else
 			{
-				/*
-				 * No Department Receipt
-				 * Get TDS/GST-TDS from Opening Balance.
-				 */
+		
 
 				if($serviceChargeOpeningTax)
 				{
@@ -2037,9 +2143,7 @@ public function verifyVendorInvoice(Request $request)
 				}
 			}
 
-			/*
-			 * Invoice Amounts
-			 */
+	
 
 			$invoiceGrossAmount = round((float)$invoice->net_invoice_value,2);
 
@@ -2049,9 +2153,6 @@ public function verifyVendorInvoice(Request $request)
 
 			$adminChargePercent = round((float)$invoice->admin_charge_percent,2);
 
-			/*
-			 * Vendor Funding TDS / GST-TDS
-			 */
 
 			$fundInvoiceTds = round($invoiceBasicAmount * $vendorFundingTdsRate / 100,2);
 
@@ -2059,19 +2160,14 @@ public function verifyVendorInvoice(Request $request)
 
 			$fundInvoiceNet = round($invoiceGrossAmount - $fundInvoiceTds - $fundInvoiceGstTds,2);
 
-			/*
-			 * CHiPS Administrative Charges
-			 */
-
+	
 			$fundAdminBasic = round($invoiceBasicAmount * $adminChargePercent / 100,2);
 
 			$fundAdminGst = round($invoiceGstAmount * $adminChargePercent / 100,2);
 
 			$fundAdminTotal = round($fundAdminBasic + $fundAdminGst,2);
 
-			/*
-			 * Service Charge TDS / GST-TDS
-			 */
+	
 
 			$fundAdminTds = round($fundAdminBasic * $serviceChargeTdsRate / 100,2);
 
@@ -2079,39 +2175,39 @@ public function verifyVendorInvoice(Request $request)
 
 			$fundAdminNet = round($fundAdminTotal - $fundAdminTds - $fundAdminGstTds,2);
 
-			/*
-			 * Current Invoice Fund Requirement
-			 */
+	
 
 			$currentInvoiceFundRequirement = round($fundInvoiceNet + $fundAdminNet,2);
+			$vendorFundingUtilizedAmount = round($fundInvoiceNet,2);
+			$serviceChargeUtilizedAmount = round($fundAdminNet,2);
+			$vendorFundingNetAmount = round($fundInvoiceNet,2);
+			$adminChargeBasicAmount = round($fundAdminBasic,2);
+			$adminChargeGstAmount = round($fundAdminGst,2);
+			$adminChargeTotalAmount = round($fundAdminTotal,2);
+			$serviceChargeTdsAmount = round($fundAdminTds,2);
+			$serviceChargeGstTdsAmount = round($fundAdminGstTds,2);
+			$serviceChargeNetAmount = round($fundAdminNet,2);
 
-			/*
-			 * Department Payments
-			 *
-			 * If Department Payment exists, use actual net received.
-			 * If no Department Payment exists, use Opening Balance.
-			 */
+	
 
 			$departmentPayments = collect();
+			$serviceChargePayments = collect();
 
 			if(count($vendorFundingDemandNoteIds) > 0)
 			{
 				$departmentPayments = DB::table('finance_department_payment')->whereIn('demand_note_id',$vendorFundingDemandNoteIds)->where('status','!=','Cancelled')->get();
 			}
 
-			if($departmentPayments->count() > 0)
+			if(count($serviceChargeDemandNoteIds) > 0)
 			{
-				$departmentReceived = round((float)$departmentPayments->sum('net_received_amount'),2);
-			}
-			else
-			{
-				$departmentReceived = round((float)$vendorFundingOpeningBalance,2);
+				$serviceChargePayments = DB::table('finance_department_payment')->whereIn('demand_note_id',$serviceChargeDemandNoteIds)->where('status','!=','Cancelled')->get();
 			}
 
-			/*
-			 * Previous Verified Vendor Invoices
-			 */
+			$vendorFundingDepartmentReceived = $departmentPayments->count() > 0 ? round((float)$departmentPayments->sum('net_received_amount'),2) : round((float)$vendorFundingOpeningBalance,2);
+			$serviceChargeDepartmentReceived = $serviceChargePayments->count() > 0 ? round((float)$serviceChargePayments->sum('net_received_amount'),2) : round((float)$serviceChargeOpeningBalance,2);
+			$departmentReceived = round($vendorFundingDepartmentReceived + $serviceChargeDepartmentReceived,2);
 
+	
 			$previousInvoicesQuery = DB::table('invoice_mpr')->where('finance_status','Verified')->where('voucher_id','!=',$invoice->voucher_id);
 
 			if(!empty($invoice->request_id))
@@ -2134,17 +2230,17 @@ public function verifyVendorInvoice(Request $request)
 
 			$utilizedAmount = round($utilizedAmount,2);
 
-			/*
-			 * Available Fund Before Current Invoice
-			 */
+
 
 			$balanceBeforeCurrentInvoice = round($departmentReceived - $utilizedAmount,2);
+			$departmentFundReceived = round($departmentReceived,2);
+			$previousVerifiedFundUtilizedAmount = round($utilizedAmount,2);
+			$fundBalanceBeforeInvoice = round($balanceBeforeCurrentInvoice,2);
 
-			/*
-			 * Current Invoice Fund Availability
-			 */
+	
 
 			$availableBalance = round($balanceBeforeCurrentInvoice - $currentInvoiceFundRequirement,2);
+			$fundBalanceAfterInvoice = round($availableBalance,2);
 
 			if($balanceBeforeCurrentInvoice < $currentInvoiceFundRequirement)
 			{
@@ -2156,9 +2252,7 @@ public function verifyVendorInvoice(Request $request)
 			$fundUtilizedAmount = round($currentInvoiceFundRequirement,2);
 		}
 
-		/*
-		 * Update Vendor Invoice
-		 */
+
 
 		DB::table('invoice_mpr')->where('voucher_id',$invoice->voucher_id)->update([
 			'finance_status' => 'Verified',
@@ -2174,15 +2268,54 @@ public function verifyVendorInvoice(Request $request)
 			'service_charge_tds_rate' => $serviceChargeTdsRate,
 			'service_charge_gst_tds_tax_id' => $serviceChargeGstTdsTaxId,
 			'service_charge_gst_tds_rate' => $serviceChargeGstTdsRate,
+			'department_gst_rate' => $departmentGstRate,
+			'vendor_funding_utilized_amount' => $vendorFundingUtilizedAmount,
+			'service_charge_utilized_amount' => $serviceChargeUtilizedAmount,
+			'department_fund_received' => $departmentFundReceived,
+			'previous_verified_fund_utilized_amount' => $previousVerifiedFundUtilizedAmount,
+			'fund_balance_before_invoice' => $fundBalanceBeforeInvoice,
+			'current_invoice_fund_requirement' => $currentInvoiceFundRequirement,
+			'fund_balance_after_invoice' => $fundBalanceAfterInvoice,
+			'vendor_funding_net_amount' => $vendorFundingNetAmount,
+			'admin_charge_basic_amount' => $adminChargeBasicAmount,
+			'admin_charge_gst_amount' => $adminChargeGstAmount,
+			'admin_charge_total_amount' => $adminChargeTotalAmount,
+			'service_charge_tds_amount' => $serviceChargeTdsAmount,
+			'service_charge_gst_tds_amount' => $serviceChargeGstTdsAmount,
+			'service_charge_net_amount' => $serviceChargeNetAmount,
 			'vendor_tds_tax_id' => $vendorTdsTaxId,
 			'vendor_tds_rate' => $vendorTdsRate,
 			'vendor_gst_tds_tax_id' => $vendorGstTdsTaxId,
 			'vendor_gst_tds_rate' => $vendorGstTdsRate
 		]);
 
-		/*
-		 * Activity Log
-		 */
+
+
+		$verificationSnapshot = [
+			'vendor_funding_tds_tax_id' => $vendorFundingTdsTaxId,
+			'vendor_funding_tds_rate' => $vendorFundingTdsRate,
+			'vendor_funding_gst_tds_tax_id' => $vendorFundingGstTdsTaxId,
+			'vendor_funding_gst_tds_rate' => $vendorFundingGstTdsRate,
+			'service_charge_tds_tax_id' => $serviceChargeTdsTaxId,
+			'service_charge_tds_rate' => $serviceChargeTdsRate,
+			'service_charge_gst_tds_tax_id' => $serviceChargeGstTdsTaxId,
+			'service_charge_gst_tds_rate' => $serviceChargeGstTdsRate,
+			'department_gst_rate' => $departmentGstRate,
+			'department_fund_received' => $departmentFundReceived,
+			'previous_verified_fund_utilized_amount' => $previousVerifiedFundUtilizedAmount,
+			'fund_balance_before_invoice' => $fundBalanceBeforeInvoice,
+			'vendor_funding_net_amount' => $vendorFundingNetAmount,
+			'admin_charge_basic_amount' => $adminChargeBasicAmount,
+			'admin_charge_gst_amount' => $adminChargeGstAmount,
+			'admin_charge_total_amount' => $adminChargeTotalAmount,
+			'service_charge_tds_amount' => $serviceChargeTdsAmount,
+			'service_charge_gst_tds_amount' => $serviceChargeGstTdsAmount,
+			'service_charge_net_amount' => $serviceChargeNetAmount,
+			'vendor_funding_utilized_amount' => $vendorFundingUtilizedAmount,
+			'service_charge_utilized_amount' => $serviceChargeUtilizedAmount,
+			'current_invoice_fund_requirement' => $currentInvoiceFundRequirement,
+			'fund_balance_after_invoice' => $fundBalanceAfterInvoice
+		];
 
 		DB::table('finance_activity_log')->insert([
 			'transaction_uuid' => (string)\Illuminate\Support\Str::uuid(),
@@ -2190,15 +2323,17 @@ public function verifyVendorInvoice(Request $request)
 			'record_id' => $invoice->voucher_id,
 			'action' => 'APPROVE',
 			'action_description' => 'Vendor Invoice Finance Verified',
-			'remarks' => 'Vendor Invoice '.$invoice->invoice_number.' Finance Verified.',
+			'field_name' => 'fund_verification_snapshot',
+			'changed_fields' => count($verificationSnapshot),
+			'old_value' => null,
+			'new_value' => json_encode($verificationSnapshot,JSON_UNESCAPED_SLASHES),
+			'remarks' => 'Vendor Invoice '.$invoice->invoice_number.' Finance Verified with fund verification snapshot.',
 			'action_by' => session('userId'),
 			'action_date' => now(),
 			'ip_address' => $request->ip()
 		]);
 
-		/*
-		 * Vendor Invoice Ledger
-		 */
+
 
 		DB::table('finance_ledger')->insert([
 			'order_id' => $invoice->order_id ?: 0,
@@ -2216,7 +2351,7 @@ public function verifyVendorInvoice(Request $request)
 			'dr_amount' => 0,
 			'cr_amount' => $invoice->net_invoice_value,
 			'remarks' => 'Vendor Invoice Finance Verified',
-			'narration' => 'Vendor Invoice '.$invoice->invoice_number.' Finance Verified.',
+			'narration' => 'Vendor Invoice '.$invoice->invoice_number,
 			'created_by' => session('userId'),
 			'created_at' => now()
 		]);
@@ -2232,5 +2367,6 @@ public function verifyVendorInvoice(Request $request)
 		return response()->json(['status'=>0,'message'=>$e->getMessage()],500);
 	}
 }
-	
+
+
 }

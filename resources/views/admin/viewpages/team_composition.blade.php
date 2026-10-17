@@ -1,6 +1,6 @@
 <table class="mytable" border="1" style="text-transform: none!important; width:100%!important; margin-top:10px; border-collapse:collapse;">
 	<thead>
-	<tr><td class="padding-5" colspan="5"><b>4.1) Resource Summary</b></td></tr>
+	<tr><td class="padding-5" colspan="6"><b>4.1) Resource Summary</b></td></tr>
 	<tr class="">
 		<td class="padding-5 center" style="width:50px;"><b>S.No.</b></td>
 		<td class="padding-5" nowrap><b>Sector</b></td>

@@ -7,6 +7,7 @@ $paid=0;
 $balance=0;
 @endphp
 @foreach ($data as $item)
+
 <tr class="" id="item-{{ $i }}">
     <td style="width:30px; text-align:center;" nowrap>{{ $loop->iteration }}</td>
 	<td style="width:30px; text-align:center;" nowrap>
@@ -22,10 +23,9 @@ $balance=0;
         <div><b>{{ $item->companyname }}</b></div>
 		@if($item->name)<p> <i class="fa fa-user"></i> Submitted By : <b>{{ $item->name }}</b> </p>@endif
 		<p class="mt-10"><b>{{ $item->ordernumber }}</b></p>
-		<p class="mt-10">{{ $item->project_name }}</p>
-		
-		
 
+		<p class="mt-10"><i class="fa fa-info-circle" title="@if($item->isprojectmanager==1) Project Manager : {{$item->departmentname}} @else Department : {{$item->departmentname}} @endif"></i> {{ $item->project_name }}</p>
+		
         @if($item->mpr_file!='')
         <a href="{{route('view.uploadedfile',Crypt::encrypt($item->mpr_file))}}" target="_blank" class="action-a" style="width:150px;">
             <span class="label label-white middle f-s-10 form-label span-content" style="width:100%; text-align:left;">
@@ -73,7 +73,7 @@ $balance=0;
 				<td style="padding:5px!important; text-align:left;">{{date('d\-m\-Y',strtotime($item->invoice_date))}}</td>
 			</tr>
 			<tr>
-				<td style="padding:5px!important; text-align:left;">Invoice Number</td>
+				<td style="padding:5px!important; text-align:left;">Invoice Number @if($item->invoice_number==$item->inv_number) <i class="fa fa-info-circle" title="MPR Created & Invoice Submitted"></i>@endif</td>
 				<td style="padding:5px!important; text-align:left;">{{ $item->invoice_number }}</td>
 			</tr>
 			<tr>

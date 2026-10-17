@@ -11,9 +11,11 @@ $now = \Carbon\Carbon::now();
 	<td nowrap style="font-weight:bold; text-align:center;">
 		{{$item->demand_note_count}} | <span class="format-indian" style="font-size:14px; font-weight:bold!important;" data-value="{{$item->total_demand_note_value}}"></span> | <span class="format-indian" style="font-size:14px; font-weight:bold!important;" data-value="{{$item->total_received_amount}}"></span>
 		<br>
+		@permission('finance.demandnote.store')
 		<a href="{{ route('finance.demandnote.create', Crypt::encrypt($item->requestid)) }}" class="btn btn-info gridbtn width-150 mt-10">
 			Create Demand Note
-		</a>	
+		</a>
+		@endpermission
 	</td>
 </tr>
 @endforeach

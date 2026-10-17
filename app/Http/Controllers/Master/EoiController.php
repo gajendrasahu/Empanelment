@@ -121,7 +121,8 @@ class EoiController extends Controller
         return view('admin/master/eoirequest_list',compact('category','departments','managers','firm_type','record_type','projects'));
     }
 	
-    public function getEoiRequestData(Request $request)
+	
+	public function getEoiRequestData(Request $request)
 	{
 		$userId			= 	$request->session()->get('userId');
 		$departmentId	= 	$request->session()->get('departmentId') ?? 0;
@@ -322,7 +323,8 @@ class EoiController extends Controller
 		}
 		return view('admin/ajaxpages/eoirequestTable',['data' => $data]);
 
-    }
+    } 
+
 
     public function viewEoiRequest(Request $request)
 	{
@@ -350,6 +352,7 @@ class EoiController extends Controller
 		return view('admin/ajaxpages/vieweoirequestTable',['data'=>$data,'detail'=>$detail]);
 
     }
+
     public function prepareDraft(Request $request,$recordid)
 	{
 		$userId    	= 	$request->session()->get('userId');
@@ -550,7 +553,7 @@ class EoiController extends Controller
 					->first();
 
 		$oldData->releasedate	=	date('d-m-Y',strtotime($oldData->releasedate));
-		$oldData->prebidlastdate=	date('d-m-Y',strtotime($oldData->prebidlastdate));
+		$oldData->prebidlastdate=	date('d-m-Y H:i:s',strtotime($oldData->prebidlastdate));
 		$oldData->deadlinedate	=	date('d-m-Y H:i:s',strtotime($oldData->deadlinedate));
 
 		try
@@ -561,9 +564,6 @@ class EoiController extends Controller
 				'engagementname'        => $validatedData['engagementname'] ?? null,
 				'releasedate'           => isset($validatedData['releasedate'])
 											? date('Y-m-d', strtotime($validatedData['releasedate']))
-											: null,
-				'prebidlastdate'        => isset($validatedData['prebidlastdate'])
-											? date('Y-m-d', strtotime($validatedData['prebidlastdate']))
 											: null,
 				'communicationaddress'  => $validatedData['communicationaddress'] ?? null,
 				'termsandcondition'     => $validatedData['termsandcondition'] ?? null,
@@ -576,6 +576,19 @@ class EoiController extends Controller
 				'projectobjective'     	=> $validatedData['projectobjective'] ?? null,
 				'scopeofwork'     		=> $validatedData['scopeofwork'] ?? null,
 			];
+
+			if(!empty($validatedData['prebidlastdate']))
+			{
+				$prebidlastdate = strtoupper(trim($validatedData['prebidlastdate']));
+
+				if (preg_match('/^\d{2}-\d{2}-\d{4}$/', $prebidlastdate)) {
+					$prebidlastdate = Carbon::createFromFormat('d-m-Y', $prebidlastdate)->startOfDay();
+				} else {
+					$prebidlastdate = Carbon::createFromFormat('d-m-Y g:i A', $prebidlastdate);
+				}
+
+				$updateData['prebidlastdate'] = $prebidlastdate->format('Y-m-d H:i:s');
+			}
 
 			if(!empty($validatedData['deadlinedate']))
 			{
@@ -677,7 +690,7 @@ class EoiController extends Controller
 				'regex:/^[A-Za-z0-9\s\.&,\-\(\)\[\]]+$/'
 			],
 			'releasedate' => ['nullable', 'date_format:d-m-Y'],
-			'prebidlastdate' => ['nullable', 'date_format:d-m-Y'],
+			'prebidlastdate' => ['nullable', 'date_format:d-m-Y g:i A'],
 			'deadlinedate' => ['nullable', 'date_format:d-m-Y g:i A'],
 			'interviewdate' => ['nullable','date_format:d-m-Y g:i A'],
 			'communicationaddress' => [
@@ -772,7 +785,7 @@ class EoiController extends Controller
 		{
 			$validator->after(function ($validator) use ($request) {
 				$releasedate    = 	Carbon::createFromFormat('d-m-Y', $request->releasedate);
-				$prebidlastdate =	Carbon::createFromFormat('d-m-Y', $request->prebidlastdate);
+				$prebidlastdate =	Carbon::createFromFormat('d-m-Y h:i A', $request->prebidlastdate);
 				$deadlinedate   =	Carbon::createFromFormat('d-m-Y h:i A', $request->deadlinedate);
 				if($request->interviewdate!='')
 				{
@@ -835,7 +848,7 @@ class EoiController extends Controller
 		}
 		
 		$oldData->releasedate	=	date('d-m-Y',strtotime($oldData->releasedate));
-		$oldData->prebidlastdate=	date('d-m-Y',strtotime($oldData->prebidlastdate));
+		$oldData->prebidlastdate=	date('d-m-Y H:i:s',strtotime($oldData->prebidlastdate));
 		$oldData->deadlinedate	=	date('d-m-Y H:i:s',strtotime($oldData->deadlinedate));
 		$oldData->interviewdate	=	date('d-m-Y H:i:s',strtotime($oldData->interviewdate));
 
@@ -851,7 +864,7 @@ class EoiController extends Controller
 			}
 			if(!empty($validatedData['prebidlastdate']) && strtotime($validatedData['prebidlastdate']))
 			{
-				$validatedData['prebidlastdate'] = date('Y-m-d', strtotime($validatedData['prebidlastdate']));
+				$validatedData['prebidlastdate'] = date('Y-m-d H:i:s', strtotime($validatedData['prebidlastdate']));
 			}
 			else
 			{
@@ -1060,7 +1073,7 @@ class EoiController extends Controller
 	{
 		$request->merge([
 			'releasedate'     => Carbon::parse($request->releasedate)->format('Y-m-d'),
-			'prebidlastdate'  => Carbon::parse($request->prebidlastdate)->format('Y-m-d'),
+			'prebidlastdate'  => Carbon::parse($request->prebidlastdate)->format('Y-m-d H:i:s'),
 			'deadlinedate'    => Carbon::parse($request->deadlinedate)->format('Y-m-d H:i:s'),
 		]);
 		
@@ -3427,13 +3440,12 @@ public function downloadAllFiles(Request $request, $recordid)
 				$detail		=	$this->priceService->getAwdPrice($requestid,$data->categoryid,$tier->tierid,$rateid);
 				break;
 			}
-			$tier_html = view('admin.viewpages.awd_tier_html_without_price_withindex',['data'=>$data,'detail'=>$detail])->render();			
+			$tier_html	= view('admin.viewpages.awd_tier_html_without_price_withindex',['data'=>$data,'detail'=>$detail])->render();			
 			$resource_summary	=	$this->priceService->getAwdResourceSummary($requestid);
-			$team_composition 	= 	view('admin.viewpages.team_composition',['resource_summary'=>$resource_summary])->render();
+			$team_composition 	= 	view('admin.viewpages.team_awd_composition',['resource_summary'=>$resource_summary])->render();
 
 		}
-		$old_letter	=	DB::table('eoi_files_update')->where('requestid',$requestid)->get();
-		
+		$old_letter		=	DB::table('eoi_files_update')->where('requestid',$requestid)->get();
 		$attachments	=	DB::table('eoi_request_attachment')->where('eoirequestid',$requestid)->get();
 
 		$committee=	DB::table('eoi_request_committee as a')
@@ -3571,8 +3583,8 @@ public function downloadAllFiles(Request $request, $recordid)
 		$department	=	DB::table('department_tbl')->where('userid',$data->userid)->first();
 		$user		=	DB::table('users_tbl')->where('userid',$userId)->first();
 
-		$tiers	=	DB::table('tiermaster_tbl')->orderBy('tierid')->get();
-		$rateid	=	DB::table('eoi_request_detail')->where('requestid',$requestid)->value('rateid');
+		$tiers		=	DB::table('tiermaster_tbl')->orderBy('tierid')->get();
+		$rateid		=	DB::table('eoi_request_detail')->where('requestid',$requestid)->value('rateid');
 
 		/* FOR TIER 1 DATA START*/
 		if($data->categoryid==2)

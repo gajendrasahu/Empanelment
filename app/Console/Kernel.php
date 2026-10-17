@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
      * @return void
      */
 	
-	
     protected function schedule(Schedule $schedule)
     {
 		$schedule->command('workorder:expiry-notifications')->dailyAt('11:00');

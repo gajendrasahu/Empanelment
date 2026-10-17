@@ -19,11 +19,13 @@ $t=0;
 			<i class="green ace-icon mt-3 fa fa-list-alt bigger-120"></i> Finance-Verified Vendor Invoices
 		</a>
 	</li>
+	@permission('finance.vendorpayment.view')
 	<li>
 		<a data-toggle="tab" href="#vendorpaymentlist">
 			<i class="green ace-icon mt-3 fa fa-list-alt bigger-120"></i> Vendor Payment List
 		</a>
 	</li>
+	@endpermission
 </ul>
 
 <div class="tab-content no-border" style="min-height:100px; border-radius:0px!important;">
@@ -133,7 +135,7 @@ $t=0;
 	</form>
 </div>
 
-
+@permission('finance.vendorpayment.view')
 <div id="vendorpaymentlist" class="tab-pane">
 	<form name="payment_data" id="payment_data" action="#" method="post" onsubmit="return false;">
 		<div class="table-responsive">
@@ -221,7 +223,7 @@ $t=0;
 		</div>
 	</form>
 </div>
-
+@endpermission
 
 
 </div>

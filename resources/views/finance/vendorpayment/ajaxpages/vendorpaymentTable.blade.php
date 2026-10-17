@@ -59,13 +59,13 @@ $now = \Carbon\Carbon::now();
 	</td>
 
 	<td class="no_wrap text-center">
-
+		@permission('finance.vendorpayment.view')
 		<a class="btn btn-primary no-hover br-5"
 		   style="padding:2px 6px!important;"
 		   href="{{ route('finance.vendorpayment.view',Crypt::encrypt($item->vendor_payment_id)) }}">
 			<i class="fa fa-eye"></i> View
 		</a>
-
+		@endpermission
 	</td>
 </tr>
 

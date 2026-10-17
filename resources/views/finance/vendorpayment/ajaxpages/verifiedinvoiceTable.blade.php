@@ -35,9 +35,11 @@ $now = \Carbon\Carbon::now();
 	</td>
 	<td>
 	@if((float)$item->balance > 0)
+	@permission('finance.vendorpayment.store')
 	<a class="btn btn-primary no-hover br-5" style="padding:2px 2px!important;" data-id="{{ $item->voucher_id }}" href="{{route('finance.vendorpayment.make',Crypt::encrypt($item->voucher_id))}}">
 		<i class="fa fa-money"></i> Make Payment
 	</a>
+	@endpermission
 	@else
 	<span class="text-muted">No Balance</span>
 	@endif

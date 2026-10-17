@@ -10,7 +10,7 @@ $now = \Carbon\Carbon::now();
         $timelineSteps = [
             ['label' => 'Requested on', 'date' => $item->creationdate, 'format' => 'd-m-Y'],
             ['label' => 'Release Date of EoI by CHiPS', 'date' => $item->releasedate, 'format' => 'd-m-Y'],
-            ['label' => 'Last Date of Pre-bid Query', 'date' => $item->prebidlastdate, 'format' => 'd-m-Y'],
+            ['label' => 'Last Date of Pre-bid Query', 'date' => $item->prebidlastdate, 'format' => 'd-m-Y h:i A'],
             ['label' => 'Last Date for Submission of Proposals', 'date' => $item->deadlinedate, 'format' => 'd-m-Y h:i A'],
             ['label' => 'Tentative Date of Presentation and Interview', 'date' => $item->interviewdate, 'format' => 'd-m-Y'],
         ];

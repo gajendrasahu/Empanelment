@@ -27,7 +27,11 @@ $now = \Carbon\Carbon::now();
 			@if($item->eoistatus==1)
 				<a class="action-a">
 				<span class="eoi-flag eoi-flag--info" class="action-a">
+					@if($item->categoryid==2 && $item->ispm==0)
 					<i class="fa fa-paper-plane"></i> Sent To Department
+					@else
+					<i class="fa fa-paper-plane"></i> Sent To Project Manager
+					@endif
 				</span>
 				</a>
 				@permission('eoipreview')
@@ -100,7 +104,7 @@ $now = \Carbon\Carbon::now();
 					@endif			
 					@if($item->isParticipated==1 && $now>date('Y\-m\-d',strtotime($item->deadlinedate)))
 					@permission('view.pptresumes')
-					<a href="{{route('view.pptresumes', Crypt::encrypt($item->requestid))}}" class="action-a">
+					<a href="{{route('view.pptresumes',Crypt::encrypt($item->requestid))}}" class="action-a">
 						<span class="eoi-flag eoi-flag--info">
 							<i class="fa fa-users"></i> Vendors
 						</span>
@@ -220,7 +224,7 @@ $now = \Carbon\Carbon::now();
 	</td>
 	<td class="center width-100 v-top">@if($item->releasedate){{date('d\-m\-Y',strtotime($item->releasedate))}} @else TBD @endif</td>
 	<td class="center width-100" style="position:relative;">
-		@if($item->prebidlastdate){{date('d\-m\-Y',strtotime($item->prebidlastdate))}} @else TBD @endif
+		@if($item->prebidlastdate){{str_replace(', 12:00 AM','',date('d\-m\-Y, h:i A',strtotime($item->prebidlastdate)))}} @else TBD @endif
 	</td>
 	<td class="center width-100">@if($item->deadlinedate){{str_replace(', 12:00 AM','',date('d\-m\-Y, h:i A',strtotime($item->deadlinedate)))}} @else TBD @endif</td>
 	<td class="center width-30" @permission('more.eoidata') onclick="viewMoreData('{{route('more.eoidata')}}','{{Crypt::encrypt($item->requestid)}}')" @endpermission>

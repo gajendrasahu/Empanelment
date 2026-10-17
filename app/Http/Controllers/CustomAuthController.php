@@ -242,9 +242,13 @@ class CustomAuthController extends Controller
 			]);
 			
 			if($user->isMaster==0)
-			$permissions	=	$this->loadAdminPermissions($user->userid);
+			{
+				$permissions	=	$this->loadAdminPermissions($user->userid);
+			}
 			else
-			$permissions	=	[];//$this->loadAdminPermissions($user->userid);
+			{
+				$permissions	=	[];//$this->loadAdminPermissions($user->userid);
+			}
 			
 			$request->session()->put([
 				'adminmenu'		=>	'dashboard',

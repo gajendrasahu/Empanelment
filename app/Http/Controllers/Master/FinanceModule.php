@@ -16,12 +16,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use App\Services\DisplayOrderService;
+use App\Services\UtilityService;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
 class FinanceModule extends Controller
 {
+	protected $utility;
+	public function __construct(UtilityService $utility)
+	{
+		$this->utility	=	$utility;
+	}
 	
     public function getPendingInvoiceData(Request $request)
 	{
@@ -272,11 +278,17 @@ class FinanceModule extends Controller
 					->whereNull('a.parentVendorId')
 					->orderBy('a.companyname')
 					->get();
-
-		$token		=	rand('100000','999999').''.time();
+		
+		$departments=	$this->utility->getDepartments();
+		$managers	=	$this->utility->getProjectManagers();
+		$category	=	$this->utility->getCategories();
+		
+		
+		$token	=	rand('100000','999999').''.time();
+		
 		Session::put('form_token', $token);
 		
-        return view('admin/master/invoice_history',compact('months','years','firms','token'));
+        return view('admin/master/invoice_history',compact('months','years','firms','token','departments','managers','category'));
     }
 
     public function getInvoiceData(Request $request)
@@ -289,16 +301,23 @@ class FinanceModule extends Controller
 		$mpr_year		=	$request->input('mpr_year');
 		$vendor_id		=	$request->input('vendor_id');
 		$payment_status	=	$request->input('payment_status');
+		
+		$department_id	=	$request->input('department_id') ?? 0;
+		$manager_id		=	$request->input('manager_id') ?? 0;
+		$category_id	=	$request->input('category_id') ?? 0;
+		
 		$pagesearch 	=	$request->input('pagesearch');
 		$pagesize		=	$request->input('pagesize',100);
 		$currentPage	= 	$request->input('page', 1);
 
         $data 			= 	DB::table('vendor_invoices as a')
-								->select('a.*','b.companyname','b.shortname','c.project_name','c.ordernumber','d.name')
+								->select('a.*','b.companyname','b.shortname','c.project_name','c.ordernumber','d.name','dept.departmentname','dept.isprojectmanager','im.invoice_number as inv_number')
 								->leftJoin('vendor_tbl as b','b.vendorid','=','a.vendorid')
 								->leftJoin('eoi_work_order as c','c.orderid','=','a.orderid')
 								->leftJoin('users_tbl as d','d.userid','=','a.subuserid')
-								->when($pagesearch != '', function ($query) use ($pagesearch) {
+								->leftJoin('department_tbl as dept','dept.departmentid','=','c.department_id')
+								->leftJoin('invoice_mpr as im','im.invoice_number','=','a.invoice_number')
+								->when($pagesearch!='',function ($query) use ($pagesearch) {
 									$query->where(function ($q) use ($pagesearch) {
 										$q->where('a.invoice_number', 'like', '%' . $pagesearch . '%')
 										  ->orwhere('b.companyname', 'like', '%' . $pagesearch . '%')
@@ -314,6 +333,15 @@ class FinanceModule extends Controller
 								})
 								->when($vendor_id!=0,function($query) use ($vendor_id){
 									return $query->where('a.vendorid','=',$vendor_id);
+								})
+								->when($department_id!=0,function($query) use ($department_id){
+									return $query->where('dept.departmentid','=',$department_id);
+								})
+								->when($manager_id!=0,function($query) use ($manager_id){
+									return $query->where('dept.departmentid','=',$manager_id);
+								})
+								->when($category_id!=0,function($query) use ($category_id){
+									return $query->where('c.categoryid','=',$category_id);
 								})
 								->when($payment_status!='',function($query) use ($payment_status){
 									if($payment_status=='Paid')

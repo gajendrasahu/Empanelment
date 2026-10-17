@@ -26,7 +26,7 @@
 			<label>Last Date of Pre-bid Query 
 			@if($data->isSecondCall==0)<i class="fa fa-info-circle show-updates" data-url="{{ route('get.updates',[Crypt::encrypt('prebidlastdate'),Crypt::encrypt($data->requestid)]) }}"></i>@endif</label>
 			@if($data->isSecondCall==0)
-			<p><i class="fa fa-calendar"></i> {{ old('prebidlastdate',$data->prebidlastdate ? date('d-m-Y',strtotime($data->prebidlastdate)) : 'To be declared') }}</p>
+			<p><i class="fa fa-calendar"></i> {{ old('prebidlastdate',$data->prebidlastdate ? date('d-m-Y, h:i A',strtotime($data->prebidlastdate)) : 'To be declared') }}</p>
 			@else
 				No Pre-Bid
 			@endif
@@ -40,11 +40,12 @@
 			<label>Tentative Date of Presentation and Interview <i class="fa fa-info-circle show-updates" data-url="{{ route('get.updates',[Crypt::encrypt('interviewdate'),Crypt::encrypt($data->requestid)]) }}"></i></label>
 			<p><i class="fa fa-calendar"></i> {{ old('interviewdate',$data->interviewdate ? date('d-m-Y, h:i A',strtotime($data->interviewdate)) : 'To be declared') }}</p>
 		</div>
+		@if($data->categoryid==2)
 		<div class="ui-item-detail">
 			<label>Place of presentations and Interviews</label>
 			<p>@if($data->interview_place) {{ $data->interview_place }} @else To be informed later @endif</p>
 		</div>
-
+		@endif
 		<div class="ui-item-detail">
 			<label>Method of Selection</label>
 			<p>@if($data->selection_method) {{ $data->selection_method }} @else To be informed later @endif</p>

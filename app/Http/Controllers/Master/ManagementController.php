@@ -139,7 +139,6 @@ class ManagementController extends Controller
 					'name'			=>	$validatedData['name'],
 					'mobilenumber'	=>	$validatedData['mobilenumber'],
 					'email'			=>	$validatedData['email'],
-					'roleid'		=>	$validatedData['roleid'],
 				]);
 				return redirect('master/add/user')->with('success','The user details have been updated successfully.');
 			}

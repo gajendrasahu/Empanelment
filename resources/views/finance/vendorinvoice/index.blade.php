@@ -98,7 +98,7 @@ $t=0;
 			<tr>
 				<td colspan="11" style="padding:2px!important;">
 					<span class="input-icon" style="height:38px!important; line-height:38px!important; width:280px!important;">
-						<input type="text" placeholder="Search ..." id="pagesearch" name="pagesearch" autocomplete="off" tabindex="<?php echo $t++;?>" style="border-radius:5px; height:38px!important; line-height:38px!important; width:280px!important;" />
+						<input type="text" placeholder="Search ..." id="pagesearch" name="pagesearch" autocomplete="off" tabindex="<?php echo $t++;?>" style="border-radius:5px; height:38px!important; line-height:38px!important; width:280px!important;" value="{{$search}}" />
 						<i class="ace-icon fa fa-search nav-search-icon padding-0"></i>
 					</span>
 					<select class="select2" name="invoice_status" id="invoice_status" data-width="190"	data-placeholder="Invoice Status">

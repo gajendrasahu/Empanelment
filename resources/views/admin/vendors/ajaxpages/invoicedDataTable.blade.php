@@ -1,195 +1,104 @@
+<div class="table-responsive">
+<table class="table-bordered mytable pd-10">
+
+<tr class="bg-primary">
+	<td colspan="2"></td>
+	<td colspan="5" class="text-center">Invoice Amount Detail</td>
+	<td colspan="2" class="text-center">Status</td>
+	<td class="text-center"></td>
+</tr>
+<tr class="bg-primary">
+	<td class="text-center no_wrap">S. No.</td>
+	<td class="no_wrap">Invoice Detail</td>
+	<td class="text-right no_wrap">Taxable</td>
+	<td class="text-right no_wrap">Tax Value</td>
+	<td class="text-right no_wrap">Net Invoice Value</td>
+	<td class="text-right no_wrap">Paid</td>
+	<td class="text-right no_wrap">Balance</td>
+	<td class="text-center no_wrap">Verification</td>
+	<td class="text-center no_wrap">Payment</td>
+	<td class="text-center no_wrap"></td>
+</tr>
+
+<tbody>
 @foreach($data as $invoice)
 <tr>
-	<td class="bg-primary" colspan="10" style="color:white;">
-	{{$loop->iteration}}) {{$invoice->invoice_number}} 
-	| <i class="fa fa-calendar"></i> {{date('d\-m\-Y',strtotime($invoice->invoice_date))}}
-	| Gross Invoice Value : INR <span class="format-indian" data-value="{{number_format($invoice->net_invoice_value,'2','.','')}}"></span>
-	@if($invoice->invoice_file)
-	|	<a href="{{route('view.uploadedfile',Crypt::encrypt($invoice->invoice_file))}}" target="_blank" style="outline:none!important;">
-			<span class="badge badge-default br-5"><i class="fa fa-file-pdf-o" style="color:white!important;"></i> Invoice</span>
+	<td class="text-center">{{$loop->iteration}}</td>
+	<td class="no_wrap" style="position:relative;">
+		Date : {{date('d\-m\-Y',strtotime($invoice->invoice_date))}}<br>{{$invoice->invoice_number}}<br>
+		<a href="{{route('view.uploadedfile',Crypt::encrypt($invoice->invoice_file))}}" target="_blank" style="position:absolute; top:3px; right:3px;">
+			<i class="fa fa-file-pdf-o"></i>
 		</a>
+		<b>{{$invoice->ordernumber}}</b><br>
+		Order Date : {{date('d\-m\-Y',strtotime($invoice->orderdate))}}<br>
+
+	</td>
+	<td class="text-right format-indian" data-value="{{$invoice->taxable_amount}}"></td>
+	<td class="text-right format-indian" data-value="{{$invoice->tax_value}}"></td>
+	<td class="text-right format-indian" data-value="{{$invoice->net_invoice_value}}"></td>
+	<td class="text-right format-indian" data-value="{{$invoice->net_paid_value}}"></td>
+	<td class="text-right format-indian" data-value="{{$invoice->net_balance_value}}"></td>
+	<td class="text-center no_wrap">
+	@if($invoice->finance_status=='Pending')
+		<span class="badge badge-warning br-5"><i class="fa fa-info-circle"></i> {{$invoice->finance_status}}</span>
+	@elseif($invoice->finance_status=='Verified')
+	<span class="badge badge-success br-5"><i class="fa fa-check"></i> {{$invoice->finance_status}}</span>
 	@endif
-
-	<span class="badge @if($invoice->finance_status=='Pending') badge-warning @else badge-success @endif br-5" style="float:right!important;">Verification Status : {{$invoice->finance_status}}</span>
-	<span class="badge @if($invoice->invoice_status=='Submitted') badge-warning @else badge-success @endif br-5" style="float:right!important; margin-right:5px;">Invoice Status : {{$invoice->invoice_status}}</span>
-	
+	</td>
+	<td class="text-center no_wrap">
+	@if($invoice->payment_status=='Unpaid')
+		<span class="badge badge-warning br-5"><i class="fa fa-info-circle"></i> {{$invoice->payment_status}}</span>
+	@else
+	<span class="badge badge-success br-5"><i class="fa fa-check"></i> {{$invoice->payment_status}}</span>
+	@endif
+	</td>
+	<td @if($invoice->finance_status!='Pending') onclick="getVendorInvoiceData('{{route('vendor.invoice.detail')}}','{{Crypt::encrypt($invoice->voucher_id)}}')" @endif>
+		@if($invoice->finance_status!='Pending')
+		<i class="fa fa-angle-double-right icon-animated-bell"></i>
+		@else
+		<i class="fa fa-info-circle" title="Verification Pending"></i>
+		@endif
 	</td>
 </tr>
-@foreach($invoice->mprs as $orderId => $mprList)
-@foreach($mprList as $mpr)
+@endforeach
+
+@if($data->count()==0)
 <tr>
-	<td class="myheadbg" colspan="10">
-	{{$mpr->mpr_number}}
-	| <i class="fa fa-calendar"></i> {{date('d\-m\-Y',strtotime($mpr->submission_date))}}
-	| <i class="fa fa-calendar"></i> {{ date('F', mktime(0, 0, 0, $mpr->mpr_month, 1)) }}-{{ $mpr->mpr_year }}
-		@if($mpr->signed_mpr)
-		<a href="{{route('view.uploadedfile',Crypt::encrypt($mpr->signed_mpr))}}" target="_blank">
-			| MPR <i class="fa fa-file-pdf-o"></i>
-		</a>
-		@endif
-	
-		@if($mpr->signed_attendance)
-		<a href="{{route('view.uploadedfile',Crypt::encrypt($mpr->signed_attendance))}}" target="_blank">
-			| Attendance <i class="fa fa-file-pdf-o"></i>
-		</a>
-		@endif
-	
-		@if($mpr->signed_supporting)
-		<a href="{{route('view.uploadedfile',Crypt::encrypt($mpr->signed_supporting))}}" target="_blank">
-			| Supporting Document <i class="fa fa-file-pdf-o"></i>
-		</a>
-		@endif
-
-	<span class="badge badge-info br-5" style="float:right!important;">
-		Approved Value : <span class="format-indian" data-value="{{$mpr->mpr_approved_value}}"></span>
-	</span>
-	<span class="badge badge-info br-5" style="float:right!important; margin-right:5px;">
-		MPR Value : <span class="format-indian" data-value="{{$mpr->mpr_value}}"></span>
-	</span>
-	
-	</td>
-</tr>
-@if($mpr->attendance_summary->count() > 0)
-
-@php
-    $totalCalculatedSalary = $mpr->attendance_summary->sum('calculated_salary');
-    $totalNetSalary = $mpr->attendance_summary->sum('net_salary');
-    $totalApprovedSalary = $mpr->attendance_summary->sum('approved_salary');
-@endphp
-
-<tr>
-    <td colspan="10">
-        <div class="table-responsive">
-            <table class="table-bordered pd-5 mytable" border="1">
-                <tr class="myheadbg">
-                    <td>Resource</td>
-                    <td class="no_wrap text-center">Working Days</td>
-                    <td class="text-center">P</td>
-                    <td class="text-center">A</td>
-                    <td class="text-center">L</td>
-                    <td class="text-center">H</td>
-                    <td class="text-right">Per Day Cost</td>
-                    <td class="text-right">Actual Salary</td>
-                    <td class="text-right">Calculated Salary</td>
-                    <td class="text-right">Net Salary</td>
-                    <td class="text-right">Deduction</td>
-                    <td class="text-right">Approved Salary</td>
-                </tr>
-				@foreach($mpr->attendance_summary as $attendance)
-				<tr>
-					<td class="no_wrap">
-						{{ $attendance->resource_name }}<br>
-						{{ $attendance->resource_mobilenumber }}
-					</td>
-
-					<td class="text-center">
-						{{ $attendance->total_working_days }}
-					</td>
-
-					<td class="text-center">
-						{{ $attendance->total_present }}
-					</td>
-
-					<td class="text-center">
-						{{ $attendance->total_absent }}
-					</td>
-
-					<td class="text-center">
-						{{ $attendance->total_leave }}
-					</td>
-
-					<td class="text-center">
-						{{ $attendance->total_holiday }}
-					</td>
-
-					<td class="text-right">
-						<span class="format-indian"
-							data-value="{{ $attendance->per_day_cost }}">
-						</span>
-					</td>
-
-					<td class="text-right">
-						<span class="format-indian"
-							data-value="{{ $attendance->actual_salary }}">
-						</span>
-					</td>
-
-					<td class="text-right">
-						<span class="format-indian"
-							data-value="{{ $attendance->calculated_salary }}">
-						</span>
-					</td>
-
-					<td class="text-right">
-						<span class="format-indian"
-							data-value="{{ $attendance->net_salary }}">
-						</span>
-					</td>
-
-					<td class="text-right">
-						<span class="format-indian"
-							data-value="{{ $attendance->deduction }}">
-						</span>
-					</td>
-
-					<td class="text-right">
-						<span class="format-indian"
-							data-value="{{ $attendance->approved_salary }}">
-						</span>
-					</td>
-				</tr>
-
-				@endforeach
-
-				{{-- TOTAL ROW --}}
-				<tr class="myheadbg">
-					<td colspan="8" class="text-right">
-						<strong>Total</strong>
-					</td>
-
-					<td class="text-right">
-						<strong>
-							<span class="format-indian"
-								data-value="{{ $totalCalculatedSalary }}">
-							</span>
-						</strong>
-					</td>
-
-					<td class="text-right">
-						<strong>
-							<span class="format-indian"
-								data-value="{{ $totalNetSalary }}">
-							</span>
-						</strong>
-					</td>
-
-					<td class="text-center">
-						-
-					</td>
-
-					<td class="text-right">
-						<strong>
-							<span class="format-indian"
-								data-value="{{ $totalApprovedSalary }}">
-							</span>
-						</strong>
-					</td>
-				</tr>
-            </table>
-        </div>
+    <td class="padding-10" colspan="10" style="text-align:center;">
+        <br>
+        <i class="fa fa-warning blue nodata"></i><br>
+        {!! __('messages.sorry') !!}
     </td>
 </tr>
-
+@else
+<tr>
+<td colspan="10" class="padding-10" style="text-align:right;">
+{{ $data->links('vendor.pagination.default') }}
+</td>
+</tr>
 @endif
-@endforeach
-@endforeach
-@endforeach
+</tbody>
+</table>
 
-
+</div>
 <script>
+
+
+
 document.querySelectorAll('.format-indian').forEach(function(el)
 {
 	el.style.fontWeight = 'bold';
 	el.innerText = formatIndianNumber(el.dataset.value);
 });
+
+const paginationLinks = document.querySelectorAll('.pagination a');
+        paginationLinks.forEach(link => {
+            link.onclick = function(event) {
+                event.preventDefault(); // Prevent default link behavior
+                const page = this.getAttribute('href').split('page=')[1]; // Extract page number from URL
+                const url = '{{ route('vendor.invoiced.html') }}'; // URL generated by Laravel route
+                loadData(page, url); // Call custom function with page number and URL
+            };
+        });
+
 </script>

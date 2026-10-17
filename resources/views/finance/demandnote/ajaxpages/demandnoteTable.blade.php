@@ -39,14 +39,16 @@ $now = \Carbon\Carbon::now();
 	</td>
 	<td class="text-center" style="white-space: nowrap;">
 		@if($item->status=='Active' && $item->payment_status=='Pending')
+			@permission('finance.demandnote.update')
 			<a href="{{ route('finance.demandnote.edit', Crypt::encrypt($item->demand_note_id)) }}"
 			   style="outline:none; text-decoration:none;"
 			   title="Edit Demand Note">
 				<i class="fa fa-pencil"></i>
 			</a>
-
+		
 			|
-
+			@endpermission
+			@permission('finance.demandnote.cancel')
 			<a href="javascript:void(0);"
 			   class="btnCancelDemandNote"
 			   data-id="{{ Crypt::encrypt($item->demand_note_id) }}"
@@ -54,11 +56,14 @@ $now = \Carbon\Carbon::now();
 			   title="Cancel Demand Note">
 				<i class="fa fa-ban"></i>
 			</a>
-			| 
+			|
+			@endpermission
 			@endif
+			@permission('finance.demandnote.view')
 			<a href="{{ route('finance.demandnote.view', Crypt::encrypt($item->demand_note_id)) }}" style="outline:none; text-decoration:none;"
 			   title="View Demand Note"> <i class="fa fa-eye"></i>
 			</a>
+			@endpermission
 	</td>
 </tr>
 @endforeach

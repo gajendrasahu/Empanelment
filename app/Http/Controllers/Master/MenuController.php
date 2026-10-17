@@ -748,15 +748,21 @@ class MenuController extends Controller
 
     public function getActionPermissionData(Request $request)
 	{
-		$menuid 	=	intval($request->input('menuid')) ?? 0;
-		$pagesearch =	$request->input('pagesearch');
-		$pagesize	=	$request->input('pagesize');
-		$currentPage= 	$request->input('page',1);
+		$menuid 		=	intval($request->input('menuid')) ?? 0;
+		$permission_type=	$request->input('permission_type') ?? NULL;
+		$pagesearch 	=	$request->input('pagesearch');
+		$pagesize		=	$request->input('pagesize');
+		$currentPage	= 	$request->input('page',1);
 
 		$data	=	DB::table('permissions_tbl as a')
 					->select('a.*','b.mastermenu')
 					->leftJoin('mainmenu_tbl as b','b.menuid','=','a.parentid')
-					->whereIn('permission_type',['ACTION','AJAX','LINK'])
+					->when($permission_type==NULL,function($query) use ($permission_type){
+						return $query->whereIn('a.permission_type',['ACTION','AJAX','LINK']);
+					})
+					->when($permission_type!=NULL,function($query) use ($permission_type){
+						return $query->where('a.permission_type','=',$permission_type);
+					})
 					->when($menuid!=0,function($query) use ($menuid){
 						return $query->where('a.menuid','=',$menuid);
 					})

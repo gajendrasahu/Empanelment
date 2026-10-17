@@ -69,7 +69,7 @@ $j=1;
 		@endif
 		@endif
         @endforeach
-	
+
     </tbody>
 </table>
 
@@ -79,7 +79,7 @@ $j=1;
 <table class="mytable pd-5 font-14" border="1">
 	@if($vendor->categoryid==2)
 	<tr>
-		<td class="v-top form-label">Sector</td>
+		<td class="v-top form-label">Sector {{$count_days}}</td>
 		<td class="v-top">{{ucwords(strtolower($resource->sectorname))}}</td>
 	</tr>
 	<tr>
@@ -151,7 +151,7 @@ $j=1;
 <table class="mytable pd-5 font-14">
 	<tr class="form-label">
 		<td class="center">Month Days</td>
-		<td class="center">Present</td>
+		<td class="center">Present / E.W.D. <i class="fa fa-info-circle" title="Effective working days (In case of engagement percentage)"></i></td>
 		<td class="center">Absent</td>
 		<td class="center">Leave</td>
 		<td class="center">Holiday</td>
@@ -167,10 +167,10 @@ $j=1;
 			<input type="text" name="presents" id="presents" value="{{$resource->total_present}}" placeholder="0" class="numbers width-50 center" autocomplete="off" onchange="CalculateSalary()">
 		</td>
 		<td class="center">
-			<input type="text" name="absents" id="absents" value="{{$resource->total_absent}}" placeholder="0" class="numbers width-50 center" autocomplete="off" onchange="CalculateSalary()">
+			<input type="text" name="absents" id="absents" value="{{$resource->total_absent}}" placeholder="0" class="numbers width-50 center" autocomplete="off" onchange="CalculateSalary()" @if($resource->engagement_percentage!=0) readonly @endif>
 		</td>
 		<td class="center">
-			<input type="text" name="leaves" id="leaves" value="{{$resource->total_leave}}" placeholder="0" class="numbers width-50 center" autocomplete="off" onchange="CalculateSalary()">
+			<input type="text" name="leaves" id="leaves" value="{{$resource->total_leave}}" placeholder="0" class="numbers width-50 center" autocomplete="off" onchange="CalculateSalary()" @if($resource->engagement_percentage!=0) readonly @endif>
 		</td>
 		<td class="center">
 			<input type="text" name="holidays" id="holidays" value="{{$resource->total_holiday ?? $holi_day}}" placeholder="0" class="numbers width-50 center" autocomplete="off" readonly>
@@ -184,7 +184,7 @@ $j=1;
 	</tr>
 	<tr>
 		<td class="form-label">Engagement (%)</td>
-		<td><input type="text" placeholder="0" class="numbers" name="engagement" value="100" id="engagement" style="width:100%" onchange="CalculateSalary()" onKeyPress="return OnKeyPress(this, event)" tabindex="{{$j++}}" @if($resource->deploymenttype=='FULL TIME') readonly @endif></td>
+		<td><input type="text" placeholder="0" class="numbers" name="engagement" value="@if($resource->engagement_percentage!=0){{$resource->engagement_percentage}}@else 100 @endif" id="engagement" style="width:100%" onchange="CalculateSalary()" onKeyPress="return OnKeyPress(this, event)" tabindex="{{$j++}}" readonly></td>
 	</tr>
 	<tr>
 		<td class="form-label">Calculated Salary</td>

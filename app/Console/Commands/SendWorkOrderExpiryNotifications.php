@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
-
+use Illuminate\Support\Facades\Log;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -27,14 +27,7 @@ class SendWorkOrderExpiryNotifications extends Command
                         ->whereDate('wo.workorderduedate','>=',$today)
                         ->where('wo.isActiveOrder',1)
 						->where('wo.sendDueReminder',1)
-                        ->select(
-                            'wo.*',
-                            'd.departmentname',
-                            'd.officialemail',
-                            'eoi.projecttitle',
-                            'eoi.eoinumber',
-                            'eoi.engagementname'
-                        )
+                        ->select('wo.*','d.departmentname','d.officialemail','eoi.projecttitle','eoi.eoinumber','eoi.engagementname')
                         ->get();
 
         $sentCount = 0;
@@ -75,17 +68,19 @@ class SendWorkOrderExpiryNotifications extends Command
                 );
 			*/
 			
-			//Mail::to('gajendrasahu09@gmail.com')->send(new WorkOrderExpiryEmail($workOrder,$remainingDays));
+			/*Mail::to('gajendrasahu09@gmail.com')->send(new WorkOrderExpiryEmail($workOrder,$remainingDays)); */
 			
-			DB::table('reminder_notification')->insert([
+			DB::table('reminder_notification')->insertOrIgnore([
 				'ordernumber'	=>	$workOrder->ordernumber,
 				'email'			=>	$workOrder->officialemail,
-				'sent_on'		=>	now()
+				'sent_on'		=>	now(),
+				'sent_date'		=>	date('Y\-m\-d')
 			]);
 			
             $sentCount++;
 
-            $this->info('Email sent to ' .$workOrder->officialemail .' - ' .$remainingDays .' days remaining');
+            $this->info('Email sent to ' .$workOrder->officialemail.' - ' .$remainingDays.' days remaining');
+			//Log::info('Email sent to ' .$workOrder->officialemail.' - ' .$remainingDays.' days remaining');
         }
 
         $this->info($sentCount .' work order reminder(s) processed successfully.');

@@ -32,17 +32,21 @@ $balance	=	$item->total_amount-$item->total_received;
 	</td>
 	<td nowrap class="text-center">
 		@if(($item->total_amount-$item->total_received)>0)
+		@permission('finance.departmentreceipt.store')
 		<a href="{{ route('finance.departmentreceipt.create',Crypt::encrypt($item->demand_note_id)) }}" class="no-outline" title="Receive Payment">
 			<i class="fa fa-money"></i>
 		</a>
+		@endpermission
 		@endif
 		@if($item->total_received>0)
 			@if(($item->total_amount-$item->total_received)>0)
 			|
 			@endif
+		<!--
 		<a href="{{ route('finance.departmentreceipt.receipts',Crypt::encrypt($item->demand_note_id)) }}" title="View Receipts">
 			<i class="fa fa-list"></i>
 		</a>
+		-->
 		@endif
 	</td>
 </tr>

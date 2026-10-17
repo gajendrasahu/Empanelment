@@ -256,9 +256,9 @@ $t=1;
 									<label>Last Date of Pre-bid Query*</label>
 									<div class="input-group" style="width:200px;">
 									@if(old('prebidlastdate')!='' && old('prebidlastdate')!='01-01-1970')
-									<input type="text" class="date-picker" data-date-format="dd-mm-yyyy" name="prebidlastdate" id="prebidlastdate" required value="{{ date('d-m-Y',strtotime(old('prebidlastdate'))) }}" placeholder="dd-mm-YYYY" style="width:200px;">
+									<input type="text" class="date-picker" data-date-format="dd-mm-yyyy" name="prebidlastdate" id="prebidlastdate" required value="{{ date('d-m-Y h:i A',strtotime(old('prebidlastdate'))) }}" placeholder="dd-mm-YYYY" style="width:200px;">
 									@else
-									<input type="text" class="date-picker" data-date-format="dd-mm-yyyy" name="prebidlastdate" id="prebidlastdate" required value="@if($data->prebidlastdate){{ date('d-m-Y',strtotime($data->prebidlastdate)) }}@endif" placeholder="dd-mm-YYYY" style="width:200px;">
+									<input type="text" class="date-picker" data-date-format="dd-mm-yyyy" name="prebidlastdate" id="prebidlastdate" required value="@if($data->prebidlastdate){{ date('d-m-Y h:i A',strtotime($data->prebidlastdate)) }}@endif" placeholder="dd-mm-YYYY" style="width:200px;">
 									@endif
 									<span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
 									</div>
@@ -270,7 +270,7 @@ $t=1;
 									<label>Submission Date*</label>
 									<div class="input-group" style="width:200px;">
 									@if(old('deadlinedate')!='' && old('deadlinedate')!='01-01-1970')
-									<input type="text" class="date-picker" data-date-format="dd-mm-yyyy" name="deadlinedate" id="deadlinedate" required value="{{ date('d-m-Y',strtotime(old('deadlinedate'))) }}" placeholder="dd-mm-YYYY" style="width:200px;">
+									<input type="text" class="date-picker" data-date-format="dd-mm-yyyy" name="deadlinedate" id="deadlinedate" required value="{{ date('d-m-Y h:i A',strtotime(old('deadlinedate'))) }}" placeholder="dd-mm-YYYY" style="width:200px;">
 									@else
 									<input type="text" class="date-picker" data-date-format="dd-mm-yyyy" name="deadlinedate" id="deadlinedate" required value="@if($data->deadlinedate){{ date('d-m-Y h:i A',strtotime($data->deadlinedate)) }}@endif" placeholder="dd-mm-YYYY" style="width:200px;">
 									@endif
@@ -294,26 +294,31 @@ $t=1;
 								</td>
 								</tr>
 								<tr>
+									@if($data->categoryid==2)
 									<td class="padding-5">
-									<label>Place of presentations & Interviews </label>
-									<div class="input-group" style="width:100%;">
-									@if(old('interview_place')!='' && old('interview_place')!='01-01-1970')
-									<input type="text" name="interview_place" id="interview_place" required value="{{ old('interview_place') }}"  style="width:100%;" placeholder="Place of interview">
-									@else
-									<input type="text" name="interview_place" id="interview_place" required value="@if($data->interview_place){{ $data->interview_place }}@endif" placeholder="Place of interview" style="width:100%;">
-									@endif
-									</div>
+										<label>Place of presentations & Interviews </label>
+										<div class="input-group" style="width:100%;">
+										@if(old('interview_place')!='' && old('interview_place')!='01-01-1970')
+										<input type="text" name="interview_place" id="interview_place" required value="{{ old('interview_place') }}"  style="width:100%;" placeholder="Place of interview">
+										@else
+										<input type="text" name="interview_place" id="interview_place" required value="@if($data->interview_place){{ $data->interview_place }}@endif" placeholder="Place of interview" style="width:100%;">
+										@endif
+										</div>
 									</td>
-
-									<td class="padding-5">
-									<label>Method of Selection </label>
-									<div class="input-group" style="width:100%;">
-									@if(old('selection_method')!='' && old('selection_method')!='01-01-1970')
-									<input type="text" name="selection_method" id="selection_method" required value="{{ old('selection_method') }}"  style="width:100%;" placeholder="Method of Selection">
-									@else
-									<input type="text" name="selection_method" id="selection_method" required value="@if($data->selection_method){{ $data->selection_method }}@endif" placeholder="Method of Selection" style="width:100%;">
 									@endif
-									</div>
+									<td class="padding-5">
+										<label>Method of Selection </label>
+										<div class="input-group" style="width:100%;">
+										@if(old('selection_method')!='' && old('selection_method')!='01-01-1970')
+										<input type="text" name="selection_method" id="selection_method" required value="{{ old('selection_method') }}"  style="width:100%;" placeholder="Method of Selection">
+										@else
+										<input type="text" name="selection_method" id="selection_method" required value="@if($data->selection_method){{ $data->selection_method }}@endif" placeholder="Method of Selection" style="width:100%;">
+										@endif
+										
+										@if($data->categoryid==1)
+										<input type="hidden" name="interview_place" id="interview_place" required value="" placeholder="" style="width:100%;">
+										@endif
+										</div>
 									</td>
 								</tr>
 								<tr><td colspan="4">&nbsp;</td></tr>

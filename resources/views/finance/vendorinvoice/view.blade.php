@@ -18,7 +18,7 @@ $t = 0;
 				<div class="card">
 
 					<div class="card-header">
-						<strong class="font-16">Vendor Invoice Details {{$caseType}}</strong>
+						<strong class="font-16">Vendor Invoice Details</strong>
 					</div>
 
 					<div class="card-body mt-10">
@@ -327,11 +327,11 @@ $t = 0;
 																</button>
 
 															@else
-
+															@permission('finance.vendorinvoice.mpr.verify')
 																<button type="button" class="btn btn-primary br-5 no-hover btnVerifyMpr width-full" data-mpr-id="{{ $mpr->mpr_id }}">
 																	<i class="fa fa-check"></i> Verify MPR & Attendance
 																</button>
-
+															@endpermission
 															@endif
 
 														</td>
@@ -993,9 +993,11 @@ $t = 0;
 
 						<div class="card-body text-right">
 							@if($caseType != 'CSF' || !$hasCsfShortfall)
+							@permission('finance.vendorinvoice.invoice.verify')
 							<button type="button" class="btn btn-success btnVerifyInvoice" data-id="{{ $invoice->voucher_id }}">
 								<i class="fa fa-check"></i> Verify This Invoice
 							</button>
+							@endpermission
 							@endif
 							<!--
 							<button type="button" class="btn btn-danger btnRejectInvoice" data-id="{{ $invoice->voucher_id }}">

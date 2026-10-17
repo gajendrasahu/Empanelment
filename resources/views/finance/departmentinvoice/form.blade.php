@@ -184,9 +184,11 @@ $t=0;
 		</div>
 		<div class="row mt-10">
 			<div class="col-md-12 text-right">
+				@permission('finance.departmentinvoice.store')
 				<button type="button" id="btnSaveInvoice" class="btn btn-info gridbtn mt-25 width-130">
 					<i class="fa fa-save"></i> Create Invoice
 				</button>
+				@endpermission
 			</div>
 		
 		</div>

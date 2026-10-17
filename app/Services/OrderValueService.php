@@ -27,15 +27,34 @@ class OrderValueService
             while($currentStart<=$end)
 			{
                 $year		=	$currentStart->year;
+				
+				if($pricing->categoryid==2)
 				$mayFirst	= 	Carbon::create($currentStart->year,6,1);
+				else
+				$mayFirst	= 	Carbon::create($currentStart->year,2,28);
 				
 				if($currentStart->lt($mayFirst))
 				{
 					$slabEnd = $mayFirst->copy()->subDay();
+					if(Carbon::parse($slabEnd)->gt('2027-02-26'))
+					{
+						$slabEnd	=	$end;
+					}
 				}
 				else
 				{
-					$slabEnd = Carbon::create($currentStart->year + 1,6,1)->subDay();
+					if($pricing->categoryid==2)
+					{
+						$slabEnd	=	Carbon::create($currentStart->year + 1,6,1)->subDay();
+					}
+					else
+					{	
+						$slabEnd	=	Carbon::create($currentStart->year + 1,2,28)->subDay();
+						if(Carbon::parse($slabEnd)->gt('2027-02-26'))
+						{
+							$slabEnd	=	$end;
+						}
+					}
 				}
 
 				if($slabEnd->gt($end))
@@ -67,9 +86,16 @@ class OrderValueService
 				$currentStart = $slabEnd->copy()->addDay()->startOfDay();
 				
 				if($pricing->categoryid==2)
-                $basePrice	=	$basePrice * 1.05;
+				{
+					$basePrice	=	$basePrice * 1.05;
+				}
 				else
-				$basePrice	=	$basePrice * 1.08;
+				{
+					if(Carbon::parse($currentStart)->lt('2027-02-27'))
+					$basePrice	=	$basePrice * 1.08;
+					else
+					$basePrice	=	$basePrice;
+				}
             }
 			if($pricing->categoryid==2)
 			{

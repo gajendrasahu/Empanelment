@@ -98,6 +98,7 @@ Route::middleware(['isLoggedIn','check.method', 'role:VENDOR'])->controller(Vend
    
    Route::get('/vendor/invoiced/mprs','vendorInvoicedMpr')->name('vendor.invoiced.mprs');
    Route::get('/vendor/invoiced/html','vendorInvoicedData')->name('vendor.invoiced.html');
+   Route::get('/vendor/invoice/detail','getVendorInvoiceData')->name('vendor.invoice.detail');
 });
 
 Route::middleware(['isLoggedIn','check.method', 'role:VENDOR'])->controller(InvoiceController::class)->group(function()

@@ -30,9 +30,8 @@ class AppServiceProvider extends ServiceProvider
 			URL::forceScheme('https');
 		}        
 
-		Blade::if('permission', function ($routeName) {
-			return app(\App\Services\PermissionService::class)
-				->hasPermission($routeName);
+		Blade::if('permission', function ($routeName){
+			return app(\App\Services\PermissionService::class)->hasPermission($routeName);
 		});		
     }
 }

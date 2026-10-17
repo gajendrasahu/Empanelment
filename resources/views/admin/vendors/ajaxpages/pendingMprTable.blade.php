@@ -1,7 +1,7 @@
 @foreach($data as $order)
 <tr>
-	<td class="text-center">{{$loop->iteration}}</td>
-	<td class="width-400 lh-25">
+	<td class="text-center v-top">{{$loop->iteration}}</td>
+	<td class="width-400 v-top">
 		{{$order->eoinumber}}<br>
 		Order Date : {{date('d\-m\-Y',strtotime($order->orderdate))}} | Due Date : {{date('d\-m\-Y',strtotime($order->workorderduedate))}}
 		<br><b>{{$order->ordernumber}}</b>

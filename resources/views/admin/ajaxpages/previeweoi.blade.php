@@ -152,7 +152,7 @@ Chhattisgarh–492001<br>Tel.: +91-771-
 	</tr>
 	<tr>
 		<td class="padding-8 form-label">Last Date of Pre-bid Query</td>
-		<td class="padding-8">@if($data->prebidlastdate!=''){{ date('d-m-Y',strtotime($data->prebidlastdate)) }}@endif</td>
+		<td class="padding-8">@if($data->prebidlastdate!=''){{ date('d-m-Y, h:i A',strtotime($data->prebidlastdate)) }}@endif</td>
 	</tr>
 	<tr>
 		<td class="padding-8 form-label">Last Date for Submission of Proposals</td>

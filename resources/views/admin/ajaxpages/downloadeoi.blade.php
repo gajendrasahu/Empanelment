@@ -178,7 +178,7 @@ ul, ol {
     <!-- COVER PAGE -->
 
     <div class="cover-page">
-
+		@if($data->categoryid==2)
         <table class="no-border" style="height:100%;">
             <tr>
 
@@ -223,7 +223,53 @@ ul, ol {
 
             </tr>
         </table>
+		@else
+<table style="
+    width:99.9%;
+    height:100%;
+    border:none !important;
+    border-collapse:collapse;
+    outline:none !important;
+    background-image:url('https://empl.cgstate.gov.in/panel/assets/images/basic/templatebg.png');
+    background-repeat:no-repeat;
+    background-position:left top;
+    background-size:auto 100%;
+    background-color:white !important;
+">
+    <tr style="height:180px;">
+        <td style="text-align:center; vertical-align:middle!important;">
+            <img src="https://empl.cgstate.gov.in/panel/assets/images/basic/chips-label.png" style="width:93%;" alt="Chips Label">
+        </td>
+    </tr>
+    <tr style="height:400px; line-height:40px;">
+        <td style="text-align:center; vertical-align:middle!important;">
+			<br><br><br><br><br>
+			<span style="font-size:50px;">Expression of Interest<br>(EoI)</span><br><br>
+			<span style="font-size:20px; padding:30px 0px 30px 0px!important;">{{$data->projecttitle}}</span>
+        </td>
+    </tr>
+    <tr style="height:150px;">
+        <td style="text-align:center; vertical-align:bottom!important;">
+		<br><br><br><br>
+		<img src="https://empl.cgstate.gov.in/panel/assets/images/basic/logo.png" style="width:200px;" alt="Chips Logo">
 
+		<br>
+		<span style="font-size:16px; line-height:1.4;">
+		Chhattisgarh Infotech Promotion Society<br>
+(CHiPS), State Data Center Building, Near<br>
+Police Control Room, Civil Lines,<br>
+Raipur, Chhatttisgarh-492001.<br>Email : ceochips@nic.in
+		</span>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:center; vertical-align:middle!important;">
+			
+        </td>
+    </tr>
+</table>
+		
+		@endif
     </div>
 
     <div class="page-break"></div>

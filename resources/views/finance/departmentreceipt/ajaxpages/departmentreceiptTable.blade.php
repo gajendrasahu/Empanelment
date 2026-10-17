@@ -154,15 +154,18 @@ $now = \Carbon\Carbon::now();
                     @endif
 					@if($item->status=='Active')
 					@if($item->total_invoiced==0)
+					@permission('finance.departmentreceipt.update')
 					<a href="{{ route('finance.departmentreceipt.edit', Crypt::encrypt($item->department_payment_id)) }}" class="btn btn-sm btn-info">
 						<i class="fa fa-edit"></i>
 						Edit
 					</a>
-
+					@endpermission
+					@permission('finance.departmentreceipt.cancel')
 					<a href="javascript:void(0);" class="btnCancelDepartmentPayment btn btn-sm btn-info" data-id="{{ Crypt::encrypt($item->department_payment_id) }}"
 						 style="outline:none; text-decoration:none;" title="Cancel Department Payment">
 						<i class="fa fa-ban"></i> Cancel
-					</a>					
+					</a>
+					@endpermission
 					@endif
 					@endif
                     @if($item->status=='Cancelled')
@@ -171,11 +174,12 @@ $now = \Carbon\Carbon::now();
 						Cancelled
 					</a>
                     @endif
+					@permission('finance.departmentreceipt.view')
 					<a href="{{ route('finance.departmentreceipt.view',Crypt::encrypt($item->department_payment_id)) }}" class="btn btn-sm btn-info"
 					   style="outline:none; text-decoration:none;" title="View Payment Receipt">
 						<i class="fa fa-eye"></i> View
 					</a>
-					
+					@endpermission
                 </div>
 
             </div>

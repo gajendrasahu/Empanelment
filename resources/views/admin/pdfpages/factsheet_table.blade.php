@@ -26,7 +26,7 @@
         <td style="font-weight:600;" nowrap>Last Date of Pre-bid Query</td>
         <td>
             @if($data->prebidlastdate)
-                {{ date('d-m-Y',strtotime($data->prebidlastdate)) }}
+                {{ date('d-m-Y, h:i A',strtotime($data->prebidlastdate)) }}
             @else
                 To be declared
             @endif

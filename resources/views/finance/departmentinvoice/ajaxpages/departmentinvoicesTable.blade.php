@@ -7,9 +7,13 @@ $now = \Carbon\Carbon::now();
 <tr>
 	<td class="text-center">{{$loop->iteration}}</td>
 	<td class="no_wrap">
+		@permission('finance.departmentinvoice.view')
 		<a href="{{ route('finance.departmentinvoice.view',Crypt::encrypt($item->department_invoice_id)) }}">
 		<u>{{ $item->invoice_no ?: '-' }}</u>
 		</a>
+		@else
+		{{ $item->invoice_no ?: '-' }}
+		@endpermission
 	</td>
 
 	<td class="no_wrap">{{ $item->invoice_date ? date('d-m-Y',strtotime($item->invoice_date)) : '-' }}</td>
@@ -38,9 +42,11 @@ $now = \Carbon\Carbon::now();
 
 	<td class="text-center">
 	@if($item->status == 'Draft')
+	@permission('finance.departmentinvoice.update')
 	<a href="{{ route('finance.departmentinvoice.edit',Crypt::encrypt($item->department_invoice_id)) }}" title="Edit">
 		<i class="fa fa-pencil"></i>
 	</a>
+	@endpermission
 	@endif
 	</td>
 

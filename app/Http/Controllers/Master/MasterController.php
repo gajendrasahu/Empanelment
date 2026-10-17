@@ -22,6 +22,7 @@ use App\Jobs\CheckOrderStatus;
 use Illuminate\Support\Facades\Log;
 use Smalot\PdfParser\Parser;
 
+
 class MasterController extends Controller
 {
 	protected $displayOrderService;
@@ -1278,6 +1279,7 @@ class MasterController extends Controller
 		
         return view('admin/master/workexperience_add',compact('token'));
     }
+	
     public function storeWorkExp(Request $request,$recordid)
 	{        
         $rules = [

@@ -843,12 +843,12 @@
 								TBD
 								@endif
 							</div>
-
+							@if($data->categoryid==2)
 							<div class="fact-item">
 								<label>Interview Place</label>
 								{{$data->interview_place}}
 							</div>
-
+							@endif
 							<div class="fact-item">
 								<label>Method of Selection</label>
 								{{$data->selection_method}}

@@ -335,7 +335,7 @@ Email: Empl.chips@cgchips.in, ceochips@nic.in
 								<div class="ui-item-detail">
 									<label>Last Date of Pre-bid Query <i class="fa fa-info-circle show-updates" data-url="{{ route('get.updates',[Crypt::encrypt('prebidlastdate'),Crypt::encrypt($data->requestid)]) }}"></i></label>
 									<div class="input-group" style="width:100%;">
-									<input type="text" name="prebidlastdate" id="prebidlastdate" placeholder="dd-mm-YYYY" required value="{{ old('prebidlastdate',$data->prebidlastdate ? date('d-m-Y',strtotime($data->prebidlastdate)) : '') }}" style="width:100%;">
+									<input type="text" name="prebidlastdate" id="prebidlastdate" placeholder="dd-mm-YYYY hh:mm AM/PM" required value="{{ old('prebidlastdate',$data->prebidlastdate ? date('d-m-Y h:i A',strtotime($data->prebidlastdate)) : '') }}" style="width:100%;">
 									<span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
 									
 									</div>
@@ -360,12 +360,15 @@ Email: Empl.chips@cgchips.in, ceochips@nic.in
 									<span class="text-danger">@error('interviewdate') <i class="fa fa-hand-o-right"> {{ strtoupper($message) }}</i> @enderror</span>
 									</div>
 								</div>
+								@if($data->categoryid==2)
 								<div class="ui-item-detail">
 									<label>Place of presentations and Interviews</label>
 									<input type="text" name="interview_place" id="interview_place" value="{{old('interview_place',$data->interview_place)}}" required placeholder="Place of presentations and Interviews" style="font-weight:normal; width:100%;" autocomplete="off">
 									<span class="text-danger">@error('interview_place') <i class="fa fa-hand-o-right"> {{ strtoupper($message) }}</i> @enderror</span>
 								</div>
-
+								@else
+								<input type="hidden" name="interview_place" id="interview_place" value="{{old('interview_place',$data->interview_place)}}" required placeholder="Place of presentations and Interviews" style="font-weight:normal; width:100%;" autocomplete="off">
+								@endif
 								<div class="ui-item-detail">
 									<label>Method of Selection</label>
 									<input type="text" name="selection_method" id="selection_method" value="{{old('selection_method',$data->selection_method)}}" required placeholder="Method of Selection" style="font-weight:normal; width:100%;" autocomplete="off">
@@ -673,6 +676,7 @@ Email: Empl.chips@cgchips.in, ceochips@nic.in
 														<i class="fa fa-refresh"></i> Preview
 													</button>
 													@endpermission
+													
 													@permission('save.draft')
 													<button type="button" style="text-transform:none!important; margin-left:10px; width:100px!important; float:left;" class="btn btn-info myfrmbtn" id="updateDraftBtn">
 														<i class="fa fa-save"></i> Update

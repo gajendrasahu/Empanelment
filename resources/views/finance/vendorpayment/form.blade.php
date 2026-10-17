@@ -408,27 +408,20 @@
 
 
 				<div class="card mt-10">
-
 					<div class="card-body">
-
 						<div class="row">
-
 							<div class="col-md-12 text-right">
-
 								<a href="{{ route('finance.vendorpayment.index') }}" class="btn btn-info gridbtn width-100">
 									<i class="fa fa-remove"></i> Cancel
 								</a>
-
-						<button type="button" id="btnSubmitPayment" class="btn btn-info gridbtn width-150">
-							<i class="fa fa-money"></i> Make Payment
-						</button>
-
+								@permission('finance.vendorpayment.store')
+								<button type="button" id="btnSubmitPayment" class="btn btn-info gridbtn width-150">
+									<i class="fa fa-money"></i> Make Payment
+								</button>
+								@endpermission
 							</div>
-
 						</div>
-
 					</div>
-
 				</div>
 
 			</form>

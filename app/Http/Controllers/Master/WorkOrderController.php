@@ -3101,8 +3101,8 @@ class WorkOrderController extends Controller
 			$select[] = 'a.remark';
 			DB::table('eoi_resource_deployment as a')
 				->select($select)
-				->join('sector_tbl as b','b.sectorid','=','a.sectorid')
-				->join('position_tbl as c','c.positionid','=','a.positionid')
+				->leftJoin('sector_tbl as b','b.sectorid','=','a.sectorid')
+				->leftJoin('position_tbl as c','c.positionid','=','a.positionid')
 				->join('eoi_work_order as d','d.orderid','=','a.orderid')
 				->join('department_tbl as e','e.departmentid','=','d.department_id')
 				->join('vendor_tbl as f','f.vendorid','=','d.vendorid')

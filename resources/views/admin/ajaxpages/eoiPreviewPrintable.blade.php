@@ -16,7 +16,7 @@ html, body {
     margin: 0 auto;
     padding: 0;
     background: #fff;
-    font-family: Arial, sans-serif;
+    font-family: Times, "Times New Roman", serif;
 }
 
 body {
@@ -94,8 +94,8 @@ td
 </style>
 </head>
 <body>
-  
-<table style="width:100%; height:11.69in; text-align:center; border:none!important; background-color:#95b3d7;">
+@if($data->categoryid==2)
+<table style="width:99.8%; height:11.69in; text-align:center; border:none!important; background-color:#95b3d7;">
 	<tr>
 		<td style="width:40%;"></td>
 		<td style="width:50%; background-color:white; padding:10px; text-align:left;">
@@ -117,11 +117,43 @@ Chhattisgarh–492001<br>Tel.: +91-771-
 		</td>
 	</tr>
 </table>
-
+@else
+<table style="width:99.8%; height:11.69in; border:none!important; background-image:url('{{ asset('panel/assets/images/basic/templatebg.png') }}'); background-repeat:no-repeat; background-position:left top; background-size:auto 100%;">
+    <tr style="height:180px;">
+        <td style="text-align:center; vertical-align:middle!important;">
+            <img src="{{ asset('panel/assets/images/basic/chips-label.png') }}" style="width:93%;" alt="Chips Label">
+        </td>
+    </tr>
+    <tr style="height:400px; line-height:40px;">
+        <td style="text-align:center; vertical-align:middle!important;">
+			<span style="font-size:50px;">Expression of Interest<br>(EoI)</span><br><br>
+			<span style="font-size:20px; padding:30px 0px 30px 0px!important;">{{$data->projecttitle}}</span>
+        </td>
+    </tr>
+    <tr style="height:150px;">
+        <td style="text-align:center; vertical-align:bottom!important;">
+		<br><br><br><br>
+		<img src="{{ asset('panel/assets/images/basic/logo.png') }}" style="width:200px;" alt="Chips Logo">
+		<br>
+		<span style="font-size:16px; line-height:1.4;">
+		Chhattisgarh Infotech Promotion Society<br>
+(CHiPS), State Data Center Building, Near<br>
+Police Control Room, Civil Lines,<br>
+Raipur, Chhatttisgarh-492001.<br>Email : ceochips@nic.in
+		</span>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:center; vertical-align:middle!important;">
+			
+        </td>
+    </tr>
+</table>
+@endif
 <div class="page-break"></div>
  
 @if($data->page_indexing!='')
-<table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
+<table style="width:99.8%; border-collapse:collapse; margin-top:10px;" border="1">
 	
 	<tr>
 		<td colspan="2" class="padding-8 form-label head-bg"><b>Table of Contents</b></td>
@@ -134,7 +166,7 @@ Chhattisgarh–492001<br>Tel.: +91-771-
 @endif
 
 @if($data->chips_objective!='')
-<table style="width:100%; border-collapse:collapse; margin-top:10px; line-height:25px;" border="1">
+<table style="width:99.8%; border-collapse:collapse; margin-top:10px; line-height:25px;" border="1">
 	<tr>
 		<td colspan="2" class="padding-8 center" style="border:none!important;">
 			<b>Expression of Interest (EoI) for </b>{!! $data->engagementname !!}
@@ -154,7 +186,7 @@ Chhattisgarh–492001<br>Tel.: +91-771-
 </table>
 @endif
 
-<table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
+<table style="width:99.8%; border-collapse:collapse; margin-top:10px;" border="1">
 	<tr>
 		<td colspan="2" class="padding-8 form-label head-bg"><b>1) Fact Sheet</b></td>
 	</tr>
@@ -188,7 +220,7 @@ Chhattisgarh–492001<br>Tel.: +91-771-
 	</tr>
 </table>
 
-<table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
+<table style="width:99.8%; border-collapse:collapse; margin-top:10px;" border="1">
 	@if($data->projectobjective!='')
 	<tr>
 		<td colspan="2" class="padding-8 form-label head-bg"><b>2) Project Objective</b></td>
@@ -206,7 +238,7 @@ Chhattisgarh–492001<br>Tel.: +91-771-
 </table>
 
 
-<table style="width:100%; border-collapse:collapse; margin-top:10px;" border="1">
+<table style="width:99.8%; border-collapse:collapse; margin-top:10px;" border="1">
 
 	<tr>
 		<td colspan="2" class="padding-8 form-label head-bg"><b>4) Team Requirement</b></td>
@@ -275,7 +307,7 @@ Chhattisgarh–492001<br>Tel.: +91-771-
 
 
 
-<div style="width:100%; text-align:center;">
+<div style="width:99.8%; text-align:center;">
 ***End of Document***
 </div>
 <script src="{{ asset('panel/assets/js/datatablePaginationWithFilter.js') }}"></script>

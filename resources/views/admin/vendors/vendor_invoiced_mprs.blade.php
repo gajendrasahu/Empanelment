@@ -37,54 +37,43 @@ $t=1;
 
 		<form name="pagedata" id="pagedata" action="#" method="post" onsubmit="return false;">
 			@csrf
-			<div class="table-responsive">
-				<table class="table-bordered mytable pd-8">
-				
-				<tr>
-					<td colspan="10" class="padding-5" style="position:relative;">
+				<div class="padding-5">
+					<select name="page_size" id="page_size" class="select2" onchange="loadData(1,'{{ route('vendor.invoiced.html') }}')" data-width="90" data-placeholder="RECORDS">
+						<option value="50">50</option>
+						<option value="100">100</option>
+						<option value="300">300</option>
+						<option value="500">500</option>														
+					</select>
+					<select class="select2" name="department_id" id="department_id" onKeyPress="return OnKeyPress(this, event)" onchange="loadData(1,'{{ route('vendor.invoiced.html') }}');" data-width="250" data-placeholder="Department /  Manager">
+						<option value=""></option>
+						@if($records->contains('isprojectmanager', 0))							
+						<optgroup label="Department">
+						@foreach($records as $usr)
+						@if($usr->isprojectmanager==0)
+							<option value="{{ $usr->departmentid }}">
+								{{ $usr->departmentname }}
+							</option>
+						@endif
+						@endforeach
+						</optgroup>
+						@endif
+						@if($records->contains('isprojectmanager', 1))
+						<optgroup label="Project Manager">
+						@foreach($records as $usr)
+						@if($usr->isprojectmanager==1)
+							<option value="{{ $usr->departmentid }}">
+								{{ $usr->departmentname }}
+							</option>
+						@endif
+						@endforeach
+						</optgroup>
+						@endif
+					</select>
 
-						<select name="page_size" id="page_size" class="select2" onchange="loadData(1,'{{ route('vendor.invoiced.html') }}')" data-width="90" data-placeholder="RECORDS">
-							<option value="50">50</option>
-							<option value="100">100</option>
-							<option value="300">300</option>
-							<option value="500">500</option>														
-						</select>
-						<select class="select2" name="department_id" id="department_id" onKeyPress="return OnKeyPress(this, event)" onchange="loadData(1,'{{ route('vendor.invoiced.html') }}');" data-width="250" data-placeholder="Department /  Manager">
-							<option value=""></option>
-							@if($records->contains('isprojectmanager', 0))							
-							<optgroup label="Department">
-							@foreach($records as $usr)
-							@if($usr->isprojectmanager==0)
-								<option value="{{ $usr->departmentid }}">
-									{{ $usr->departmentname }}
-								</option>
-							@endif
-							@endforeach
-							</optgroup>
-							@endif
-							@if($records->contains('isprojectmanager', 1))
-							<optgroup label="Project Manager">
-							@foreach($records as $usr)
-							@if($usr->isprojectmanager==1)
-								<option value="{{ $usr->departmentid }}">
-									{{ $usr->departmentname }}
-								</option>
-							@endif
-							@endforeach
-							</optgroup>
-							@endif
-						</select>
-
-						<input type="text" placeholder="Search ..." class="padding-5 br-5" id="page_search" name="page_search" autocomplete="off" onchange="loadData(1,'{{ route('vendor.invoiced.html') }}')" style="width:250px!important; line-height:28px; position:absolute; right:5px; font-weight:normal;" tabindex="<?php echo $t++;?>" />
-						
-					</td>
-				</tr>
-				
-				<tbody class="tabledata">
-				<tr><td colspan="10" class="center padding-6">--Search Record--</td></tr>
-				</tbody>
-				</table>
-			</div>
+					<input type="text" placeholder="Search ..." class="padding-5 br-5" id="page_search" name="page_search" autocomplete="off" onchange="loadData(1,'{{ route('vendor.invoiced.html') }}')" style="width:250px!important; line-height:28px; position:absolute; right:20px; font-weight:normal;" tabindex="<?php echo $t++;?>" />
+				</div>
+				<div class="tabledata"></div>
+			
 		</form>
 		</div>
 	</div>
@@ -105,23 +94,42 @@ $t=1;
 	</div>
 </div>
 
-<div class="modal fade" id="invoiceHistory" style="margin-top:-20px;">
-<form name="invoicing" id="invoicing" action="{{route('prepare.vendorinvoice')}}" method="post" enctype="multipart/form-data">
-@csrf
-  <div class="modal-dialog modal-xl" style="width:95%;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title form-label invoice-title" style="float:left;"><i class="fa fa-calendar"></i> Monthly Progress Report — Generate or Update MPRs</h5>    
-      </div>
-      <div class="modal-body" id="invoiceContent" style="min-height:200px; max-height:450px; overflow-y:scroll;">Loading...</div>
-      <div class="modal-footer invoice-footer">
-        <button type="button" class="btn btn-close btn-info gridbtn" style="width:80px;" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</form>
-</div>
+<div class="modal fade" id="invoiceDetail" tabindex="-1" aria-labelledby="invoiceDetailLabel" aria-hidden="true" style="margin-top:-25px;">
 
+    <div class="modal-dialog modal-xl" style="width:99%; max-width:99%;">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title form-label" id="invoiceDetailLabel">
+                    <i class="fa fa-file-text-o"></i>
+                    Invoice Details
+                </h5>
+            </div>
+
+            <div class="modal-body"
+                 id="invoiceContent"
+                 style="min-height:200px; max-height:450px; overflow-y:auto;">
+
+                <div class="text-center">
+                    <i class="fa fa-spinner fa-spin"></i>
+                    Loading...
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info gridbtn btn-close" style="width:80px;" data-bs-dismiss="modal">
+                    <i class="fa fa-remove"></i> Close
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 
 <script src="{{ asset('panel/assets/js/jquery-2.1.4.min.js') }}"></script>
 <script>
@@ -135,6 +143,7 @@ $(document).ready(function() {
 
 	loadData(1,'{{ route('vendor.invoiced.html') }}');
 });
+
 
 function loadData(page,r1)
 {
@@ -152,6 +161,49 @@ function loadData(page,r1)
 		$(".tabledata").html(data);
 	});
 }
+
+
+function getVendorInvoiceData(r1, voucher_id)
+{
+    $.get(
+        r1,
+        {
+            voucher_id: voucher_id
+        },
+        function(data, status)
+        {
+            if (status === 'success')
+            {
+                $('#invoiceDetail').modal('show');
+                $('#invoiceContent').html(data);
+
+            }
+            else
+            {
+                bootbox.alert('Unable to load invoice details.');
+            }
+        }
+    )
+    .fail(function(xhr)
+    {
+        if (xhr.responseJSON && xhr.responseJSON.message)
+        {
+            bootbox.alert(xhr.responseJSON.message);
+        }
+        else
+        {
+            bootbox.alert('Unable to load invoice details.');
+        }
+    });
+}
+
+
+$('.btn-close').on('click', function (e)
+{
+    $('#invoiceContent').html('');
+    $('#invoiceDetail').modal('hide');
+});
+
 </script>
 <script src="{{ asset('panel/assets/js/master.js') }}"></script>
 <script src="{{ asset('panel/assets/js/datatablePaginationWithFilter.js') }}"></script>

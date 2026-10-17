@@ -79,16 +79,16 @@ class InvoiceController extends Controller
 					['label' => 'December', 'value' => 12],
 				];
 		
-		$currentYear = now()->year;
-		$years	=	collect(range(2025, $currentYear))
-					->sortDesc()
-					->map(function ($year) {
-						return [
-							'label' => $year,
-							'value' => $year,
-						];
-					})
-					->values();
+		$currentYear	=	now()->year;
+		$years			=	collect(range(2025, $currentYear))
+							->sortDesc()
+							->map(function ($year) {
+								return [
+									'label' => $year,
+									'value' => $year,
+								];
+							})
+							->values();
 					
 		$token		=	rand('100000','999999').''.time();
 		Session::put('form_token', $token);
@@ -99,7 +99,7 @@ class InvoiceController extends Controller
 						->select('orderid','project_name','ordernumber')
 						->where('vendorid',Session('vendorId'))
 						->where('subuserid',session('subUserId'))
-						->whereDate('workorderduedate', '>=', now()->subMonths(2)->startOfMonth())
+						->whereDate('workorderduedate','>=',now()->subMonths(12)->startOfMonth())
 						->get();
 		}
 		else
@@ -107,7 +107,7 @@ class InvoiceController extends Controller
 			$orders	=	DB::table('eoi_work_order')
 						->select('orderid','project_name','ordernumber')
 						->where('vendorid',Session('vendorId'))
-						->whereDate('workorderduedate', '>=', now()->subMonths(2)->startOfMonth())
+						->whereDate('workorderduedate','>=',now()->subMonths(12)->startOfMonth())
 						->get();
 			
 		}
@@ -133,7 +133,16 @@ class InvoiceController extends Controller
 			'mpr_month' 		=> 	'required|numeric',
 			'mpr_year' 			=> 	'required|numeric',
 			'invoice_date' 		=> 	'required|date|before_or_equal:today',
-			'invoice_number' 	=> 	'required|max:30|not_regex:/<script\b[^>]*>(.*?)<\/script>/is|regex:/^[a-zA-Z0-9.\/\\\\\-\(\)\[\]]+$/',
+			'invoice_number' 	=> [
+				'required',
+				'max:30',
+				'not_regex:/<script\b[^>]*>(.*?)<\/script>/is',
+				'regex:/^[a-zA-Z0-9.\/\\\\\-\(\)\[\]]+$/',
+				Rule::unique('vendor_invoices', 'invoice_number')
+					->where(function ($query) {
+						$query->where('vendorid',session('vendorId'));
+					}),
+			],
 			'amount_value' 		=> 	'required|numeric',
 			'tax_value'       	=> 	'required|numeric',
 			'invoice_value'		=>	'required|numeric',
@@ -163,6 +172,7 @@ class InvoiceController extends Controller
 			'invoice_number.not_regex'    	=> 'The invoice number contains invalid characters.',
 			'invoice_number.regex'        	=> 'The invoice number format is invalid.',
 			'invoice_number.max'			=> 'The invoice number may not be greater than 30 characters.',
+			'invoice_number.unique' 		=> 'This invoice number already exists. Please enter a different invoice number.',
 			
 			'amount_value.required'       => 'The amount value field is required.',
 			'amount_value.numeric'        => 'The amount value must be a numeric value.',

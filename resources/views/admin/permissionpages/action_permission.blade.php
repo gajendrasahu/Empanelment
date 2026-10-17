@@ -130,6 +130,12 @@ $t=0;
 								</option>
 							@endforeach
 						</select>
+						<select class="select2 form-control" data-width="200" name="per_type" id="per_type" onKeyPress="return OnKeyPress(this, event)" tabindex="{{$t++}}" data-placeholder="Permission Type" onchange="loadData(1,'{{ route('actionpermission.html') }}')">
+							<option value=""></option>
+							<option value="ACTION">ACTION</option>
+							<option value="AJAX">AJAX</option>
+							<option value="LINK">LINK</option>
+						</select>
 						
 						<span class="input-icon" style="float:right;">
 							<input type="text" placeholder="Search ..." class="nav-search-input" id="pagesearch" name="pagesearch" autocomplete="off" onchange="loadData(1,'{{ route('actionpermission.html') }}')" tabindex="<?php echo $t++;?>" />
@@ -176,15 +182,17 @@ $t=0;
 
 function loadData(page,r1)
 {
-	var pagesize	=	document.getElementById("pagesize").value;
-	var pagesearch	=	document.getElementById("pagesearch").value;
-	var menuid		=	document.getElementById("menuid").value;
+	var pagesize		=	document.getElementById("pagesize").value;
+	var pagesearch		=	document.getElementById("pagesearch").value;
+	var menuid			=	document.getElementById("menuid").value;
+	var permission_type	=	document.getElementById("per_type").value;
 	$.get(""+r1,
 	{
 		page:page,
 		pagesize:pagesize,
 		pagesearch:pagesearch,
-		menuid:menuid
+		menuid:menuid,
+		permission_type:permission_type
 	},
 	function(data, status){
 		$(".tabledata").html(data);

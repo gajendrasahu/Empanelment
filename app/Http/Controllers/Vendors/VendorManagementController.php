@@ -667,411 +667,12 @@ class VendorManagementController extends Controller
 		}
 	}
 	
-	/*
-    public function storeMprAttendance(Request $request)
-	{
-		$request->merge([
-			'deploymentid'	=> 	Crypt::decrypt($request->deploymentid),
-			'absents'		=>	$request->absents ?? 0,
-			'leaves'		=>	$request->leaves ?? 0,
-		]);
-		
-        $rules = [
-			'orderid' 		=> 	'required',
-			'mprid' 		=> 	'required|numeric|min:0',
-			'month' 		=> 	'required|numeric',
-			'year' 			=> 	'required|numeric',
-			'deploymentid' 	=> 	'required|exists:eoi_resource_deployment,deploymentid',
-			'total_days' 	=> 	'required|numeric',
-			'count_days' 	=> 	'required|numeric',
-			'per_day_salary'=> 	'required|numeric',
-			'presents' 		=> 	'required|numeric',
-			'absents' 		=> 	'required|numeric',
-			'leaves' 		=> 	'required|numeric',
-			'holidays' 		=> 	'required|numeric',
-			'engagement'	=> 	'required|numeric|between:0,100',
-			'mpr_remark' 	=> 	['nullable','max:1000', 'regex:/^[a-zA-Z0-9!`,@\$#%&*\(\)\{\}\[\]:\'"\., ]*$/'],
-        ];
-		$exists	=	DB::table('mpr_tbl')->where('mpr_id',$request->mprid)->exists();
-					
-		if(!$exists)
-		{
-			$rules['attendancefile']	= 	'required|file|mimes:pdf|max:5120';
-			$rules['mprfile'] 			= 	'required|file|mimes:pdf|max:5120';
-			$rules['supportingfile']	=	'nullable|file|mimes:pdf|max:5120';
-		}
-		else
-		{
-			$rules['attendancefile'] =	'nullable|file|mimes:pdf|max:5120';
-			$rules['mprfile'] 		 = 	'nullable|file|mimes:pdf|max:5120';
-			$rules['supportingfile'] = 	'nullable|file|mimes:pdf|max:5120';
-		}
-		
-        $messages = [
-			'orderid.required' 			=> 'Order detail is required',
-			'mprid.required' 			=> 'MPR detail is required',
-			'mprid.numeric' 			=> 'Invalid MPR detail',
-			'mprid.min' 				=> 'Invalid MPR detail',
-			'month.required' 			=> 'Month value is required',
-			'month.numeric' 			=> 'Invalid month value',
-			'year.required' 			=> 'Year value is required',
-			'year.numeric' 				=> 'Invalid year value',
-			'deploymentid.required' 	=> 'Deployment detail is required',
-			'total_days.required' 		=> 'Total days value is required',
-			'total_days.numeric' 		=> 'Invalid total days value',
-			'presents.required' 		=> 'Present value is required',
-			'presents.numeric' 			=> 'Invalid present value',
-			'absents.required' 			=> 'Absent value is required',
-			'absents.numeric' 			=> 'Invalid absent value',
-			'leaves.required' 			=> 'Leave value is required',
-			'leaves.numeric' 			=> 'Invalid leave value',
-			'holidays.required' 		=> 'Holidy value is required',
-			'holidays.numeric' 			=> 'Invalid holiday value',
-
-			'engagement.required' 		=> 'Engagement is required.',
-			'engagement.numeric'  		=> 'Engagement must be a number.',
-			'engagement.between' 		=> 'Engagement must be between 0% and 100%.',
-			
-			'mpr_remark.string'  		=> 'Remark must be a valid text.',
-			'mpr_remark.max'     		=> 'Remark cannot exceed 1000 characters.',
-			'mpr_remark.regex'   		=> 'Remark contains invalid characters.',
-
-			'attendancefile.required'	=> 'Attendance file is required',
-			'attendancefile.file' 		=> 'Invalid Attendance file selected',
-			'attendancefile.mimes' 		=> 'Invalid Attendance file selected',
-			'attendancefile.max' 		=> 'Maximum file size of 5 MB is allowed',
-
-			'mprfile.required' 			=> 'MPR file is required',
-			'mprfile.file' 				=> 'Invalid MPR file selected',
-			'mprfile.mimes' 			=> 'Invalid MPR file selected',
-			'mprfile.max' 				=> 'Maximum file size of 5 MB is allowed',
-
-			'supportingfile.required'	=> 'Supporting file is required',
-			'supportingfile.file' 		=> 'Invalid Supporting file selected',
-			'supportingfile.mimes' 		=> 'Invalid Supporting file selected',
-			'supportingfile.max' 		=> 'Maximum file size of 5 MB is allowed',
-        ];
-		$validatedData					=	$request->validate($rules, $messages);
-
-		DB::beginTransaction();
-		try
-		{
-			$start			= 	Carbon::create($validatedData['year'], $validatedData['month'], 1);			
-			$joiningDate	=	DB::table('eoi_resource_deployment')
-								->where('deploymentid',$validatedData['deploymentid'])
-								->value('deployment_date');
-			$joiningDate 	= 	Carbon::parse($joiningDate);
-
-			
-			$start 			= 	$joiningDate->greaterThanOrEqualTo($start) ? $joiningDate : $start;
-			
-			$releasedate	=	DB::table('eoi_resource_deployment')
-								->where('deploymentid',$validatedData['deploymentid'])
-								->value('lastdate');
-			
-			$monthEnd	=	$start->copy()->endOfMonth();
-			$end 		= 	$releasedate ? $monthEnd->min(\Carbon\Carbon::parse($releasedate)) : $monthEnd;
-			
-			$weekendCount 	= 	0;
-			$countableDays	= 	$start->diffInDays($end) + 1;
-
-			for($date = $start; $date->lte($end); $date->addDay())
-			{
-				if($date->isSaturday() || $date->isSunday())
-				{
-					$weekendCount++;
-				}
-			}
-			if($weekendCount>$validatedData['holidays'])
-			{
-				return response()->json(['status'=>400,'message'=>"Entered holidays cannot be less than {$weekendCount}, because Saturdays and Sundays are already considered holidays in this month."]);
-			}
-			$orderid=	DB::table('eoi_resource_deployment')->where('deploymentid',$validatedData['deploymentid'])->value('orderid');
-			
-			$order	=	DB::table('eoi_work_order')->where('orderid',$orderid)->first();
-			
-			if(!$order)
-			{
-				return response()->json(['status'=>400,'message'=>'Invalid order detail provided. Please check and try again!']);
-			}
-			$vendor	=	DB::table('vendor_tbl')->where('vendorid',$order->vendorid)->first();
-			
-			$exists	=	DB::table('mpr_tbl')
-						->where('order_id',$order->orderid)
-						->where('vendor_id',$order->vendorid)
-						->where('mpr_month',$validatedData['month'])
-						->where('mpr_year',$validatedData['year'])
-						->first();
-			if(!$exists)
-			{
-				$ord			=	explode("/",$order->ordernumber);
-				
-				$mprnumber		=	'MPR/'.$ord[0].'/'.$validatedData['month'].'/'.$validatedData['year'];
-				$report_month 	= 	Carbon::create($validatedData['year'],$validatedData['month'])->endOfMonth()->toDateString();
-				$mprid			=	DB::table('mpr_tbl')->insertGetId([
-										'mpr_number'	=>	$mprnumber,
-										'vendor_id'		=>	$order->vendorid,
-										'order_id'		=>	$order->orderid,
-										'request_id'	=>	$order->requestid,
-										'report_month'	=>	$report_month,
-										'mpr_month'		=>	$validatedData['month'],
-										'mpr_year'		=>	$validatedData['year'],
-										'created_at'	=>	now(),
-										'subUserId'		=>	session('subUserId') ?? 0
-									]);
-				$validatedData['mprid']	=	$mprid;
-			}
-			else
-			{
-				$validatedData['mprid']	=	$exists->mpr_id;
-			}
-			$exists	=	DB::table('mpr_resource')
-						->where('deployment_id',$validatedData['deploymentid'])
-						->where('mpr_month',$validatedData['month'])
-						->where('mpr_year',$validatedData['year'])
-						->first();
-			$date 		= 	Carbon::createFromDate($validatedData['year'],$validatedData['month'],1)->toDateString();
-
-			$rateid		=	DB::table('remuneration_rate_list')
-							->whereDate('startDate','<=',$date)
-							->where('endDate','>=',$date)
-							->where('categoryid',$vendor->categoryid)
-							->value('rateid');
-			
-			$pricing	=	DB::table('pricing_tbl')
-							->where('categoryid',$vendor->categoryid)
-							->where('tierid',$vendor->tierid)
-							->first();
-			
-			$resource	=	DB::table('eoi_resource_deployment as a')
-							->select('a.deploymentid','a.orderid','d.remuneration','d.includingtax','a.deploymenttype')
-							->leftJoin('sector_tbl as b','b.sectorid','=','a.sectorid')
-							->leftJoin('position_tbl as c','c.positionid','=','a.positionid')
-							->leftJoin('remuneration_tbl as d', function ($join) use ($vendor,$rateid) {
-								$join->where('d.categoryid', $vendor->categoryid)
-									 ->where('d.tierid', $vendor->tierid)
-									 ->where('d.rateid', $rateid);
-
-								if ($vendor->categoryid == 2) {
-									$join->on('d.sectorid', '=', 'a.sectorid')
-										 ->on('d.positionid', '=', 'a.positionid');
-								} elseif ($vendor->categoryid == 1) {
-									$join->on('d.experiencelevel', '=', 'a.experiencelevel');
-								}
-							})
-							->where('a.deploymentid',$validatedData['deploymentid'])
-							->first();
-
-			$taxable					=	$resource->remuneration;
-			$resource->operating_value	=	(($taxable*$pricing->operatingmargin)/100);
-			$taxable					=	$taxable+$resource->operating_value;
-			$resource->tax_value		=	(($taxable*$pricing->tax)/100);
-			$resource->total_amount		=	$taxable+$resource->tax_value;
-
-			if(!$exists)
-			{				
-				DB::table('mpr_resource')->insert([
-					'deployment_id'		=>	$validatedData['deploymentid'],
-					'mpr_id'			=>	$validatedData['mprid'],
-					'mpr_month'			=>	$validatedData['month'],
-					'mpr_year'			=>	$validatedData['year'],
-					'remuneration'		=>	$resource->remuneration,
-					'operating'			=>	$pricing->operatingmargin,
-					'operating_value'	=>	$resource->operating_value,
-					'tax'				=>	$pricing->tax,
-					'tax_value'			=>	$resource->tax_value,
-					'total_amount'		=>	$resource->total_amount,
-					'status'			=>	'Completed'
-				]);
-			}
-			$total_days = 	Carbon::create($validatedData['year'], $validatedData['month'])->daysInMonth;
-			$presents	=	0;
-			$absents	=	0;
-			$leaves		=	0;
-			$holidays	=	0;
-			$actualDays	=	0;
-
-			$presents	=	$request->input('presents') ?? 0;
-			$absents	=	$request->input('absents') ?? 0;
-			$leaves		=	$request->input('leaves') ?? 0;
-			$holidays	=	$request->input('holidays') ?? 0;
-			$actualDays	=	$request->input('count_days') ?? 0;
-			if($countableDays!=($presents+$absents+$leaves+$holidays) || $countableDays>$total_days)
-			{
-				$message	=	"Total available days for the selected month is ".$countableDays.". Please ensure that the sum of P, A, L, and H equals ".$countableDays;
-				return response()->json(['status' => 500,'message'=>$message]);
-			}
-			
-			for($i=1;$i<=31;$i++)
-			{
-				$days[$i]		=	$request->input('day_'.$i);
-				$remarks[$i]	=	$request->input('remark_'.$i);
-				
-				if($days[$i]!='' && in_array($days[$i],['A','P','L','H']))
-				{
-					$actualDays++;
-
-					$exists		=	DB::table('mpr_attendance')
-									->where('mpr_id',$validatedData['mprid'])
-									->where('deployment_id',$validatedData['deploymentid'])
-									->where('work_day',$i)
-									->where('work_month',$validatedData['month'])
-									->where('work_year',$validatedData['year'])
-									->exists();
-					if(!$exists)
-					{
-						DB::table('mpr_attendance')->insert([
-							'mpr_id'		=>	$validatedData['mprid'],
-							'deployment_id'	=>	$validatedData['deploymentid'],
-							'work_date'		=>	$validatedData['year'].'-'.$validatedData['month'].'-'.$i,
-							'work_day'		=>	$i,
-							'work_month'	=>	$validatedData['month'],
-							'work_year'		=>	$validatedData['year'],
-							'status'		=>	$days[$i],
-							'created_at'	=>	now(),
-							'mpr_detail'	=>	$remarks[$i],
-						]);
-					}
-					if($days[$i]=='P')
-					{
-						$presents	=	$presents+1;
-					}
-					if($days[$i]=='A')
-					{
-						$absents	=	$absents+1;
-					}
-					if($days[$i]=='L')
-					{
-						$leaves	=	$leaves+1;
-					}
-					if($days[$i]=='H')
-					{
-						$holidays	=	$holidays+1;
-					}
-				}
-			}
-			$exists	=	DB::table('mpr_attendance_summary')
-						->where('mpr_id',$validatedData['mprid'])
-						->where('deployment_id',$validatedData['deploymentid'])
-						->exists();
-						
-			$attendancefile	=	$request->file('attendancefile') ?? NULL;
-			$mprfile		=	$request->file('mprfile') ?? NULL;
-			$supportingfile	=	$request->file('supportingfile') ?? NULL;
-			$engagement		=	$request->input('engagement') ?? NULL;
-			$mpr_remark		=	$request->input('mpr_remark') ?? NULL;
-
-			if($attendancefile!='')
-			{
-				$attendancefile	=	$request->file('attendancefile')->store('uploads/mprattendancefiles','public');
-			}
-			if($mprfile!='')
-			{
-				$mprfile	=	$request->file('mprfile')->store('uploads/mprfiles','public');
-			}
-			if($supportingfile!='')
-			{
-				$supportingfile	=	$request->file('supportingfile')->store('uploads/mprsupportingfiles','public');
-			}
-			
-			
-			$countable			=	$presents+$leaves+$holidays;
-			$per_day_salary		=	$resource->remuneration/$total_days;
-			$actual_salary		=	$actualDays*$per_day_salary;
-			$calculated_salary	=	$countable*$per_day_salary;
-			if($resource->deploymenttype!='FULL TIME')
-			{
-				$per_day_salary		=	($per_day_salary*$validatedData['engagement'])/100;
-				$actual_salary		=	$actualDays*$per_day_salary;
-				$calculated_salary	=	$countable*$per_day_salary;
-			}
-			
-
-			if(!$exists)
-			{				
-				DB::table('mpr_attendance_summary')->insert([
-					'mpr_id'			=>	$validatedData['mprid'],
-					'deployment_id'		=>	$validatedData['deploymentid'],
-					'total_working_days'=>	$total_days,
-					'count_days'		=>	$validatedData['count_days'] ?? 0,
-					'total_present'		=>	$presents,
-					'total_absent'		=>	$absents,
-					'total_leave'		=>	$leaves,
-					'total_holiday'		=>	$holidays,
-					'actual_salary'		=>	round($actual_salary,2),
-					'calculated_salary'	=>	round($calculated_salary,2),
-					'net_salary'		=>	round($calculated_salary,2),
-					'per_day_cost'		=>	round($per_day_salary,2),
-					'mpr_file'			=>	$mprfile,
-					'attendance_file'	=>	$attendancefile,
-					'supporting_file'	=>	$supportingfile,
-					'engagement'		=>	$validatedData['engagement'] ?? 0,
-					'mpr_remark'		=>	$validatedData['mpr_remark'] ?? NULL,
-					'subUserId'			=>	session('subUserId') ?? 0
-				]);
-			}
-			else
-			{
-				DB::table('mpr_attendance_summary')
-				->where('mpr_id',$validatedData['mprid'])
-				->where('deployment_id',$validatedData['deploymentid'])
-				->update([
-					'total_working_days'=>	$total_days,
-					'count_days'		=>	$validatedData['count_days'] ?? 0,
-					'total_present'		=>	$presents,
-					'total_absent'		=>	$absents,
-					'total_leave'		=>	$leaves,
-					'total_holiday'		=>	$holidays,
-					'actual_salary'		=>	round($actualDays*$per_day_salary,2),
-					'calculated_salary'	=>	round($calculated_salary,2),
-					'net_salary'		=>	round($calculated_salary,2),
-					'per_day_cost'		=>	round($per_day_salary,2),
-					'engagement'		=>	$validatedData['engagement'] ?? 0,
-					'mpr_remark'		=>	$validatedData['mpr_remark'] ?? NULL					
-				]);
-				$files = [];
-				if($request->hasFile('attendancefile'))
-				{
-					$files['attendance_file'] = $request->file('attendancefile')->store('uploads/mprattendancefiles', 'public');
-				}
-
-				if($request->hasFile('mprfile'))
-				{
-					$files['mpr_file'] = $request->file('mprfile')->store('uploads/mprfiles', 'public');
-				}
-
-				if($request->hasFile('supportingfile'))
-				{
-					$files['supporting_file'] = $request->file('supportingfile')->store('uploads/mprsupportingfiles', 'public');
-				}
-
-				if(!empty($files))
-				{
-					DB::table('mpr_attendance_summary')
-					->where('mpr_id', $validatedData['mprid'])
-					->where('deployment_id', $validatedData['deploymentid'])
-					->update($files);
-				}				
-			}
-			DB::commit();
-			return response()->json(['status' => 200,'mprid'=>$validatedData['mprid']]);
-		}
-		catch(Exception $e)
-		{
-			DB::rollBack();
-			return response()->json(['status'=>500,'message'=>$e->getMessage()]);
-		}
-	}
-	*/
-
-
-
 public function storeMprAttendance(Request $request)
 {
     $request->merge([
-        'deploymentid' => Crypt::decrypt($request->deploymentid),
-        'absents'      => $request->absents ?? 0,
-        'leaves'       => $request->leaves ?? 0,
+        'deploymentid' => 	Crypt::decrypt($request->deploymentid),
+        'absents'      => 	$request->absents ?? 0,
+        'leaves'       => 	$request->leaves ?? 0,
     ]);
 	
 	$orderDetail	=	DB::table('eoi_work_order')
@@ -1081,8 +682,8 @@ public function storeMprAttendance(Request $request)
 	if(!$orderDetail)
 	{
 		return response()->json([
-			'status'  => 400,
-			'message' => 'Invalid work order detail provided.'
+			'status'  =>	400,
+			'message' => 	'Invalid work order detail provided.'
 		]);
 	}
 	
@@ -1268,13 +869,22 @@ public function storeMprAttendance(Request $request)
 		{
             DB::rollBack();
             return response()->json([
-                'status'  => 400,
-                'message' => 'Deployment joining date is not available.'
+                'status'  => 	400,
+                'message' =>	'Deployment joining date is not available.'
             ]);
         }
-
-        $joiningDate=	Carbon::parse($deployment->deployment_date)->startOfDay();
-        $start 		= 	$monthStart->copy();
+		
+		$order	=	DB::table('eoi_work_order')->select('orderdate')->where('orderid',$deployment->orderid)->first();
+		
+        $joiningDate	=	Carbon::parse($deployment->deployed_date)->startOfDay();
+		$joiningDate	=	collect([$joiningDate,$order->orderdate])->max();
+		if(!empty($deployment->startDate))
+		{
+			$joiningDate	=	collect([$joiningDate,$deployment->startDate])->min();
+			$joiningDate	=	collect([$joiningDate,$resource->deployed_date])->max();
+		}
+		
+        $start 			= 	$monthStart->copy();
 
         if($joiningDate->greaterThan($start))
 		{
@@ -1294,7 +904,7 @@ public function storeMprAttendance(Request $request)
         }
 
         $order	=	DB::table('eoi_work_order')
-					->where('orderid', $deployment->orderid)
+					->where('orderid',$deployment->orderid)
 					->first();
 
         if(!$order)
@@ -1379,10 +989,8 @@ public function storeMprAttendance(Request $request)
             | Recurring Yearly Holiday
             |--------------------------------------------------------------------------
             */
-            if (
-                $holiday->is_recurring &&
-                $holiday->recurring_type === 'yearly'
-            ) {
+            if ($holiday->is_recurring && $holiday->recurring_type === 'yearly')
+			{
 
                 $originalStart =
                     Carbon::parse($holiday->start_date);
@@ -1649,18 +1257,9 @@ public function storeMprAttendance(Request $request)
         |--------------------------------------------------------------------------
         */
         $mprResourceExists = DB::table('mpr_resource')
-            ->where(
-                'deployment_id',
-                $validatedData['deploymentid']
-            )
-            ->where(
-                'mpr_month',
-                $validatedData['month']
-            )
-            ->where(
-                'mpr_year',
-                $validatedData['year']
-            )
+            ->where('deployment_id',$validatedData['deploymentid'])
+            ->where('mpr_month',$validatedData['month'])
+            ->where('mpr_year',$validatedData['year'])
             ->first();
 
         /*
@@ -1668,11 +1267,7 @@ public function storeMprAttendance(Request $request)
         | Rate Date
         |--------------------------------------------------------------------------
         */
-        $date = Carbon::createFromDate(
-            $validatedData['year'],
-            $validatedData['month'],
-            1
-        )->toDateString();
+        $date = Carbon::createFromDate($validatedData['year'],$validatedData['month'],1)->toDateString();
 
         /*
         |--------------------------------------------------------------------------
@@ -1680,36 +1275,19 @@ public function storeMprAttendance(Request $request)
         |--------------------------------------------------------------------------
         */
         $rateid = DB::table('remuneration_rate_list')
-            ->whereDate(
-                'startDate',
-                '<=',
-                $date
-            )
-            ->where(
-                'endDate',
-                '>=',
-                $date
-            )
-            ->where(
-                'categoryid',
-                $vendor->categoryid
-            )
+            ->whereDate('startDate','<=',$date)
+            ->where('endDate','>=',$date)
+            ->where('categoryid',$vendor->categoryid)
             ->value('rateid');
-
+		
         /*
         |--------------------------------------------------------------------------
         | Pricing
         |--------------------------------------------------------------------------
         */
         $pricing = DB::table('pricing_tbl')
-            ->where(
-                'categoryid',
-                $vendor->categoryid
-            )
-            ->where(
-                'tierid',
-                $vendor->tierid
-            )
+            ->where('categoryid',$vendor->categoryid)
+            ->where('tierid',$vendor->tierid)
             ->first();
 
         if (!$pricing) {
@@ -1728,68 +1306,27 @@ public function storeMprAttendance(Request $request)
         |--------------------------------------------------------------------------
         */
         $resource = DB::table('eoi_resource_deployment as a')
-            ->select(
-                'a.deploymentid',
-                'a.orderid',
-                'd.remuneration',
-                'd.includingtax',
-                'a.deploymenttype'
-            )
-            ->leftJoin(
-                'sector_tbl as b',
-                'b.sectorid',
-                '=',
-                'a.sectorid'
-            )
-            ->leftJoin(
-                'position_tbl as c',
-                'c.positionid',
-                '=',
-                'a.positionid'
-            )
-            ->leftJoin(
-                'remuneration_tbl as d',
+            ->select('a.deploymentid','a.orderid','d.remuneration','d.includingtax','a.deploymenttype')
+            ->leftJoin('sector_tbl as b','b.sectorid','=','a.sectorid')
+            ->leftJoin('position_tbl as c','c.positionid','=','a.positionid')
+            ->leftJoin('remuneration_tbl as d',
                 function ($join) use ($vendor, $rateid) {
 
-                    $join->where(
-                        'd.categoryid',
-                        $vendor->categoryid
-                    )
-                    ->where(
-                        'd.tierid',
-                        $vendor->tierid
-                    )
-                    ->where(
-                        'd.rateid',
-                        $rateid
-                    );
+			$join->where('d.categoryid',$vendor->categoryid)
+			->where('d.tierid',$vendor->tierid)
+			->where('d.rateid',$rateid);
 
-                    if ($vendor->categoryid == 2) {
-
-                        $join->on(
-                            'd.sectorid',
-                            '=',
-                            'a.sectorid'
-                        )->on(
-                            'd.positionid',
-                            '=',
-                            'a.positionid'
-                        );
-
-                    } elseif ($vendor->categoryid == 1) {
-
-                        $join->on(
-                            'd.experiencelevel',
-                            '=',
-                            'a.experiencelevel'
-                        );
+                    if($vendor->categoryid == 2)
+					{
+                        $join->on('d.sectorid','=','a.sectorid')->on('d.positionid','=','a.positionid');
+                    }
+					elseif ($vendor->categoryid == 1)
+					{
+                        $join->on('d.experiencelevel','=','a.experiencelevel');
                     }
                 }
             )
-            ->where(
-                'a.deploymentid',
-                $validatedData['deploymentid']
-            )
+            ->where('a.deploymentid',$validatedData['deploymentid'])
             ->first();
 
         if (!$resource) {
@@ -2172,7 +1709,7 @@ public function storeMprAttendance(Request $request)
 		$deploymentid	=	$request->input('deploymentid') ?? 0;
 		
 		$order 			= 	DB::table('eoi_work_order')
-							->select('orderid','project_name as projecttitle','categoryid','vendorid','workorderduedate')
+							->select('orderid','project_name as projecttitle','categoryid','vendorid','workorderduedate','orderdate')
 							->where('orderid',$orderid)
 							->where('vendorid',Session('vendorId'))
 							->first();
@@ -2180,6 +1717,7 @@ public function storeMprAttendance(Request $request)
 		{
 			return response()->json(['status'=>400,'message'=>'Invalid order detail provided. Please check and try again!']);
 		}
+		
 		$vendor		=	DB::table('vendor_tbl')
 						->select('vendorid','categoryid','tierid')
 						->where('vendorid',$order->vendorid)
@@ -2194,7 +1732,7 @@ public function storeMprAttendance(Request $request)
 						->value('rateid');
 						
 		$resource	=	DB::table('eoi_resource_deployment as a')
-						->select('a.deploymentid','a.orderid','a.name','a.mobilenumber','a.email','a.deployment_date','a.deployed_date','a.deployment_status','a.role','a.experience as awdexperience','a.experiencelevel','a.qualification','a.deploymenttype','a.duration','a.operating','a.tax','a.admincharge as admin','a.lastdate','d.sectorname','e.consultantposition','e.experience','f.remuneration','mas.total_present','mas.total_absent','mas.total_leave','mas.total_holiday','mas.mpr_remark','mas.attendance_file','mas.supporting_file','mas.mpr_file')
+						->select('a.deploymentid','a.orderid','a.name','a.mobilenumber','a.email','a.deployment_date','a.deployed_date','a.deployment_status','a.role','a.experience as awdexperience','a.experiencelevel','a.qualification','a.deploymenttype','a.duration','a.operating','a.tax','a.admincharge as admin','a.lastdate','a.engagement_percentage','a.startDate','d.sectorname','e.consultantposition','e.experience','f.remuneration','mas.total_present','mas.total_absent','mas.total_leave','mas.total_holiday','mas.mpr_remark','mas.attendance_file','mas.supporting_file','mas.mpr_file')
 						->leftJoin('mpr_resource as b', function($join) use ($mprid) {
 							$join->on('b.deployment_id', '=', 'a.deploymentid');
 							if($mprid>0){
@@ -2232,9 +1770,15 @@ public function storeMprAttendance(Request $request)
 
 		$joining_date			=	$resource->deployed_date;
 
-
-
+	
 		$joining_date	= 	$resource->deployed_date;
+		$joining_date	=	collect([$joining_date,$order->orderdate])->max();
+		if(!empty($resource->startDate))
+		{
+			$joining_date	=	collect([$joining_date,$resource->startDate])->min();
+			$joining_date	=	collect([$joining_date,$resource->deployed_date])->max();
+		}
+		
 		$last_date    	= 	$resource->lastdate;
 
 		$result = DB::select("
@@ -2275,20 +1819,11 @@ public function storeMprAttendance(Request $request)
 
 				CASE
 
-					/* -----------------------------------------
-					 * Before deployed date
-					 * ----------------------------------------- */
 					WHEN DATE_ADD(
 							DATE(CONCAT(?, '-', LPAD(?, 2, '0'), '-01')),
 							INTERVAL n.n DAY
 						 ) < DATE(?)
 					THEN 'NA'
-
-
-					/* -----------------------------------------
-					 * After last date
-					 * Only apply when lastdate exists
-					 * ----------------------------------------- */
 					WHEN ? IS NOT NULL
 						 AND DATE_ADD(
 								DATE(CONCAT(?, '-', LPAD(?, 2, '0'), '-01')),
@@ -2296,17 +1831,9 @@ public function storeMprAttendance(Request $request)
 							 ) > DATE(?)
 					THEN 'NA'
 
-
-					/* -----------------------------------------
-					 * Existing attendance status
-					 * ----------------------------------------- */
 					WHEN a.status IS NOT NULL
 					THEN a.status
 
-
-					/* -----------------------------------------
-					 * Normal holiday
-					 * ----------------------------------------- */
 					WHEN EXISTS (
 						SELECT 1
 						FROM holiday_tbl h
@@ -2319,13 +1846,6 @@ public function storeMprAttendance(Request $request)
 					)
 					THEN 'H'
 
-
-					/* -----------------------------------------
-					 * Yearly recurring holiday
-					 *
-					 * Example:
-					 * 15-August every year
-					 * ----------------------------------------- */
 					WHEN EXISTS (
 						SELECT 1
 						FROM holiday_tbl h
@@ -2346,13 +1866,6 @@ public function storeMprAttendance(Request $request)
 					)
 					THEN 'H'
 
-
-					/* -----------------------------------------
-					 * Monthly recurring holiday
-					 *
-					 * Example:
-					 * Every month 10th to 12th
-					 * ----------------------------------------- */
 					WHEN EXISTS (
 						SELECT 1
 						FROM holiday_tbl h
@@ -2367,10 +1880,6 @@ public function storeMprAttendance(Request $request)
 					)
 					THEN 'H'
 
-
-					/* -----------------------------------------
-					 * Saturday / Sunday
-					 * ----------------------------------------- */
 					WHEN DAYOFWEEK(
 							DATE_ADD(
 								DATE(CONCAT(?, '-', LPAD(?, 2, '0'), '-01')),
@@ -2379,10 +1888,6 @@ public function storeMprAttendance(Request $request)
 						 ) IN (1, 7)
 					THEN 'H'
 
-
-					/* -----------------------------------------
-					 * Normal working day
-					 * ----------------------------------------- */
 					ELSE ''
 
 				END AS status,
@@ -2425,52 +1930,25 @@ public function storeMprAttendance(Request $request)
 			ORDER BY work_date
 		", [
 
-			/* work_date */
 			$year, $month,
-
-			/* work_day */
 			$year, $month,
-
-			/* work_month */
 			$year, $month,
-
-			/* work_year */
 			$year, $month,
-
-			/* day_name */
 			$year, $month,
-
-			/* deployed_date */
 			$year, $month,
 			$joining_date,
-
-			/* lastdate */
 			$last_date,
 			$year, $month,
 			$last_date,
-
-			/* normal holiday */
 			$year, $month,
-
-			/* yearly recurring holiday - month */
 			$year, $month,
-
-			/* yearly recurring holiday - day */
 			$year, $month,
-
-			/* monthly recurring holiday */
 			$year, $month,
-
-			/* Saturday / Sunday */
 			$year, $month,
-
-			/* attendance JOIN */
 			$year, $month,
 			$deploymentid,
 			$month,
 			$year,
-
-			/* WHERE */
 			$year, $month,
 			$month
 		]);
@@ -2482,6 +1960,7 @@ public function storeMprAttendance(Request $request)
 		
 		
 		$resource->total_days	=	$attendance->count();
+		
 		$html	=	view('admin.vendors.ajaxpages.loadResourceMpr',[
 						'resource'	=>	$resource,
 						'order'		=>	$order,
@@ -2660,16 +2139,16 @@ public function storeMprAttendance(Request $request)
 
 						->get();
 
-			$html = view(
-				'admin.vendors.ajaxpages.loadMprResources',
-				[
-					'resources' => $resources,
-					'order'     => $order,
-					'mprid'     => $mprid,
-					'month'     => $month,
-					'year'      => $year
-				]
-			)->render();
+			$html	=	view(
+							'admin.vendors.ajaxpages.loadMprResources',
+							[
+								'resources' => $resources,
+								'order'     => $order,
+								'mprid'     => $mprid,
+								'month'     => $month,
+								'year'      => $year
+							]
+						)->render();
 
 			return response()->json([
 				'status' => 200,
@@ -3504,7 +2983,7 @@ public function storeMprAttendance(Request $request)
 			Session::put('adminsubmenu','participatedeois');
 			Session::put('menid',94);
 			$userId		= $request->session()->get('userId');
-			$vendorId		= $request->session()->get('vendorId');
+			$vendorId	= $request->session()->get('vendorId');
 			$issuper	= $request->session()->get('issuper');
 			if($issuper==0)
 			{
@@ -5469,7 +4948,7 @@ public function storeMprAttendance(Request $request)
 		if($request->upload_type == 'mpr')
 		{
 			$request->validate([
-				'signed_mpr' => 'required|mimes:pdf|max:10240',
+				'signed_mpr' => 'required|mimes:pdf|max:15360',
 			], [
 				'signed_mpr.required' => 'Please select the signed MPR PDF file to upload.',
 				'signed_mpr.mimes'    => 'Only PDF files are allowed.',
@@ -5653,7 +5132,7 @@ public function storeMprAttendance(Request $request)
 		$pagesize    = max(1, min($pagesize, 100));
 		$currentPage = max(1, $currentPage);
 
-		$defaultMprStartDate = Carbon::create(2026, 6, 1)->startOfMonth();
+		$defaultMprStartDate = Carbon::create(2026, 5, 1)->startOfMonth();
 		$currentMonth        = now()->startOfMonth();
 		$today               = now();
 
@@ -5725,15 +5204,23 @@ public function storeMprAttendance(Request $request)
 				continue;
 			}
 
-			$startDate = Carbon::parse($deployment->deployed_date);
-			$orderStartDate = Carbon::parse($order->orderdate);
+			$startDate 		=	Carbon::parse($deployment->deployed_date);
+			$orderStartDate = 	Carbon::parse($order->orderdate);
 
 			$current = collect([
 				$startDate,
 				$orderStartDate,
 				$mprStartDate
 			])->max();
-
+			
+			if(!empty($deployment->startDate) && empty($order->opening_date))
+			{
+				$deployment->startDate	=	Carbon::parse($deployment->startDate);
+				$current = collect([
+					$current,
+					$deployment->startDate,
+				])->min();				
+			}
 			$current = $current->copy()->startOfMonth();
 
 			$endDate = Carbon::parse($order->workorderduedate);
@@ -5844,7 +5331,7 @@ public function storeMprAttendance(Request $request)
 			->values();
 
 
-		$orders = new \Illuminate\Pagination\LengthAwarePaginator(
+		$orders	=	new \Illuminate\Pagination\LengthAwarePaginator(
 			$items,
 			$total,
 			$pagesize,
@@ -5855,12 +5342,7 @@ public function storeMprAttendance(Request $request)
 			]
 		);
 
-		return view(
-			'admin/vendors/ajaxpages/pendingMprTable',
-			[
-				'data' => $orders
-			]
-		);
+		return view('admin/vendors/ajaxpages/pendingMprTable',['data'	=>	$orders]);
 	}
 
 
@@ -6016,7 +5498,6 @@ public function storeMprAttendance(Request $request)
 		return view('admin/vendors/vendor_invoiced_mprs',compact('records'));
     }
 
-
 	public function vendorInvoicedData(Request $request)
 	{
 		$vendorId		=	$request->session()->get('vendorId') ?? 0;
@@ -6037,29 +5518,26 @@ public function storeMprAttendance(Request $request)
 							'a.voucher_id',
 							'a.invoice_number',
 							'a.invoice_date',
-							'a.invoice_status',
-							'a.finance_status',
-							'a.payment_status',
-							'a.mpr_ids',
-							'a.mpr_approved_amount',
-							'a.operating_cost',
 							'a.taxable_amount',
-							'a.tax',
 							'a.tax_value',
 							'a.net_invoice_value',
 							'a.net_paid_value',
 							'a.net_balance_value',
+							'a.finance_status',
+							'a.payment_status',
 							'a.invoice_file',
 							'a.order_id',
 							'a.vendor_id',
 							'a.subUserId',
+							'b.ordernumber',
+							'b.orderdate'
 						)
 						->join('eoi_work_order as b','b.orderid','=','a.order_id')
-						->where('a.vendor_id', $vendorId)
-						->when($subUserId > 0, function ($query) use ($subUserId) {
+						->where('a.vendor_id',$vendorId)
+						->when($subUserId>0,function ($query) use ($subUserId) {
 							$query->where('a.subUserId', $subUserId);
 						})
-						->when($departmentid > 0, function ($query) use ($departmentid) {
+						->when($departmentid>0,function ($query) use ($departmentid) {
 							$query->where('b.department_id', $departmentid);
 						})
 						->when($pagesearch !== '', function ($query) use ($pagesearch) {
@@ -6068,100 +5546,252 @@ public function storeMprAttendance(Request $request)
 						})
 						->orderBy('a.invoice_date', 'DESC')
 						->paginate($pagesize,['*'],'page',$currentPage);
-		/*
-		foreach($invoices as $invoice)
-		{
-			$mprIds = array_filter(explode(',', $invoice->mpr_ids));
-			if(!empty($mprIds))
-			{
-				$invoice->mprs	=	DB::table('mpr_tbl as a')
-									->select('a.*')
-									->whereIn('a.mpr_id', $mprIds)
-									->where('a.vendor_id', $invoice->vendor_id)
-									->where('a.is_verified', 1)
-									->where('a.is_invoiced', 1)
-
-									->when($subUserId > 0, function ($query) use ($subUserId) {
-										$query->where('a.subUserId', $subUserId);
-									})
-
-									->orderBy('a.submission_date')
-									->get()
-									->groupBy('order_id');
-
-			}
-			else
-			{
-				$invoice->mprs = collect();
-			}
-		}
-		*/
-
-		foreach($invoices as $invoice)
-		{
-			$mprIds = array_filter(explode(',', $invoice->mpr_ids));
-
-			if(!empty($mprIds))
-			{
-				$invoice->mprs = DB::table('mpr_tbl as a')
-					->select('a.*')
-					->whereIn('a.mpr_id', $mprIds)
-					->where('a.vendor_id', $invoice->vendor_id)
-					->where('a.is_verified', 1)
-					->where('a.is_invoiced', 1)
-
-					->when($subUserId > 0, function ($query) use ($subUserId) {
-						$query->where('a.subUserId', $subUserId);
-					})
-
-					->orderBy('a.submission_date')
-					->get()
-
-					->map(function ($mpr) {
-
-						$mpr->attendance_summary = DB::table('mpr_attendance_summary as s')
-							->leftJoin(
-								'eoi_resource_deployment as r',
-								'r.deploymentid',
-								'=',
-								's.deployment_id'
-							)
-							->select(
-								's.summary_id',
-								's.mpr_id',
-								's.deployment_id',
-								's.total_working_days',
-								's.count_days',
-								's.per_day_cost',
-								's.total_present',
-								's.total_absent',
-								's.total_leave',
-								's.total_holiday',
-								's.actual_salary',
-								's.calculated_salary',
-								's.calculated_operating',
-								's.calculated_gst',
-								's.net_salary',
-								's.deduction',
-								's.approved_salary',
-								'r.name as resource_name',
-								'r.mobilenumber as resource_mobilenumber',
-								'r.email as resource_email'
-							)
-							->where('s.mpr_id', $mpr->mpr_id)
-							->get();
-
-						return $mpr;
-					})
-
-					->groupBy('order_id');
-			}
-			else
-			{
-				$invoice->mprs = collect();
-			}
-		}
 		
 		return view('admin/vendors/ajaxpages/invoicedDataTable',['data' => $invoices]);
 	}
+
+/* 	public function getVendorInvoiceData(Request $request)
+	{
+		$vendorId  = $request->session()->get('vendorId') ?? 0;
+		$subUserId = $request->session()->get('subUserId') ?? 0;
+
+		$voucher_id = $request->input('voucher_id');
+
+
+		if (empty($voucher_id)) {
+			return response()->json([
+				'status'  => false,
+				'message' => 'Invalid invoice reference.'
+			], 422);
+		}
+
+
+		try {
+			$voucherId = Crypt::decrypt($voucher_id);
+		} catch (\Exception $e) {
+			return response()->json([
+				'status'  => false,
+				'message' => 'Invalid invoice reference.'
+			], 422);
+		}
+
+		$invoice = DB::table('invoice_mpr as a')
+			->select(
+				'a.voucher_id',
+				'a.invoice_number',
+				'a.invoice_date',
+				'a.invoice_status',
+				'a.finance_status',
+				'a.payment_status',
+				'a.mpr_ids',
+				'a.mpr_approved_amount',
+				'a.operating_cost',
+				'a.taxable_amount',
+				'a.tax',
+				'a.tax_value',
+				'a.net_invoice_value',
+				'a.net_paid_value',
+				'a.net_balance_value',
+				'a.invoice_file',
+				'a.order_id',
+				'a.vendor_id',
+				'a.subUserId'
+			)
+			->join(
+				'eoi_work_order as b',
+				'b.orderid',
+				'=',
+				'a.order_id'
+			)
+			->where('a.voucher_id', $voucherId)
+			->where('a.vendor_id', $vendorId)
+			->when($subUserId > 0, function ($query) use ($subUserId) {
+				$query->where('a.subUserId', $subUserId);
+			})
+			->first();
+
+		if (!$invoice) {
+			return response()->json([
+				'status'  => false,
+				'message' => 'Invoice not found.'
+			], 404);
+		}
+
+		$mprIds = collect(explode(',', $invoice->mpr_ids ?? ''))
+			->map(function ($id) {
+				return trim($id);
+			})
+			->filter()
+			->values()
+			->all();
+
+		if (!empty($mprIds)) {
+
+			$invoice->mprs = DB::table('mpr_tbl as a')
+				->select('a.*')
+				->whereIn('a.mpr_id', $mprIds)
+				->where('a.vendor_id', $invoice->vendor_id)
+				->where('a.is_verified', 1)
+				->where('a.is_invoiced', 1)
+				->when($subUserId > 0, function ($query) use ($subUserId) {
+					$query->where('a.subUserId', $subUserId);
+				})
+				->orderBy('a.submission_date')
+				->get()
+				->map(function ($mpr) {
+
+					$mpr->attendance_summary = DB::table('mpr_attendance_summary as s')
+						->leftJoin('eoi_resource_deployment as r','r.deploymentid','=','s.deployment_id')
+						->select(
+							's.summary_id',
+							's.mpr_id',
+							's.deployment_id',
+							's.total_working_days',
+							's.count_days',
+							's.per_day_cost',
+							's.total_present',
+							's.total_absent',
+							's.total_leave',
+							's.total_holiday',
+							's.actual_salary',
+							's.calculated_salary',
+							's.calculated_operating',
+							's.calculated_gst',
+							's.net_salary',
+							's.deduction',
+							's.approved_salary',
+							'r.name as resource_name',
+							'r.mobilenumber as resource_mobilenumber',
+							'r.email as resource_email',
+							's.mpr_file',
+							's.attendance_file',
+							's.supporting_file'
+						)
+						->where('s.mpr_id', $mpr->mpr_id)
+						->get();
+
+					return $mpr;
+				})
+				->groupBy('order_id');
+
+		} else {
+
+			$invoice->mprs = collect();
+		}
+
+		return view(
+			'admin/vendors/ajaxpages/invoiceDetail',
+			[
+				'invoice' => $invoice
+			]
+		);
+	} */
+
+
+
+public function getVendorInvoiceData(Request $request)
+{
+	$vendorId = $request->session()->get('vendorId') ?? 0;
+	$subUserId = $request->session()->get('subUserId') ?? 0;
+	$voucher_id = $request->input('voucher_id');
+
+	if(empty($voucher_id))
+	{
+		return response()->json(['status'=>false,'message'=>'Invalid invoice reference.'],422);
+	}
+
+	try
+	{
+		$voucherId = Crypt::decrypt($voucher_id);
+	}
+	catch(\Exception $e)
+	{
+		return response()->json(['status'=>false,'message'=>'Invalid invoice reference.'],422);
+	}
+
+	$invoice = DB::table('invoice_mpr as a')
+		->select('a.voucher_id','a.invoice_number','a.invoice_date','a.invoice_status','a.finance_status','a.payment_status','a.mpr_ids','a.mpr_approved_amount','a.operating_cost','a.taxable_amount','a.tax','a.tax_value','a.net_invoice_value','a.net_paid_value','a.net_balance_value','a.invoice_file','a.order_id','a.request_id','a.vendor_id','a.subUserId')
+		->join('eoi_work_order as b','b.orderid','=','a.order_id')
+		->where('a.voucher_id',$voucherId)
+		->where('a.vendor_id',$vendorId)
+		->when($subUserId > 0,function($query) use ($subUserId){ $query->where('a.subUserId',$subUserId); })
+		->first();
+
+	if(!$invoice)
+	{
+		return response()->json(['status'=>false,'message'=>'Invoice not found.'],404);
+	}
+
+	/*
+	|--------------------------------------------------------------------------
+	| PAYMENT DATA
+	|--------------------------------------------------------------------------
+	*/
+
+	$invoice->payments = DB::table('finance_vendor_payment')
+		->where('voucher_id',$invoice->voucher_id)
+		->where('vendor_id',$invoice->vendor_id)
+		->orderBy('payment_date','asc')
+		->orderBy('vendor_payment_id','asc')
+		->get();
+
+	$invoice->total_payment_count = $invoice->payments->count();
+	$invoice->total_gross_payment = round((float)$invoice->payments->sum('gross_amount'),2);
+	$invoice->total_approval_amount = round((float)$invoice->payments->sum('approval_amount'),2);
+	$invoice->total_tds_amount = round((float)$invoice->payments->sum('tds_amount'),2);
+	$invoice->total_gst_tds_amount = round((float)$invoice->payments->sum('gst_tds_amount'),2);
+	$invoice->total_net_paid_amount = round((float)$invoice->payments->sum('net_paid_amount'),2);
+	$invoice->total_gross_paid_amount = round((float)$invoice->payments->sum('gross_paid_amount'),2);
+	$invoice->total_admin_charge_amount = round((float)$invoice->payments->sum('admin_charge_amount'),2);
+	$invoice->total_basic_amount = round((float)$invoice->payments->sum('basic_amount'),2);
+
+	/*
+	|--------------------------------------------------------------------------
+	| MPR IDs
+	|--------------------------------------------------------------------------
+	*/
+
+	$mprIds = collect(explode(',', $invoice->mpr_ids ?? ''))
+		->map(function($id){ return trim($id); })
+		->filter()
+		->values()
+		->all();
+
+	/*
+	|--------------------------------------------------------------------------
+	| MPR DATA
+	|--------------------------------------------------------------------------
+	*/
+
+	if(!empty($mprIds))
+	{
+		$invoice->mprs = DB::table('mpr_tbl as a')
+			->select('a.*')
+			->whereIn('a.mpr_id',$mprIds)
+			->where('a.vendor_id',$invoice->vendor_id)
+			->where('a.is_verified',1)
+			->where('a.is_invoiced',1)
+			->when($subUserId > 0,function($query) use ($subUserId){ $query->where('a.subUserId',$subUserId); })
+			->orderBy('a.submission_date')
+			->get()
+			->map(function($mpr)
+			{
+				$mpr->attendance_summary = DB::table('mpr_attendance_summary as s')
+					->leftJoin('eoi_resource_deployment as r','r.deploymentid','=','s.deployment_id')
+					->select('s.summary_id','s.mpr_id','s.deployment_id','s.total_working_days','s.count_days','s.per_day_cost','s.total_present','s.total_absent','s.total_leave','s.total_holiday','s.actual_salary','s.calculated_salary','s.calculated_operating','s.calculated_gst','s.net_salary','s.deduction','s.approved_salary','r.name as resource_name','r.mobilenumber as resource_mobilenumber','r.email as resource_email','s.mpr_file','s.attendance_file','s.supporting_file')
+					->where('s.mpr_id',$mpr->mpr_id)
+					->get();
+
+				return $mpr;
+			})
+			->groupBy('order_id');
+	}
+	else
+	{
+		$invoice->mprs = collect();
+	}
+
+	return view('admin/vendors/ajaxpages/invoiceDetail',['invoice'=>$invoice]);
+}
+	
 }

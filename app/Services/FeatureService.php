@@ -24,6 +24,7 @@ class FeatureService
                 ->value('feature_status') === 1;
         });
     }
-
+	
+	
 }
 ?>

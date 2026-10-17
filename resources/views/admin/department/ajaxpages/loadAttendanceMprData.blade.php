@@ -96,7 +96,7 @@
 				</tr>
 				<tr>
 					<td class="form-label">Submitted Salary</td>
-					<td style="width:150px;"><input type="text" class="numbers" value="{{round($summary->net_salary)}}" name="net_salary" id="net_salary" readonly style="width:100%;"></td>
+					<td style="width:150px;"><input type="text" class="numbers" value="{{ceil($summary->net_salary)}}" name="net_salary" id="net_salary" readonly style="width:100%;"></td>
 				</tr>
 				<tr>
 					<td class="form-label">Approved Salary</td>
@@ -309,7 +309,7 @@ function approveResourceMpr(rl,mprid,deploymentid)
 	var count_days			=	Number(document.getElementById('count_days').value);
 	var net_salary			=	Number(document.getElementById('net_salary').value);
 	var calculated_salary	=	Number(document.getElementById('calculated_salary').value);
-	if(net_salary<calculated_salary)
+	if((net_salary-calculated_salary)>1)
 	{
 		$(".aprBtn").prop("disabled","");
 		bootbox.alert("The approved salary cannot exceed the submitted salary. Please check and try again.");

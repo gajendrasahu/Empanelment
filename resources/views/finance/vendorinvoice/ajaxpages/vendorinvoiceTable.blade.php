@@ -83,9 +83,11 @@ $now = \Carbon\Carbon::now();
 	</td>
 
 	<td class="no_wrap text-center">
+		@permission('finance.vendorinvoice.view')
 		<a href="{{ route('finance.vendorinvoice.view',Crypt::encrypt($item->voucher_id)) }}" class="" title="View" style="outline:none; text-decoration:none;">
 			<i class="fa fa-eye"></i>
 		</a>
+		@endpermission
 	</td>
 </tr>
 

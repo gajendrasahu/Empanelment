@@ -317,7 +317,7 @@ $remark = preg_replace(
 				</td>
 			</tr>
 		</table>
-@if(!$data->otp_verified_on && $data->deadlinedate->lt(now()))
+@if($data->otp_verified_on==NULL && \Carbon\Carbon::parse($data->deadlinedate)->gt(now()))
 <table class="mytable pd-8" style="text-transform:none!important; border:none!important; width:100%;">
     <tr class="myheadbg font-bold">
         <td colspan="2">OTP Verification</td>
@@ -368,24 +368,28 @@ $remark = preg_replace(
 @endif
 
 	</div>
-		@if($data->isinprebid==1 && $prebidPublished==0)
-			<button type="button" class="btn btn-info" disabled id="participateBtn" style="width:400px; float:right; margin-top:20px; margin-bottom:20px;">
-				<i class="fa fa-warning"></i> Please wait until the pre-bid response is published.
-			</button>		
+		@if($data->otp_verified_on==NULL && \Carbon\Carbon::parse($data->deadlinedate)->lt(now()))
+		<button type="button" class="btn btn-info partBtn" disabled style="width:200px; float:right; margin-top:20px; margin-bottom:20px;">
+			<i class="fa fa-lock"></i> Submission Closed
+		</button>
 		@else
-			
-			@if($data->isresumeuploaded==0)
-			<button type="submit" class="btn btn-info partBtn" @if(!$data->otp_verified_on) disabled @endif id="participateBtn" style="width:200px; float:right; margin-top:20px; margin-bottom:20px;">
-				<i class="fa fa-save"></i> Submit & Participate
-			</button>
-			@else
-			<button type="button" class="btn btn-info" disabled style="width:100px; float:right; margin-top:20px; margin-bottom:20px;">
-				Uploaded
-			</button>		
-			@endif
-			
-			<br><br><br><br>
+		@if($data->isresumeuploaded==0)
+		@if($data->otp_verified_on!=NULL && \Carbon\Carbon::parse($data->deadlinedate)->lt(now()))
+		<button type="submit" class="btn btn-info partBtn" disabled id="" style="width:200px; float:right; margin-top:20px; margin-bottom:20px;">
+			<i class="fa fa-save"></i> Submission Closed
+		</button>
+		@else
+		<button type="submit" class="btn btn-info partBtn" id="participateBtn" style="width:200px; float:right; margin-top:20px; margin-bottom:20px;">
+			<i class="fa fa-save"></i> Submit & Participate
+		</button>
 		@endif
+		@else
+		<button type="button" class="btn btn-info" disabled style="width:100px; float:right; margin-top:20px; margin-bottom:20px;">
+			Uploaded
+		</button>		
+		@endif
+		@endif
+		<br><br><br><br>
 </div>
 
 
@@ -839,8 +843,6 @@ $(document).on('click', '#verifyOtpBtn', function () {
     let floatid = 	$('#floatid').val().trim();
     let otp 	= 	$('#otp').val().trim();
     let btn 	= 	$(this);
-	alert(email);
-	alert(floatid);
     // Validate OTP
     if (!otp) {
         $('#otpMessage').html(

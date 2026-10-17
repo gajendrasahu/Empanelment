@@ -23,7 +23,7 @@
 		</div>
 		<div class="ui-item-detail">
 			<label>Last Date of Pre-bid Query <i class="fa fa-info-circle show-updates" data-url="{{ route('get.updates',[Crypt::encrypt('prebidlastdate'),Crypt::encrypt($data->requestid)]) }}"></i></label>
-			<p><i class="fa fa-calendar"></i> {{ old('prebidlastdate',$data->prebidlastdate ? date('d-m-Y',strtotime($data->prebidlastdate)) : 'To be declared') }}</p>
+			<p><i class="fa fa-calendar"></i> {{ old('prebidlastdate',$data->prebidlastdate ? date('d-m-Y, h:i A',strtotime($data->prebidlastdate)) : 'To be declared') }}</p>
 		</div>
 		<div class="ui-item-detail">
 			<label>Last Date for Submission of Proposals <i class="fa fa-info-circle show-updates" data-url="{{ route('get.updates',[Crypt::encrypt('deadlinedate'),Crypt::encrypt($data->requestid)]) }}"></i></label>

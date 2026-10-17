@@ -243,11 +243,11 @@
 				<div class="card mt-10">
 
 					<div class="card-body text-right">
-
+					@permission('finance.departmentinvoice.update')
 						<button type="button" id="btnUpdateInvoice" class="btn btn-info gridbtn width-150">
 							<i class="fa fa-refresh"></i> Update Invoice
 						</button>
-
+					@endpermission
 					</div>
 
 				</div>

@@ -23,8 +23,10 @@ use App\Services\DeploymentDataService;
 use App\Services\TierWiseDataService;
 use App\Services\PasswordService;
 use Illuminate\Support\Facades\Hash;
+
 class ResourceController extends Controller
 {
+	
 	protected $deploymentService;
 	protected $priceService;
 	protected $passwordService;
@@ -1013,13 +1015,15 @@ class ResourceController extends Controller
 								  'eoi_request.requestid'
 							  );
 					})
+					->where('isClosed',0)
+					->where('iscancelled',0)
 					->orderBy('releasedate','DESC')
 					->paginate($pagesize,['*'],'page',$currentPage);		
 		
 
 		foreach($data as $eoi)
 		{
-			$vendors = DB::table('eoi_request_detail_resume as erdr')
+			$vendors	=	DB::table('eoi_request_detail_resume as erdr')
 							->leftJoin('vendor_tbl as v','v.vendorid','=','erdr.vendorid')
 							->where('erdr.requestid',$eoi->requestid)
 							->select('erdr.vendorid','v.shortname','v.tierid','v.categoryid')
@@ -1032,7 +1036,7 @@ class ResourceController extends Controller
 			{
 				if($eoi->categoryid==2)
 				{
-					$vendor->records = DB::table('eoi_request_detail_resume as a')
+					$vendor->records	=	DB::table('eoi_request_detail_resume as a')
 											->select('a.name','c.sectorname','d.consultantposition','a.resume')
 											->join('eoi_request_detail as b','b.recordid','=','a.recordid')
 											->join('sector_tbl as c','c.sectorid','=','b.sectorid')
@@ -1047,7 +1051,7 @@ class ResourceController extends Controller
 
 				if($eoi->categoryid==1)
 				{
-					$vendor->records = DB::table('eoi_request_detail_resume as a')
+					$vendor->records	=	DB::table('eoi_request_detail_resume as a')
 											->select('a.name','c.experiencelevel','a.resume')
 											->join('eoi_request_detail as b','b.recordid','=','a.recordid')
 											->join('remuneration_tbl as c','c.experiencelevel','=','b.experiencelevel')
@@ -1055,10 +1059,11 @@ class ResourceController extends Controller
 											->where('a.vendorid',$vendor->vendorid)
 											->where('c.tierid',$vendor->tierid)
 											->where('c.categoryid',$vendor->categoryid)
-											->when($pagesearch!='',function($query) use ($pagesearch){
+											->when($pagesearch!='',function($query) use ($pagesearch) {
 												return $query->where('a.name','like','%'.$pagesearch.'%');
 											})
-											->get();
+											->distinct()
+											->get();					
 				}
 
 				if(isset($vendor->records) && $vendor->records->count() > 0)

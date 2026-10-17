@@ -12,7 +12,7 @@ if ($record->project_name!='') {
 }
 
 @endphp
-
+@if(app(\App\Services\PermissionService::class)->hasPermission('finance.demandnote.store') || !app(\App\Services\PermissionService::class)->hasPermission('finance.demandnote.update'))
 <div class="main-content">
 	<div class="main-content-inner">
 		<div class="page-content">
@@ -214,9 +214,17 @@ if ($record->project_name!='') {
 
 						<div class="col-md-4 mt-10 text-right">
 							@if($mode=='create')
-								<button type="button" class="btn btn-info gridbtn width-100" id="btnSaveDemandNote"><i class="fa fa-save"></i> Submit</button>
+								@permission('finance.demandnote.store')
+									<button type="button" class="btn btn-info gridbtn width-100" id="btnSaveDemandNote">
+										<i class="fa fa-save"></i> Submit
+									</button>
+								@endpermission
 							@else
-								<button type="button" class="btn btn-info gridbtn width-100" id="btnUpdateDemandNote"><i class="fa fa-refresh"></i> Update</button>
+								@permission('finance.demandnote.update')
+									<button type="button" class="btn btn-info gridbtn width-100" id="btnUpdateDemandNote">
+										<i class="fa fa-refresh"></i> Update
+									</button>
+								@endpermission
 							@endif
 						</div>
 					</div>
@@ -227,7 +235,7 @@ if ($record->project_name!='') {
 		</div>
 	</div>
 </div>
-
+@endif
 
 <div class="modal fade" id="demandResourceModal">
     <div class="modal-dialog modal-lg" style="width:95%; margin-top:0px;">
@@ -322,6 +330,7 @@ $("#advance_amount").keyup(function(){
 	calculateDemandAmounts();
 });
 
+@permission('finance.demandnote.store')
 $("#btnSaveDemandNote").click(function () {
 
     bootbox.confirm("Are you sure you want to save this Demand Note?", function(result){
@@ -334,7 +343,9 @@ $("#btnSaveDemandNote").click(function () {
     });
 
 });
+@endpermission
 
+@permission('finance.demandnote.update')
 $("#btnUpdateDemandNote").click(function () {
 
     bootbox.confirm("Are you sure you want to update this Demand Note?", function(result){
@@ -347,6 +358,7 @@ $("#btnUpdateDemandNote").click(function () {
     });
 
 });
+@endpermission
 
 function saveDemandNote()
 {
